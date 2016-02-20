@@ -7,6 +7,7 @@ import com.avaje.ebean.annotation.UpdatedTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name="users")
@@ -45,6 +46,10 @@ public class User extends Model {
     @UpdatedTimestamp
     @Column(name="date_updated")
     private Timestamp whenUpdated;
+
+    @JoinTable(name="user_has_perks")
+    @ManyToMany(cascade=CascadeType.ALL)
+    private List<Perk> perks;
 
     public String getFirstname() {
         return firstname;
@@ -100,5 +105,13 @@ public class User extends Model {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
+    }
+
+    public List<Perk> getPerks() {
+        return perks;
+    }
+
+    public void setPerks(List<Perk> perks) {
+        this.perks = perks;
     }
 }

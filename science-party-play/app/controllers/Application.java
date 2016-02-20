@@ -15,12 +15,12 @@ public class Application extends Controller {
 
     public Result index() {
 
-        User user = User.find.byId(3L);
+        User user = User.find.byId(4L);
 
         if (user == null) {
             user = new User();
-            user.firstname = "Erik";
-            user.lastname = "Wolf";
+            user.setFirstname("Erik");
+            user.setLastname("Wolf");
             Ebean.save(user);
         }
 
