@@ -47,9 +47,15 @@ public class User extends Model {
     @Column(name="date_updated")
     private Timestamp whenUpdated;
 
+    @Column(name="last_online")
+    private Timestamp lastOnline;
+
     @JoinTable(name="user_has_perks")
     @ManyToMany(cascade=CascadeType.ALL)
     private List<Perk> perks;
+
+    @OneToMany(mappedBy="user", cascade= CascadeType.ALL)
+    private List<Player> players;
 
     public String getFirstname() {
         return firstname;
@@ -107,11 +113,35 @@ public class User extends Model {
         this.lastname = lastname;
     }
 
+    public Timestamp getLastOnline() {
+        return lastOnline;
+    }
+
+    public void setLastOnline(Timestamp lastOnline) {
+        this.lastOnline = lastOnline;
+    }
+
     public List<Perk> getPerks() {
         return perks;
     }
 
     public void setPerks(List<Perk> perks) {
         this.perks = perks;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    public Timestamp getWhenUpdated() {
+        return whenUpdated;
+    }
+
+    public Timestamp getWhenCreated() {
+        return whenCreated;
     }
 }
