@@ -49,6 +49,7 @@ create table users (
   last_online               datetime(6),
   date_created              datetime(6) not null,
   date_updated              datetime(6) not null,
+  constraint uq_users_email unique (email),
   constraint pk_users primary key (id))
 ;
 

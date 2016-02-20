@@ -30,6 +30,7 @@ public class User extends Model {
     private Timestamp birthday;
 
     @Size(max=60)
+    @Column(unique = true)
     private String email;
 
     @Size(max=32)
@@ -56,6 +57,10 @@ public class User extends Model {
 
     @OneToMany(mappedBy="user", cascade= CascadeType.ALL)
     private List<Player> players;
+
+    public Long getId() {
+        return id;
+    }
 
     public String getFirstname() {
         return firstname;
@@ -143,5 +148,14 @@ public class User extends Model {
 
     public Timestamp getWhenCreated() {
         return whenCreated;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "firstname='" + firstname + '\'' +
+                ", lastname='" + lastname + '\'' +
+                ", email='" + email + '\'' +
+                '}';
     }
 }

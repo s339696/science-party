@@ -1,6 +1,7 @@
 package controllers;
 
 import com.avaje.ebean.Ebean;
+import manager.LoginManager;
 import models.ebean.Perk;
 import models.ebean.Topic;
 import models.ebean.User;
@@ -19,7 +20,6 @@ public class Application extends Controller {
 
     public Result index() {
         // Kurzer Datenbank Test
-        System.out.println(User.find.byId(1L).username);
 
         return ok(views.html.index.render("Willkommen bei Science Party"));
     }
@@ -49,7 +49,26 @@ public class Application extends Controller {
     }
 
     public Result playground() {
-        User user = User.find.byId(1L);
+
+        User owner = LoginManager.login("erik.wolf.29@gmail.com","1234");
+        if (owner != null) {
+            Logger.info("Login: " + owner.toString());
+        }
+
+
+        owner = null;
+        owner = LoginManager.getLoggedInUser();
+        if (owner != null) {
+            Logger.info("Get User: " + owner.toString());
+        }
+
+        Logger.info(String.valueOf(LoginManager.isLoggedIn()));
+
+        LoginManager.logout();
+
+        Logger.info(String.valueOf(LoginManager.isLoggedIn()));
+
+/*        User user = User.find.byId(1L);
 
         Topic topic = new Topic();
         topic.setName("Forschungsmethoden");
@@ -76,7 +95,7 @@ public class Application extends Controller {
             user.getPerks().add(perk);
         }
 
-        user.update();
+        user.update();*/
 
         //user.update();
         // Logger.info(user.firstname + " " + user.lastname + " " + user.email + " " + user.birthday.toLocalDateTime().toString());
