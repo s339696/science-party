@@ -12,8 +12,11 @@ libraryDependencies ++= Seq(
   javaWs
 )
 
-// MySQL Anbindung
+// MySQL Connector
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.38"
+
+//Database Evolution
+libraryDependencies += evolutions
 
 // Ebean ORM
 lazy val myProject = (project in file("."))
