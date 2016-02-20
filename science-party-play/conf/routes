@@ -3,8 +3,14 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
-GET     /playground                 controllers.Application.playground()
+GET     /index                      controllers.Application.index()
+GET     /                           controllers.Application.home()
+GET     /login                      controllers.Application.login()
+GET     /register                   controllers.Application.register()
+GET     /blog                       controllers.Application.blog()
+GET     /events                     controllers.Application.events()
+GET     /kontakt                    controllers.Application.kontakt()
 
+GET     /playground                 controllers.Application.playground()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

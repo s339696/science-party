@@ -1,0 +1,44 @@
+@(titel: String)
+
+@mainExtern("Anmeldung") {
+
+<!DOCTYPE html>
+
+<html lang="de">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Login</title>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+    </head>
+    <body>
+
+    <!-- LOGO [class="leftLogo"] -->
+
+        <h1>
+            Anmelden
+        </h1>
+
+        <div id="loginContainer">
+            <div class="formular">
+                <form>
+                    E-Mail Adresse:<br>
+                    <input type="text" name="email" placeholder="E-Mail Adresse" required>
+                    <br>
+                    Passwort:<br>
+                    <input type="password" name="password" placeholder="Passwort" required>
+                    <br>
+                    <br>
+                    <input type="submit" value="Anmelden">
+                </form>
+            </div>
+
+            <div>
+                <a class="bigButton">
+                    Registrieren
+                </a>
+            </div>
+        </div>
+    </body>
+</html>
+}
