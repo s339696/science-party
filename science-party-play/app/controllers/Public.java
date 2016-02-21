@@ -62,6 +62,17 @@ public class Public extends Controller {
     }
 
     /**
+     * Renders the register page.
+     * @return
+     */
+    public Result register() {
+        if (LoginManager.isLoggedIn()) {
+            return redirect(controllers.routes.Application.renderHome());
+        }
+        return ok(views.html.register.render("Registrierung"));
+    }
+
+    /**
      * Handles a register request and creates in the end a new user.
      *
      * Required JSON Data:

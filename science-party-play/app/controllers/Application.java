@@ -23,10 +23,6 @@ public class Application extends Controller {
         }
     }
 
-    public Result register() {
-        return ok(views.html.register.render("Registrierung"));
-    }
-
     public Result blog() {
         return ok(views.html.blog.render("Blog"));
     }
