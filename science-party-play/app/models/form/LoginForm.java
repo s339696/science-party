@@ -2,6 +2,9 @@ package models.form;
 
 import play.data.validation.Constraints;
 
+/**
+ * Form to parse payload of a login request
+ */
 public class LoginForm {
 
     @Constraints.Required()
