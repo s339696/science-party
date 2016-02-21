@@ -65,7 +65,7 @@ public class Public extends Controller {
      * Renders the register page.
      * @return
      */
-    public Result register() {
+    public Result renderRegister() {
         if (LoginManager.isLoggedIn()) {
             return redirect(controllers.routes.Application.renderHome());
         }

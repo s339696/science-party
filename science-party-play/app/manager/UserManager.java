@@ -2,6 +2,7 @@ package manager;
 
 import exception.UserException;
 import models.ebean.User;
+import play.Logger;
 import util.Helper;
 
 import java.sql.Timestamp;
@@ -34,7 +35,7 @@ public class UserManager {
         user.setLocked(false);
         user.setPoints(0);
 
-        // Insert in Database
+        // Insert into Database
         try {
             user.insert();
         }catch (Exception e) {
@@ -60,10 +61,10 @@ public class UserManager {
         }
         String[] splitedBirth = birthday.split("\\.");
         day = Integer.parseInt(splitedBirth[0]);
-        month = Integer.parseInt(splitedBirth[0]);
-        year = Integer.parseInt(splitedBirth[0]);
-
-        return Timestamp.valueOf(LocalDateTime.of(year,month,day,0,0));
+        month = Integer.parseInt(splitedBirth[1]);
+        year = Integer.parseInt(splitedBirth[2]);
+        Timestamp ts =  Timestamp.valueOf(LocalDateTime.of(year,month,day,0,0));
+        return ts;
     }
 
     private static String checkEmail(String email) throws UserException {

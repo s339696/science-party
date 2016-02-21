@@ -17,7 +17,7 @@ GET     /profile/:id                controllers.Profil.renderProfil(id: Long)
 GET     /logout                     controllers.Profil.handleLogout()
 
 # Todo
-GET     /register                   controllers.Application.register()
+GET     /register                   controllers.Public.renderRegister()
 GET     /blog                       controllers.Application.blog()
 GET     /events                     controllers.Application.events()
 GET     /kontakt                    controllers.Application.kontakt()
