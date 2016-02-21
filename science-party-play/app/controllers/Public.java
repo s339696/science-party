@@ -1,9 +1,7 @@
 package controllers;
 
-import controllers.*;
-import controllers.routes;
+
 import exception.LoginException;
-import exception.UserException;
 import manager.LoginManager;
 import manager.UserManager;
 import models.ebean.User;

@@ -11,6 +11,11 @@ POST    /login                      controllers.Public.handleLoginRequest()
 
 POST    /register                   controllers.Public.handleRegisterRequest()
 
+#Profil
+GET     /profile                    controllers.Profil.renderOwnProfil()
+GET     /profile/:id                controllers.Profil.renderProfil(id: Long)
+GET     /logout                     controllers.Profil.handleLogout()
+
 # Todo
 GET     /register                   controllers.Application.register()
 GET     /blog                       controllers.Application.blog()

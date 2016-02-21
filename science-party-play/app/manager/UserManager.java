@@ -43,7 +43,7 @@ public class UserManager {
 
         return user;
     }
-    
+
     /**
      * Check format of a given birthday string and converts to Timestamp.
      * @param birthday
