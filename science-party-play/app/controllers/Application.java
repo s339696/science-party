@@ -2,17 +2,25 @@ package controllers;
 
 
 import manager.LoginManager;
-import models.ebean.User;
-
 import play.mvc.*;
-import play.Logger;
 
-import views.html.*;
-
+/**
+ * Handle general Application requests.
+ * @return
+ */
 public class Application extends Controller {
 
+    /**
+     * This methods renders the one and only index/root/home page if no user is logged in. Otherwise the User will
+     * redirected to his own Profilpage.
+     * @return
+     */
     public Result renderHome() {
-        return ok(views.html.home.render("Willkommen bei Science Party"));
+        if (LoginManager.isLoggedIn()) {
+            return redirect(controllers.routes.Profil.renderOwnProfil());
+        } else {
+            return ok(views.html.home.render("Willkommen bei Science Party"));
+        }
     }
 
     public Result register() {
@@ -31,6 +39,12 @@ public class Application extends Controller {
         return ok(views.html.kontakt.render("Kontakt"));
     }
 
+    /**
+     * Time to play a bit and this doesn't mean to play a game...
+     * --> Development in process.
+     *
+     * @return
+     */
     public Result playground() {
 
         return ok("Let's Play!!!");
