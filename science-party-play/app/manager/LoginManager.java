@@ -1,6 +1,9 @@
 package manager;
 
+import exception.LoginException;
 import models.ebean.User;
+import play.Logger;
+import util.Helper;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -21,16 +24,22 @@ public class LoginManager {
      * @param password
      * @return
      */
-    public static User login(String email, String password) {
-        User user = User.find.where().ilike("email",email).ilike("password",password).findUnique();
+    public static User login(String email, String password) throws LoginException {
+        password = Helper.getMD5fromString(password);
+        Logger.info(password);
+        User user = User.find.where().ilike("email",email).findUnique();
         if (user != null) {
-            session("userid", user.getId().toString());
-            session("email", email);
-            session("password", password);
-            updateLastOnline(user);
-            return user;
+            if (user.getPassword().equals(password)) {
+                session("userid", user.getId().toString());
+                session("email", email);
+                session("password", password);
+                updateLastOnline(user);
+                return user;
+            } else {
+                throw new LoginException("Das eingegebene Passwort war falsch.");
+            }
         } else {
-            return null;
+            throw new LoginException("Es wurde kein Account mit der eingegebenen Mailadresse gefunden.");
         }
     }
 

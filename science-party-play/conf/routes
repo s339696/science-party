@@ -2,10 +2,13 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+# Public Area
+GET     /login                      controllers.Public.renderLoginPage()
+POST    /login                      controllers.Public.handleLoginRequest()
+
 # Home page
 GET     /index                      controllers.Application.index()
 GET     /                           controllers.Application.home()
-GET     /login                      controllers.Application.login()
 GET     /register                   controllers.Application.register()
 GET     /blog                       controllers.Application.blog()
 GET     /events                     controllers.Application.events()

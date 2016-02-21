@@ -1,20 +1,13 @@
 package controllers;
 
-import com.avaje.ebean.Ebean;
+
 import manager.LoginManager;
-import models.ebean.Perk;
-import models.ebean.Topic;
 import models.ebean.User;
-import play.*;
+
 import play.mvc.*;
 import play.Logger;
 
-import util.Helper;
 import views.html.*;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class Application extends Controller {
 
@@ -26,10 +19,6 @@ public class Application extends Controller {
 
     public Result home() {
         return ok(views.html.home.render("Willkommen bei Science Party"));
-    }
-
-    public Result login() {
-        return ok(views.html.login.render("Anmeldung"));
     }
 
     public Result register() {
@@ -50,7 +39,7 @@ public class Application extends Controller {
 
     public Result playground() {
 
-        User owner = LoginManager.login("erik.wolf.29@gmail.com","1234");
+/*        User owner = LoginManager.login("erik.wolf.29@gmail.com","1234");
         if (owner != null) {
             Logger.info("Login: " + owner.toString());
         }
@@ -66,7 +55,7 @@ public class Application extends Controller {
 
         LoginManager.logout();
 
-        Logger.info(String.valueOf(LoginManager.isLoggedIn()));
+        Logger.info(String.valueOf(LoginManager.isLoggedIn()));*/
 
 /*        User user = User.find.byId(1L);
 
