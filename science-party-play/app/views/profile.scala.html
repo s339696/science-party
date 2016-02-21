@@ -1,0 +1,9 @@
+@(user: models.ebean.User)
+
+@mainIntern("Profil von " + user.getFirstname) {
+    @(user.getFirstname) <br>
+    @(user.getLastname) <br>
+    @(user.getBirthdayAsString) <br>
+    @(user.getEmail) <br>
+
+}

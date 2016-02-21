@@ -22,7 +22,7 @@ public class Profil extends Controller {
 
     public Result renderProfil(long id) {
 
-        return ok();
+        return ok(views.html.profile.render(User.find.byId(1L)));
     }
 
     public Result handleProfileUpdate() {

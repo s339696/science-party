@@ -3,37 +3,41 @@ package models.ebean;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+import play.api.mvc.PathBindable;
+import util.Helper;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User extends Model {
 
     // Finder
-    public static Finder<Long,User> find = new Finder<>(User.class);
+    public static Finder<Long, User> find = new Finder<>(User.class);
 
     // Columns
     @Id
     @GeneratedValue
     private Long id;
 
-    @Size(max=45)
+    @Size(max = 45)
     private String firstname;
 
-    @Size(max=45)
+    @Size(max = 45)
     private String lastname;
 
     private Timestamp birthday;
 
-    @Size(max=60)
+    @Size(max = 60)
     @Column(unique = true)
     private String email;
 
-    @Size(max=32)
+    @Size(max = 32)
     private String password;
 
     private int points;
@@ -41,21 +45,21 @@ public class User extends Model {
     private boolean locked;
 
     @CreatedTimestamp
-    @Column(name="date_created")
+    @Column(name = "date_created")
     private Timestamp whenCreated;
 
     @UpdatedTimestamp
-    @Column(name="date_updated")
+    @Column(name = "date_updated")
     private Timestamp whenUpdated;
 
-    @Column(name="last_online")
+    @Column(name = "last_online")
     private Timestamp lastOnline;
 
-    @JoinTable(name="user_has_perks")
-    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(name = "user_has_perks")
+    @ManyToMany(cascade = CascadeType.ALL)
     private List<Perk> perks;
 
-    @OneToMany(mappedBy="user", cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Player> players;
 
     public Long getId() {
@@ -104,6 +108,10 @@ public class User extends Model {
 
     public Timestamp getBirthday() {
         return birthday;
+    }
+
+    public String getBirthdayAsString() {
+        return Helper.getStringFromTimestamp(getBirthday(), "dd.MM.YYYY");
     }
 
     public void setBirthday(Timestamp birthday) {

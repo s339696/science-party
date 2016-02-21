@@ -73,6 +73,8 @@ public class LoginManager {
         } else {
             // Test if the password has changed since last Login and logout() if it has changed
             User user = User.find.where().ilike("email",email).ilike("password",password).findUnique();
+            // Hack do fake a login.
+            //User user = User.find.byId(1L);
             if (user == null) {
                 logout();
             }
