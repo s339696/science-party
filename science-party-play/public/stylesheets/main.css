@@ -13,7 +13,9 @@ div.video {
 
 div.Navigator{
 	background-color: #333;
-	width: 853px;
+	position: fixed;
+	top: 0;
+	width: 98%;
 }
 
 div.formular {
@@ -22,7 +24,7 @@ div.formular {
 }
 
 div#loginContainer {
-	width: 422px;
+	width: 423px;
 }
 
 div.topLoginSignin {
@@ -59,12 +61,16 @@ input[type=submit]:hover {
 }
 
 ul {
-	width: 853px;
 	list-style-type: none;
-	margin: auto;
+	margin: 0;
 	padding: 0;
 	overflow: hidden;
 	background-color: #333;
+}
+
+ul.topLoginSignin {
+	float:right;
+	list-style-type:none;
 }
 
 li {
@@ -72,13 +78,19 @@ li {
 }
 
 li a {
-	display: inline-block;
+	display: block;
 	color: white;
 	text-align: center;
-	padding: 20px 85px;
+	padding: 20px 65px;
 	text-decoration: none;
 }
 
-li a:hover {
-	backgrounde-color: #111;
+li.topLoginSignin a.topLoginSignin {
+	padding: 20px 10px;
 }
+
+li a:hover:not(.active) {
+	background-color: #111;
+}
+
+

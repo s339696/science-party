@@ -11,17 +11,17 @@
         <script src="@routes.Assets.versioned("javascripts/hello.js")" type="text/javascript"></script>
     </head>
     <body>
-        <div>
-            <div class="Navigator">
-                <ul class="Navigator">
-                    <li class="Navigator"><a class="Navigator" href="/">Start</a></li>
-                    <li class="Navigator"><a class="Navigator" href="blog">Blog</a></li>
-                    <li class="Navigator"><a class="Navigator" href="events">Events</a></li>
-                    <li class="Navigator"><a class="Navigator" href="kontakt">Kontakt</a></li>
+        <div class="Navigator">
+            <ul class="Navigator">
+                <li class="Navigator"><a class="Navigator" href="/">Start</a></li>
+                <li class="Navigator"><a class="Navigator" href="blog">Blog</a></li>
+                <li class="Navigator"><a class="Navigator" href="events">Events</a></li>
+                <li class="Navigator"><a class="Navigator" href="kontakt">Kontakt</a></li>
+                <ul class="topLoginSignin">
+                    <li class="topLoginSignin"><a class="topLoginSignin" href="login">Anmelden</a></li>
+                    <li class="topLoginSignin"><a class="topLoginSignin" href="register">Registrieren</a></li>
                 </ul>
-
-            </div>
-            <div class="topLoginSignin"><a class="topLoginSignin" href="login">Anmelden</a> | <a class="topLoginSignin" href="register">Registrieren</a></div>
+            </ul>
         </div>
 
         @content
