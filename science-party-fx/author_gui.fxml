@@ -18,7 +18,7 @@
                      <children>
                         <Accordion layoutX="-26.0" layoutY="100.0" />
                         <ScrollBar layoutX="352.0" orientation="VERTICAL" prefHeight="603.0" prefWidth="14.0" />
-                        <TextField layoutX="15.0" layoutY="14.0" prefHeight="25.0" prefWidth="251.0" text="Suche" />
+                        <TextField fx:id="search" layoutX="15.0" layoutY="14.0" prefHeight="25.0" prefWidth="251.0" text="Suche" />
                      </children>
                   </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="603.0" prefWidth="624.0">
