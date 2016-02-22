@@ -12,8 +12,11 @@ libraryDependencies ++= Seq(
   javaWs
 )
 
-// MySQL Anbindung
+// MySQL Connector
 libraryDependencies += "mysql" % "mysql-connector-java" % "5.1.38"
+
+//Database Evolution
+libraryDependencies += evolutions
 
 // Ebean ORM
 lazy val myProject = (project in file("."))
@@ -23,6 +26,8 @@ lazy val myProject = (project in file("."))
 // other, legacy style, accesses its actions statically.
 routesGenerator := InjectedRoutesGenerator
 
+
+fork in run := true
 
 fork in run := true
 

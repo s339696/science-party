@@ -2,14 +2,27 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-# Home page
-GET     /index                      controllers.Application.index()
-GET     /                           controllers.Application.home()
-GET     /login                      controllers.Application.login()
-GET     /register                   controllers.Application.register()
+#Home page
+GET     /                           controllers.Application.renderHome()
+
+# Public Area
+GET     /login                      controllers.Public.renderLoginPage()
+POST    /login                      controllers.Public.handleLoginRequest()
+
+POST    /register                   controllers.Public.handleRegisterRequest()
+
+#Profil
+GET     /profile                    controllers.Profil.renderOwnProfil()
+GET     /profile/:id                controllers.Profil.renderProfil(id: Long)
+GET     /logout                     controllers.Profil.handleLogout()
+
+# Todo
+GET     /register                   controllers.Public.renderRegister()
 GET     /blog                       controllers.Application.blog()
 GET     /events                     controllers.Application.events()
 GET     /kontakt                    controllers.Application.kontakt()
 
+# Playground -> Let's play a bit
+GET     /playground                 controllers.Application.playground()
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
