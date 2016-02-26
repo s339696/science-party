@@ -1,6 +1,7 @@
 package controllers;
 
 
+import exception.games.StartGameException;
 import manager.GameManager;
 import manager.LoginManager;
 import models.ebean.Game;
@@ -49,16 +50,12 @@ public class Application extends Controller {
      * @return
      */
     public Result playground() {
-        Topic topic = Topic.find.byId(1L);
 
-        User user1 = User.find.byId(1L);
-        User user2 = User.find.byId(2L);
-
-        List<User> users = new ArrayList<User>();
-        users.add(user1);
-        users.add(user2);
-
-        Game game = GameManager.createGame(topic, users);
+        try {
+            GameManager.startGame(Game.find.byId(5L));
+        } catch (StartGameException e) {
+            return ok(e.getMessage());
+        }
 
         return ok("Let's Play!!!");
     }

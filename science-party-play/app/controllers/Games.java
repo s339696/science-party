@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.*;
+import exception.games.StartGameException;
 import manager.GameManager;
 import manager.LoginManager;
 import models.ebean.Game;
@@ -20,10 +21,20 @@ import java.util.List;
  */
 public class Games extends Controller {
 
+    /**
+     * Renders the start page of the games section.
+     *
+     * @return
+     */
     public Result renderGames() {
         return redirect(controllers.routes.Games.renderRunningGames());
     }
 
+    /**
+     * Renders a list of games where the logged in user is part of and which has not started yet.
+     *
+     * @return
+     */
     public Result renderPendingGames() {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
@@ -32,13 +43,18 @@ public class Games extends Controller {
 
         List<Game> pendingGames = GameManager.getPendingGames(user.getId());
 
-        for (Game game: pendingGames) {
+        for (Game game : pendingGames) {
             Logger.info(game.getId().toString());
         }
 
         return ok("Pending Games");
     }
 
+    /**
+     * Renders a list of all games where the logged in user is part of.
+     *
+     * @return
+     */
     public Result renderRunningGames() {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
@@ -47,13 +63,19 @@ public class Games extends Controller {
 
         List<Game> runningGames = GameManager.getRunningGames(user.getId());
 
-        for (Game game: runningGames) {
+        for (Game game : runningGames) {
             Logger.info(game.getId().toString());
         }
 
         return ok("Running Games");
     }
 
+    /**
+     * Renders a game with the given id if the user is part of the game.
+     *
+     * @param id
+     * @return
+     */
     public Result renderGame(Long id) {
         return ok();
     }
@@ -82,7 +104,7 @@ public class Games extends Controller {
 
         //Get Topic and create object
         int topicId = cgForm.getTopicId();
-        Topic topic = Topic.find.byId((long)topicId);
+        Topic topic = Topic.find.byId((long) topicId);
         if (topic == null) {
             return badRequest("Das ausgewählte Thema ist ungültig.");
         }
@@ -101,12 +123,21 @@ public class Games extends Controller {
             }
         }
 
-        //Create Games
-        Game game = GameManager.createGame(topic, playerList);
-        if (game==null) {
+        //Create Game
+
+        Game game = null;
+        try {
+            game = GameManager.createGame(topic, playerList);
+        } catch (StartGameException e) {
+            return ok("Das Spiel mit der Id #" + e.getGame().getId() + " wurde erfolgreich erzeugt, " +
+                    "konnte aber noch nicht gestartet werden.");
+        } catch (Exception e) {
+            // TODO:
+        }
+        if (game == null) {
             return badRequest("Das Spiel konnte nicht erzeugt werden.");
         }
-        return ok("Das Spiel mit der Id #" + game.getId() + " wurde erfolgreich erzeugt.");
+        return ok("Das Spiel mit der Id #" + game.getId() + " wurde erfolgreich erzeugt und gestartet.");
     }
 
     public Result deleteGame(Long id) {

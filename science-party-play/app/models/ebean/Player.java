@@ -13,6 +13,7 @@ public class Player extends Model {
     // Enum
     public enum PlayerStatus {
         @EnumValue("I") INVITED,
+        @EnumValue("A") ACCEPTED,
         @EnumValue("P") PLAYING,
         @EnumValue("L") LEFT,
     }
@@ -37,6 +38,10 @@ public class Player extends Model {
 
     @ManyToOne
     private Game game;
+
+    public Long getId() {
+        return id;
+    }
 
     public int getFieldPosition() {
         return fieldPosition;

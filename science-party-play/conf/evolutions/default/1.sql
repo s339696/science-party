@@ -27,7 +27,7 @@ create table players (
   player_status             varchar(1),
   user_id                   bigint,
   game_id                   bigint,
-  constraint ck_players_player_status check (player_status in ('I','L','P')),
+  constraint ck_players_player_status check (player_status in ('A','I','L','P')),
   constraint pk_players primary key (id))
 ;
 
