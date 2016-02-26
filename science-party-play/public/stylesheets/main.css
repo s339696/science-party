@@ -23,6 +23,12 @@ div.formular {
 	padding: 40px;
 }
 
+div.startLoginButton {
+	width: 340px;
+	padding: 0px;
+	border: none;
+}
+
 div#loginContainer {
 	width: 423px;
 }
@@ -33,6 +39,20 @@ div.topLoginSignin {
 
 form {
 	margin: auto;
+}
+
+a.bigButton {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	background-color: #4CAF50;
+	color: white;
+	padding: 25px 0;
+	margin: 8px 0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
 input[type=text], input[type=password], input[type=date] {
@@ -57,6 +77,10 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
+	background-color: #45a049;
+}
+
+a.bigButton:hover {
 	background-color: #45a049;
 }
 
