@@ -1,8 +1,15 @@
 package controllers;
 
 
+import manager.GameManager;
 import manager.LoginManager;
+import models.ebean.Game;
+import models.ebean.Topic;
+import models.ebean.User;
 import play.mvc.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Handle general Application requests.
@@ -42,6 +49,16 @@ public class Application extends Controller {
      * @return
      */
     public Result playground() {
+        Topic topic = Topic.find.byId(1L);
+
+        User user1 = User.find.byId(1L);
+        User user2 = User.find.byId(2L);
+
+        List<User> users = new ArrayList<User>();
+        users.add(user1);
+        users.add(user2);
+
+        Game game = GameManager.createGame(topic, users);
 
         return ok("Let's Play!!!");
     }

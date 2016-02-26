@@ -48,6 +48,10 @@ public class Game extends Model {
     @OneToMany(mappedBy="game", cascade= CascadeType.ALL)
     List<Player> players;
 
+    public Long getId() {
+        return id;
+    }
+
     public List<Player> getPlayers() {
         return players;
     }
@@ -72,11 +76,11 @@ public class Game extends Model {
         this.gameStatus = gameStatus;
     }
 
-    public int getActive_player() {
+    public int getActivePlayer() {
         return activePlayer;
     }
 
-    public void setActive_player(int active_player) {
+    public void setActivePlayer(int active_player) {
         this.activePlayer = active_player;
     }
 

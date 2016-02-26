@@ -16,6 +16,17 @@ GET     /profile                    controllers.Profil.renderOwnProfil()
 GET     /profile/:id                controllers.Profil.renderProfil(id: Long)
 GET     /logout                     controllers.Profil.handleLogout()
 
+#Gameplay
+GET     /games/                     controllers.Games.renderGames()
+GET     /games/pending              controllers.Games.renderPendingGames()
+GET     /games/load                 controllers.Games.renderRunningGames()
+GET     /games/play/:id             controllers.Games.renderGame(id: Long)
+POST    /games/create               controllers.Games.createGame()
+POST    /games/delete/:id           controllers.Games.deleteGame(id: Long)
+POST    /games/accept/:id           controllers.Games.acceptGame(id: Long)
+POST    /games/decline/:id          controllers.Games.declineGame(id: Long)
+POST    /games/leave/:id            controllers.Games.leaveGame(id: Long)
+
 # Todo
 GET     /register                   controllers.Public.renderRegister()
 GET     /blog                       controllers.Application.blog()
