@@ -14,6 +14,13 @@ import java.util.List;
  */
 public class GameManager {
 
+    /**
+     * Creates a new Game object and the required database inserts.
+     *
+     * @param topic
+     * @param users
+     * @return
+     */
     public static Game createGame(Topic topic, List<User> users) {
         // TODO: Nullpointercheck for topic
 
@@ -30,7 +37,7 @@ public class GameManager {
             //TODO: Invalid amount of players
         }
         List<Player> players = new ArrayList<Player>();
-        for (User user: users) {
+        for (User user : users) {
             Player player = new Player();
             player.setFieldPosition(0);
             player.setPlayerStatus(Player.PlayerStatus.INVITED);
@@ -41,5 +48,39 @@ public class GameManager {
         }
 
         return game;
+    }
+
+    /**
+     * Returns a list with all pending games for a given user id.
+     *
+     * @param userId
+     * @return
+     */
+    public static List<Game> getPendingGames(Long userId) {
+        List<Game> pendingGames = Game.find
+                .fetch("players")
+                .where()
+                .ilike("game_status", "P")
+                .eq("user_id", userId)
+                .findList();
+
+        return pendingGames;
+    }
+
+    /**
+     * Returns a list with all running games for a given user id.
+     *
+     * @param userId
+     * @return
+     */
+    public static List<Game> getRunningGames(Long userId) {
+        List<Game> runningGames = Game.find
+                .fetch("players")
+                .where()
+                .ilike("game_status", "A")
+                .eq("user_id", userId)
+                .findList();
+
+        return runningGames;
     }
 }

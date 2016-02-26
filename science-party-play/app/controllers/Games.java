@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.*;
 import manager.GameManager;
 import manager.LoginManager;
 import models.ebean.Game;
@@ -20,15 +21,37 @@ import java.util.List;
 public class Games extends Controller {
 
     public Result renderGames() {
-        return ok();
+        return redirect(controllers.routes.Games.renderRunningGames());
     }
 
     public Result renderPendingGames() {
-        return ok();
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
+
+        List<Game> pendingGames = GameManager.getPendingGames(user.getId());
+
+        for (Game game: pendingGames) {
+            Logger.info(game.getId().toString());
+        }
+
+        return ok("Pending Games");
     }
 
     public Result renderRunningGames() {
-        return ok();
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
+
+        List<Game> runningGames = GameManager.getRunningGames(user.getId());
+
+        for (Game game: runningGames) {
+            Logger.info(game.getId().toString());
+        }
+
+        return ok("Running Games");
     }
 
     public Result renderGame(Long id) {
@@ -66,8 +89,6 @@ public class Games extends Controller {
 
         // Get involved Users and add them to Playerlist
         List<User> playerList = new ArrayList<User>();
-
-        Logger.info("Spieler 1: " + player1.getId());
         playerList.add(player1);
 
         int[] playerIds = cgForm.getPlayerIds();
