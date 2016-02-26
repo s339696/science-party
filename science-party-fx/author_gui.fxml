@@ -67,24 +67,6 @@
               </items>
             </SplitPane>
          </content></Tab>
-      <Tab text="QR-Codes">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <SplitPane dividerPositions="0.3888" layoutY="-1.0" prefHeight="603.0" prefWidth="949.0" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-1.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                           <children>
-                              <ScrollBar layoutX="351.0" orientation="VERTICAL" prefHeight="601.0" prefWidth="14.0" />
-                           </children>
-                        </AnchorPane>
-                      <AnchorPane />
-                    </items>
-                  </SplitPane>
-               </children>
-            </AnchorPane>
-        </content>
-      </Tab>
       <Tab text="Statistiken">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
