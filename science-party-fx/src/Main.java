@@ -9,11 +9,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import model.User;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Created by Richard on 22.02.2016.
@@ -38,10 +36,8 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
-        ObservableList<String> list = FXCollections.observableArrayList();
-        list.add(0, "hallo");
 
-       // System.out.println(list.get(0));
+
 
 
       launch(args);
