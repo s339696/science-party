@@ -26,7 +26,7 @@ import java.util.List;
 public class AuthorConnect extends Controller {
 
     /**
-     * Returns the userdata for the the user with the given ID.
+     * Returns the userdata for the user with the given ID as JSON.
      *
      * @param id
      * @return
@@ -48,7 +48,7 @@ public class AuthorConnect extends Controller {
     }
 
     /**
-     * Returns a List with all user IDs
+     * Returns all Users as JSON.
      * @return
      */
     public Result serveUserlist() {
@@ -58,13 +58,11 @@ public class AuthorConnect extends Controller {
             return badRequest(e.getMessage());
         }
 
-        ObjectNode node = Json.newObject();
-
         List<User> userlist = User.find.all();
 
-        for (User user: userlist) {
-            node.put("id", user.getId());
-        }
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(userlist, JsonNode.class);
 
         return ok(node);
     }
