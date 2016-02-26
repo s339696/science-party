@@ -3,14 +3,11 @@ package models.ebean;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
-import play.api.mvc.PathBindable;
 import util.Helper;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Entity
@@ -39,6 +36,8 @@ public class User extends Model {
 
     @Size(max = 32)
     private String password;
+
+    private boolean author;
 
     private int points;
 
@@ -156,6 +155,14 @@ public class User extends Model {
 
     public Timestamp getWhenCreated() {
         return whenCreated;
+    }
+
+    public boolean isAuthor() {
+        return author;
+    }
+
+    public void setAuthor(boolean author) {
+        this.author = author;
     }
 
     @Override

@@ -44,6 +44,7 @@ create table users (
   birthday                  datetime(6),
   email                     varchar(60),
   password                  varchar(32),
+  author                    tinyint(1) default 0,
   points                    integer,
   locked                    tinyint(1) default 0,
   last_online               datetime(6),
