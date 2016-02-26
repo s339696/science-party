@@ -2,28 +2,19 @@
 
 @mainExtern("Anmeldung") {
 
-<!DOCTYPE html>
-
-<html lang="de">
-
-    <head>
-        <meta charset="UTF-8">
-        <title>Login</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
-    </head>
-    <body>
-
     <!-- LOGO [class="leftLogo"] -->
 
+    <div class="formular">
         <h1>
             Anmelden
         </h1>
+    </div>
 
         <div id="loginContainer">
             <div class="formular">
                 <form>
                     E-Mail Adresse:<br>
-                    <input type="text" name="email" placeholder="E-Mail Adresse" required>
+                    <input type="email" name="email" placeholder="E-Mail Adresse" required>
                     <br>
                     Passwort:<br>
                     <input type="password" name="password" placeholder="Passwort" required>
@@ -33,12 +24,10 @@
                 </form>
             </div>
 
-            <div>
-                <a class="bigButton">
+            <div class="formular">
+                <a class="bigButton" href="/register">
                     Registrieren
                 </a>
             </div>
         </div>
-    </body>
-</html>
 }

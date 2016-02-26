@@ -13,7 +13,9 @@ div.video {
 
 div.Navigator{
 	background-color: #333;
-	width: 853px;
+	position: fixed;
+	top: 0;
+	width: 98%;
 }
 
 div.formular {
@@ -21,8 +23,14 @@ div.formular {
 	padding: 40px;
 }
 
+div.startLoginButton {
+	width: 340px;
+	padding: 0px;
+	border: none;
+}
+
 div#loginContainer {
-	width: 422px;
+	width: 423px;
 }
 
 div.topLoginSignin {
@@ -31,6 +39,20 @@ div.topLoginSignin {
 
 form {
 	margin: auto;
+}
+
+a.bigButton {
+	width: 100%;
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	background-color: #4CAF50;
+	color: white;
+	padding: 25px 0;
+	margin: 8px 0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
 input[type=text], input[type=password], input[type=date] {
@@ -58,13 +80,21 @@ input[type=submit]:hover {
 	background-color: #45a049;
 }
 
+a.bigButton:hover {
+	background-color: #45a049;
+}
+
 ul {
-	width: 853px;
 	list-style-type: none;
-	margin: auto;
+	margin: 0;
 	padding: 0;
 	overflow: hidden;
 	background-color: #333;
+}
+
+ul.topLoginSignin {
+	float:right;
+	list-style-type:none;
 }
 
 li {
@@ -72,13 +102,19 @@ li {
 }
 
 li a {
-	display: inline-block;
+	display: block;
 	color: white;
 	text-align: center;
-	padding: 20px 85px;
+	padding: 20px 65px;
 	text-decoration: none;
 }
 
-li a:hover {
-	backgrounde-color: #111;
+li.topLoginSignin a.topLoginSignin {
+	padding: 20px 10px;
 }
+
+li a:hover:not(.active) {
+	background-color: #111;
+}
+
+
