@@ -23,8 +23,8 @@ GET     /games/load                 controllers.Games.renderRunningGames()
 GET     /games/play/:id             controllers.Games.renderGame(id: Long)
 POST    /games/create               controllers.Games.createGame()
 POST    /games/delete/:id           controllers.Games.deleteGame(id: Long)
-POST    /games/accept/:id           controllers.Games.acceptGame(id: Long)
-POST    /games/decline/:id          controllers.Games.declineGame(id: Long)
+POST    /games/accept/:id           controllers.Games.respondGameInv(id: Long, action: Integer = 1)
+POST    /games/decline/:id          controllers.Games.respondGameInv(id: Long, action: Integer = 0)
 POST    /games/leave/:id            controllers.Games.leaveGame(id: Long)
 
 # Todo
