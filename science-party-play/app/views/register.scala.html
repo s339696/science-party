@@ -2,17 +2,6 @@
 
 @mainExtern("Registrierung") {
 
-<!DOCTYPE html>
-
-<html lang="de">
-
-    <head>
-        <meta charset="UTF-8">
-        <title>Register</title>
-        <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
-    </head>
-    <body>
-
     <!-- LOGO [class="leftLogo"] -->
 
         <div class="formular">
@@ -24,27 +13,52 @@
         <div class="formular">
             <form>
                 Vorname:<br>
-                <input type="text" name="firstname" placeholder="Vorname" required>
+                <input id="firstname" type="text" name="firstname" placeholder="Vorname" required>
                 <br>
                 Nachname:<br>
-                <input type="text" name="lastname" placeholder="Nachname" required>
+                <input id="lastname" type="text" name="lastname" placeholder="Nachname" required>
                 <br>
                 Geburtsdatum:<br>
-                <input type="date" name="birth" required>
+                <input id="birthday" type="date" name="birth" required>
                 <br>
                 E-Mail Adresse:<br>
-                <input type="email" name="email" placeholder="E-Mail Adresse" required>
+                <input id="email" type="email" name="email" placeholder="E-Mail Adresse" required>
                 <br>
                 Passwort:<br>
-                <input type="password" name="password" placeholder="Passwort" required>
+                <input id="password" type="password" name="password" placeholder="Passwort" required>
                 <br>
                 <br>
                 <input type="checkbox" name="agb" value="agb" required> Ich stimme den <a href="http://worldoftanks.eu/user_agreement">Endbenutzer-Lizenzvertrag</a> zu.
                 <br>
                 <br>
-                <input type="submit" value="Registrieren">
+                <input id="registerSubmit" type="submit" value="Registrieren">
             </form>
         </div>
-    </body>
-</html>
+        <script>
+            $("#registerSubmit").click(function() {
+                var firstname = $("#firstname").val();
+                var lastname = $("#lastname").val();
+                var birthday = $("#birthday").val();
+				var email = $("#email").val();
+				var password = $("#password").val();
+				$.ajax({
+					url: '/login',
+					method: 'POST',
+					contentType: "application/json",
+					dataType: 'json',
+					data: JSON.stringify({
+						firstname: firstname,
+						lastname: lastname,
+						birthday: birthday,
+						email: email,
+						password: password,
+					}),
+                    success: function(data) {
+                        alert(data.resultMessage);
+                        location.reload();
+                    }
+				});
+			});
+        </script>
+
 }

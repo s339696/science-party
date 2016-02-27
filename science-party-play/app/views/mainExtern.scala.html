@@ -23,7 +23,27 @@
                 </ul>
             </ul>
         </div>
-
         @content
+        <script>
+			$("#loginSubmit").click(function() {
+				var email = $("#email").val();
+				var password = $("#password").val();
+				$.ajax({
+					url: '/login',
+					method: 'POST',
+					contentType: "application/json",
+					dataType: 'json',
+					data: JSON.stringify({
+						action: "login",
+						email: email,
+						password: password,
+					}),
+                    success: function(data) {
+                        alert(data.resultMessage);
+                        location.reload();
+                    }
+				});
+			});
+        </script>
     </body>
 </html>
