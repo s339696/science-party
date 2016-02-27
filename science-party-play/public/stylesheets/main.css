@@ -55,7 +55,7 @@ a.bigButton {
 	cursor: pointer;
 }
 
-input[type=text], input[type=password], input[type=date] {
+input[type=text], input[type=password], input[type=date], input[type=email] {
 	width: 100%;
 	padding: 12px;
 	margin: 8px 0;
