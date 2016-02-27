@@ -51,7 +51,8 @@ public class Application extends Controller {
      */
     public Result playground() {
 
-        Game game = Game.find.byId(1L);
+        Game game = Game.find.byId(2L);
+        game.setNextPlayerActive();
         return ok(String.valueOf(game.hasPlayingPlayer()));
     }
 

@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.EnumValue;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+import play.Logger;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -100,5 +101,35 @@ public class Game extends Model {
                 .eq("player_status", "P").findList();
 
         return player.size() > 0 ? true : false;
+    }
+
+    /**
+     * Change the id of the acitve player to the next player with status PLAYING
+     */
+    public void setNextPlayerActive() {
+        List<Player> players = Player.find.where()
+                .eq("game_id", this.getId())
+                .eq("player_status", Player.PlayerStatus.PLAYING)
+                .orderBy().asc("id").findList();
+        if (players.size() != 0) {
+            int activeIndex = 0;
+            int nextIndex = 0;
+            for (Player player: players) {
+                if (player.getId() == this.activePlayer) {
+                    activeIndex = players.indexOf(player);
+                }
+            }
+
+            if (activeIndex == players.size()-1) {
+                nextIndex = 0;
+            } else {
+                nextIndex = activeIndex + 1;
+            }
+
+            this.setActivePlayer(players.get(nextIndex).getId().intValue());
+            this.update();
+
+            System.out.println("Active player: " + this.getActivePlayer());
+        }
     }
 }
