@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.*;
+import exception.games.GameException;
 import exception.games.StartGameException;
 import manager.GameManager;
 import manager.LoginManager;
@@ -82,7 +83,7 @@ public class Games extends Controller {
 
     /**
      * Creates a new Game with the following JSON data.
-     *
+     * <p>
      * {
      * "topicId":"1",
      * "playerIds":[2,3,4]
@@ -124,7 +125,6 @@ public class Games extends Controller {
         }
 
         //Create Game
-
         Game game = null;
         try {
             game = GameManager.createGame(topic, playerList);
@@ -144,12 +144,29 @@ public class Games extends Controller {
         return ok();
     }
 
-    public Result acceptGame(Long id) {
-        return ok();
-    }
+    public Result respondGameInv(Long id, Integer action) {
+        Game game = GameManager.getGameById(id);
+        User user = LoginManager.getLoggedInUser();
 
-    public Result declineGame(Long id) {
-        return ok();
+        Boolean accept = (action == 1) ? true : false;
+
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
+
+        if (game == null) {
+            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
+        }
+
+        try {
+            GameManager.respondGameInvite(game, user, accept);
+        } catch (StartGameException e) {
+            return ok(e.getMessage());
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Die Einladung wurde angenommen und das Spiel gestartet.");
     }
 
     public Result leaveGame(Long id) {

@@ -52,7 +52,7 @@ public class Application extends Controller {
     public Result playground() {
 
         try {
-            GameManager.startGame(Game.find.byId(5L));
+            GameManager.startGame(Game.find.byId(1L));
         } catch (StartGameException e) {
             return ok(e.getMessage());
         }

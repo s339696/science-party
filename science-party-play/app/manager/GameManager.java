@@ -1,5 +1,6 @@
 package manager;
 
+import exception.games.GameException;
 import exception.games.StartGameException;
 import models.ebean.Game;
 import models.ebean.Player;
@@ -62,6 +63,51 @@ public class GameManager {
     }
 
     /**
+     * Accept the invitation and try to start the game
+     *
+     * @param game
+     * @param user
+     * @throws Exception
+     */
+    public static void respondGameInvite(Game game, User user, boolean accept) throws Exception {
+        Player player = getPlayerOfGameAndUser(game, user);
+
+        // Accept if player found
+        if (player == null || player.getPlayerStatus() != Player.PlayerStatus.INVITED) {
+            throw new GameException("Der angegebene User wurde nicht zu diesem Spiel eingeladen oder hat die Anfrage bereits beantwortet.");
+        } else {
+            if (accept) {
+                player.setPlayerStatus(Player.PlayerStatus.ACCEPTED);
+            } else {
+                player.setPlayerStatus(Player.PlayerStatus.DECLINE);
+            }
+            player.update();
+        }
+
+        // Try to start the game
+        startGame(game);
+    }
+
+    /**
+     * Leave a running game
+     *
+     * @param game
+     * @param user
+     */
+    public static void leaveGame(Game game, User user) throws GameException {
+        Player player = getPlayerOfGameAndUser(game, user);
+
+        if (player == null) {
+            throw new GameException("Der angegebene User ist kein aktives Mitglied dieses Spieles.");
+        }
+
+        if (player.getPlayerStatus() == Player.PlayerStatus.PLAYING) {
+            player.setPlayerStatus(Player.PlayerStatus.LEFT);
+        }
+        player.update();
+    }
+
+    /**
      * Returns a list with all pending games for a given user id.
      *
      * @param userId
@@ -98,7 +144,32 @@ public class GameManager {
     }
 
     /**
+     * Return the player object that matches the given game and user.
+     *
+     * @param game
+     * @param user
+     * @return
+     */
+    public static Player getPlayerOfGameAndUser(Game game, User user) {
+        return Player.find.where()
+                .eq("user_id", user.getId())
+                .eq("game_id", game.getId())
+                .findUnique();
+    }
+
+    /**
+     * Returns the game with the given id.
+     *
+     * @param id
+     * @return
+     */
+    public static Game getGameById(Long id) {
+        return Game.find.byId(id);
+    }
+
+    /**
      * Starts a game if it is possible.
+     *
      * @param game
      * @throws StartGameException
      */
@@ -110,23 +181,30 @@ public class GameManager {
             throw new StartGameException("Das Spiel wurde bereits gestartet.", game);
         }
 
-        // Check if all player accepted the invitation
-        for (Player player: players) {
-            Logger.info(player.getUser().getEmail());
-            if (player.getPlayerStatus() != Player.PlayerStatus.ACCEPTED) {
-                throw new StartGameException("Es haben noch nicht alle Spieler ihre Einladung angenommen.", game);
+        // Check if all player responded the invitation
+        for (Player player : players) {
+            if (player.getPlayerStatus() != Player.PlayerStatus.ACCEPTED &&
+                    player.getPlayerStatus() != Player.PlayerStatus.DECLINE) {
+                throw new StartGameException("Das Spiel konnte nicht gestartet werden, da noch nicht alle Spieler ihre Einladung beantwortet haben.", game);
             }
         }
 
-        // All players accepted, let's set them to PLAYING:
-        for (Player player: players) {
-            player.setPlayerStatus(Player.PlayerStatus.PLAYING);
+        // All players responded, let's set them to PLAYING:
+        for (Player player : players) {
+            if (player.getPlayerStatus() == Player.PlayerStatus.ACCEPTED) {
+                player.setPlayerStatus(Player.PlayerStatus.PLAYING);
+            }
             player.update();
         }
 
-        // Set activePlayer to random
+        // Random start: Generate starting player id as long a starting player has status PLAYING
         Random random = new Random();
-        int startNumb = random.nextInt(players.size());
+        int startNumb;
+        do {
+            startNumb = random.nextInt(players.size());
+        } while (Player.find.byId((long) startNumb).getPlayerStatus() != Player.PlayerStatus.PLAYING);
+
+        // Set starting player and start game
         game.setActivePlayer(players.get(startNumb).getId().intValue());
         game.setGameStatus(Game.GameStatus.ACTIVE);
         game.update();

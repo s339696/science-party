@@ -14,8 +14,10 @@ public class Player extends Model {
     public enum PlayerStatus {
         @EnumValue("I") INVITED,
         @EnumValue("A") ACCEPTED,
+        @EnumValue("D") DECLINE,
         @EnumValue("P") PLAYING,
         @EnumValue("L") LEFT,
+        @EnumValue("F") FINISHED,
     }
 
 
