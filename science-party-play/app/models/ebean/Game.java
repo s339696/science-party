@@ -32,6 +32,10 @@ public class Game extends Model {
     @Column(name="active_player")
     private int activePlayer;
 
+    @OneToOne
+    @Column(name="active_question")
+    private Question activeQuestion;
+
     @Column(name="game_status")
     private GameStatus gameStatus;
 
