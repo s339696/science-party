@@ -22,6 +22,9 @@ public class Topic extends Model {
     @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
     private List<Game> games;
 
+    @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
+    private List<Question> questions;
+
     public String getName() {
         return name;
     }
@@ -36,5 +39,13 @@ public class Topic extends Model {
 
     public void setGames(List<Game> games) {
         this.games = games;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 }

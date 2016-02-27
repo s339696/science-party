@@ -3,6 +3,14 @@
 
 # --- !Ups
 
+create table answers (
+  id                        bigint auto_increment not null,
+  text                      varchar(255),
+  correct                   tinyint(1) default 0,
+  question_id               bigint,
+  constraint pk_answers primary key (id))
+;
+
 create table games (
   id                        bigint auto_increment not null,
   active_player             integer,
@@ -29,6 +37,14 @@ create table players (
   game_id                   bigint,
   constraint ck_players_player_status check (player_status in ('A','I','L','F','P','D')),
   constraint pk_players primary key (id))
+;
+
+create table questions (
+  id                        bigint auto_increment not null,
+  text                      varchar(1000),
+  difficulty                integer,
+  topic_id                  bigint,
+  constraint pk_questions primary key (id))
 ;
 
 create table topics (
@@ -60,12 +76,16 @@ create table user_has_perks (
   users_id                       bigint not null,
   constraint pk_user_has_perks primary key (perks_id, users_id))
 ;
-alter table games add constraint fk_games_topic_1 foreign key (topic_id) references topics (id) on delete restrict on update restrict;
-create index ix_games_topic_1 on games (topic_id);
-alter table players add constraint fk_players_user_2 foreign key (user_id) references users (id) on delete restrict on update restrict;
-create index ix_players_user_2 on players (user_id);
-alter table players add constraint fk_players_game_3 foreign key (game_id) references games (id) on delete restrict on update restrict;
-create index ix_players_game_3 on players (game_id);
+alter table answers add constraint fk_answers_question_1 foreign key (question_id) references questions (id) on delete restrict on update restrict;
+create index ix_answers_question_1 on answers (question_id);
+alter table games add constraint fk_games_topic_2 foreign key (topic_id) references topics (id) on delete restrict on update restrict;
+create index ix_games_topic_2 on games (topic_id);
+alter table players add constraint fk_players_user_3 foreign key (user_id) references users (id) on delete restrict on update restrict;
+create index ix_players_user_3 on players (user_id);
+alter table players add constraint fk_players_game_4 foreign key (game_id) references games (id) on delete restrict on update restrict;
+create index ix_players_game_4 on players (game_id);
+alter table questions add constraint fk_questions_topic_5 foreign key (topic_id) references topics (id) on delete restrict on update restrict;
+create index ix_questions_topic_5 on questions (topic_id);
 
 
 
@@ -77,6 +97,8 @@ alter table user_has_perks add constraint fk_user_has_perks_users_02 foreign key
 
 SET FOREIGN_KEY_CHECKS=0;
 
+drop table answers;
+
 drop table games;
 
 drop table perks;
@@ -84,6 +106,8 @@ drop table perks;
 drop table user_has_perks;
 
 drop table players;
+
+drop table questions;
 
 drop table topics;
 

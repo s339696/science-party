@@ -233,4 +233,8 @@ public class Games extends Controller {
         return ok("Das Spiel wurde verlassen.");
     }
 
+    public Result handleAnswer(Long id) {
+        return ok();
+    }
+
 }
