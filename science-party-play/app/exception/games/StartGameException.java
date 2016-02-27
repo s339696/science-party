@@ -3,10 +3,9 @@ package exception.games;
 import models.ebean.Game;
 
 /**
- * This exception is thrown if a game starts to fail.
+ * This exception is thrown if a game starts or fail to start.
  */
-public class StartGameException extends Exception {
-    Game game = null;
+public class StartGameException extends GameException {
 
     public StartGameException() {
     }
@@ -16,11 +15,6 @@ public class StartGameException extends Exception {
     }
 
     public StartGameException(String message, Game game) {
-        super(message);
-        this.game = game;
-    }
-
-    public Game getGame() {
-        return game;
+        super(message, game);
     }
 }

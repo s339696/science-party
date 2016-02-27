@@ -51,13 +51,8 @@ public class Application extends Controller {
      */
     public Result playground() {
 
-        try {
-            GameManager.startGame(Game.find.byId(1L));
-        } catch (StartGameException e) {
-            return ok(e.getMessage());
-        }
-
-        return ok("Let's Play!!!");
+        Game game = Game.find.byId(1L);
+        return ok(String.valueOf(game.hasPlayingPlayer()));
     }
 
 }

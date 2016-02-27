@@ -91,4 +91,14 @@ public class Game extends Model {
     public Timestamp getWhenUpdated() {
         return whenUpdated;
     }
+
+    public boolean hasPlayingPlayer() {
+
+        List<Player> player = Player.find
+                .where()
+                .eq("game_id", this.getId())
+                .eq("player_status", "P").findList();
+
+        return player.size() > 0 ? true : false;
+    }
 }

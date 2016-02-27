@@ -5,6 +5,7 @@ import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.EnumValue;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="players")
@@ -76,4 +77,5 @@ public class Player extends Model {
     public void setGame(Game game) {
         this.game = game;
     }
+
 }

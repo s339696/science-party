@@ -6,6 +6,7 @@ import exception.games.StartGameException;
 import manager.GameManager;
 import manager.LoginManager;
 import models.ebean.Game;
+import models.ebean.Player;
 import models.ebean.Topic;
 import models.ebean.User;
 import models.form.CreateGameForm;
@@ -78,7 +79,35 @@ public class Games extends Controller {
      * @return
      */
     public Result renderGame(Long id) {
-        return ok();
+        Game game = GameManager.getGameById(id);
+        User user = LoginManager.getLoggedInUser();
+
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
+
+        if (game == null) {
+            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
+        }
+
+        Player player = GameManager.getPlayerOfGameAndUser(game, user);
+
+        // Check if the logged in player is the active player and render the required environment
+        if (game.getActivePlayer() == player.getId()) {
+            return renderGameActive(id);
+        } else {
+            return renderGameWaiting(id);
+        }
+    }
+
+    public Result renderGameActive(Long id) {
+
+        return ok("Du bist an der Reihe.");
+    }
+
+    public Result renderGameWaiting(Long id) {
+
+        return ok("Du bist nicht an Reihe.");
     }
 
     /**
@@ -144,6 +173,15 @@ public class Games extends Controller {
         return ok();
     }
 
+    /**
+     * Handle the response to a game invitation.
+     * action = 1 --> accept invite
+     * action = 0 --> decline invite
+     *
+     * @param id
+     * @param action
+     * @return
+     */
     public Result respondGameInv(Long id, Integer action) {
         Game game = GameManager.getGameById(id);
         User user = LoginManager.getLoggedInUser();
@@ -169,8 +207,30 @@ public class Games extends Controller {
         return ok("Die Einladung wurde angenommen und das Spiel gestartet.");
     }
 
+    /**
+     * Handles the request to leave a game.
+     *
+     * @param id
+     * @return
+     */
     public Result leaveGame(Long id) {
-        return ok();
+        Game game = GameManager.getGameById(id);
+        User user = LoginManager.getLoggedInUser();
+
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
+
+        if (game == null) {
+            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
+        }
+
+        try {
+            GameManager.leaveGame(game, user);
+        } catch (GameException e) {
+            return badRequest(e.getMessage());
+        }
+        return ok("Das Spiel wurde verlassen.");
     }
 
 }
