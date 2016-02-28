@@ -9,6 +9,7 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
         <script src="@routes.Assets.versioned("javascripts/hello.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.versioned("javascripts/jquery-2.1.4.js")" type="text/javascript"></script>
     </head>
     <body>
         <div class="Navigator">
@@ -24,26 +25,6 @@
             </ul>
         </div>
         @content
-        <script>
-			$("#loginSubmit").click(function() {
-				var email = $("#email").val();
-				var password = $("#password").val();
-				$.ajax({
-					url: '/login',
-					method: 'POST',
-					contentType: "application/json",
-					dataType: 'json',
-					data: JSON.stringify({
-						action: "login",
-						email: email,
-						password: password,
-					}),
-                    success: function(data) {
-                        alert(data.resultMessage);
-                        location.reload();
-                    }
-				});
-			});
-        </script>
+
     </body>
 </html>
