@@ -40,15 +40,18 @@
                     url: '/login',
                     method: 'POST',
                     contentType: "application/json",
-                    dataType: 'json',
+                    dataType: "text",
                     data: JSON.stringify({
                         action: "login",
                         email: email,
                         password: password,
                     }),
-                    success: function(data) {
-                        alert(data.resultMessage);
+                    success: function(data,status,xhr) {
+                        alert(xhr.responseText);
                         location.reload();
+                    },
+                    error: function(xhr,status,error) {
+                        alert(xhr.responseText);
                     }
                 });
 
