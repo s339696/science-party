@@ -10,47 +10,48 @@
         </h1>
     </div>
 
-        <div id="loginContainer">
-            <div class="formular">
-                <form>
-                    E-Mail Adresse:<br>
-                    <input id="email" type="email" name="email" placeholder="E-Mail Adresse" required>
-                    <br>
-                    Passwort:<br>
-                    <input id="password" type="password" name="password" placeholder="Passwort" required>
-                    <br>
-                    <br>
-                    <input id="loginButton" type="submit" value="Anmelden">
-                </form>
-            </div>
-
-            <div class="formular">
-                <a class="bigButton" href="/register">
-                    Registrieren
-                </a>
-            </div>
+    <div id="loginContainer">
+        <div class="formular">
+            <form id="loginForm">
+                E-Mail Adresse:<br>
+                <input id="email" type="email" name="email" placeholder="E-Mail Adresse" required>
+                <br>
+                Passwort:<br>
+                <input id="password" type="password" name="password" placeholder="Passwort" required>
+                <br>
+                <br>
+                <input id="loginButton" type="submit" value="Anmelden">
+            </form>
         </div>
-        <script>
 
-            $("#loginButton").click(function() {
-				var email = $("#email").val();
-				var password = $("#password").val();
-				$.ajax({
-					url: '/login',
-					method: 'POST',
-					contentType: "application/json",
-					dataType: 'json',
-					data: JSON.stringify({
-					    action: "login",
-						email: email,
-						password: password,
-					}),
+        <div class="formular">
+            <a class="bigButton" href="/register">
+                Registrieren
+            </a>
+        </div>
+    </div>
+    <script>
+            $("#loginForm").on('submit', function (e) {
+                e.preventDefault();
+                console.log("Klick!");
+                var email = $("#email").val();
+                var password = $("#password").val();
+                $.ajax({
+                    url: '/login',
+                    method: 'POST',
+                    contentType: "application/json",
+                    dataType: 'json',
+                    data: JSON.stringify({
+                        action: "login",
+                        email: email,
+                        password: password,
+                    }),
                     success: function(data) {
                         alert(data.resultMessage);
                         location.reload();
                     }
-				});
+                });
 
-			});
-        </script>
+            });
+    </script>
 }
