@@ -3,7 +3,7 @@ package models.form;
 import play.data.validation.Constraints;
 
 /**
- * Created by ewolf on 26.02.2016.
+ * Form to parse payload of a create game request
  */
 public class CreateGameForm {
 

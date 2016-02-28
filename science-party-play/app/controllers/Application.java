@@ -5,6 +5,7 @@ import exception.games.StartGameException;
 import manager.GameManager;
 import manager.LoginManager;
 import models.ebean.Game;
+import models.ebean.Question;
 import models.ebean.Topic;
 import models.ebean.User;
 import play.mvc.*;
@@ -51,9 +52,11 @@ public class Application extends Controller {
      */
     public Result playground() {
 
-        Game game = Game.find.byId(2L);
-        game.setNextPlayerActive();
-        return ok(String.valueOf(game.hasPlayingPlayer()));
+        Game game = Game.find.byId(1L);
+        game.nextTurn();
+        System.out.println(game.getActivePlayer());
+        System.out.println(game.getActiveQuestion().getId());
+        return ok("Play!");
     }
 
 }

@@ -3,10 +3,7 @@ package manager;
 import exception.games.GameException;
 import exception.games.StartGameException;
 import exception.games.StopGameException;
-import models.ebean.Game;
-import models.ebean.Player;
-import models.ebean.Topic;
-import models.ebean.User;
+import models.ebean.*;
 import play.Logger;
 
 import java.util.ArrayList;
@@ -30,9 +27,9 @@ public class GameManager {
 
         // Create actual game
         Game game = new Game();
-        game.setActivePlayer(0);
         game.setGameStatus(Game.GameStatus.PENDING);
         game.setTopic(topic);
+        game.setActiveQuestion(Question.getRandomQuestion(topic));
 
         game.insert();
 
@@ -153,8 +150,8 @@ public class GameManager {
             startNumb = random.nextInt(players.size());
         } while (Player.find.byId((long) startNumb).getPlayerStatus() != Player.PlayerStatus.PLAYING);
 
-        // Set starting player and start game
-        game.setActivePlayer(players.get(startNumb).getId().intValue());
+        // Set starting player, starting question and start game
+        game.setActivePlayer(players.get(startNumb));
         game.setGameStatus(Game.GameStatus.ACTIVE);
         game.update();
     }
@@ -171,7 +168,8 @@ public class GameManager {
         if (game.getGameStatus() == Game.GameStatus.ACTIVE) {
 
             game.setGameStatus(Game.GameStatus.FINISHED);
-            game.setActivePlayer(0);
+            game.setActivePlayer(null);
+            game.setActiveQuestion(null);
             game.update();
 
             for (Player player : players) {
@@ -186,6 +184,48 @@ public class GameManager {
 
         //TODO: Maybe update ranking
         return true;
+    }
+
+    /**
+     * Answer the Question and process the turn
+     *
+     * @param game
+     * @param answer
+     */
+    public static boolean answerActiveQuestion(Game game, Answer answer) throws GameException {
+        boolean result = false;
+        Answer correctAnswer = game.getActiveQuestion().getCorrectAnswer();
+        Player activePlayer = game.getActivePlayer();
+
+        if (correctAnswer == null) {
+            throw new GameException("Es ist ein Fehler aufgetreten. Auf diese Frage gibt es leider keine korrekte Antwort.");
+        }
+
+        if (game.getGameStatus() != Game.GameStatus.ACTIVE) {
+            throw new GameException("Es handelt sich um kein aktives Spiel.");
+        }
+
+        // Check if answer is correct.
+        if (correctAnswer.getId() == answer.getId()) {
+            // Step forward and update points of active player
+            Question activeQuestion = game.getActiveQuestion();
+            activePlayer.setFieldPosition(activePlayer.getFieldPosition() + activeQuestion.getDifficulty());
+            activePlayer.update();
+
+            result = true;
+        }
+
+        // Check if active player reached 40points
+        if (activePlayer.getFieldPosition() >= 40) {
+            if (stopGame(game)) {
+                throw new StopGameException("Du hast das Ziel erreicht und das Spiel gewonnen.");
+            }
+        }
+
+        // Pass turn to next player
+        game.nextTurn();
+
+        return result;
     }
 
     /**

@@ -7,11 +7,11 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name="questions")
+@Table(name = "questions")
 public class Question extends Model {
 
     // Finder
-    public static Model.Finder<Long,Question> find = new Model.Finder<>(Question.class);
+    public static Model.Finder<Long, Question> find = new Model.Finder<>(Question.class);
 
     @Id
     @GeneratedValue
@@ -25,7 +25,7 @@ public class Question extends Model {
     @ManyToOne
     private Topic topic;
 
-    @OneToMany(mappedBy="question", cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     List<Answer> answers;
 
     public Long getId() {
@@ -62,5 +62,22 @@ public class Question extends Model {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    public static Question getRandomQuestion(Topic topic) {
+        return Question.find.where()
+                .ieq("topic_id", topic.getId().toString())
+                .orderBy("RAND()").setMaxRows(1).findUnique();
+    }
+
+    /**
+     * Returns the corret answer of the question.
+     *
+     * @return
+     */
+    public Answer getCorrectAnswer() {
+        return Answer.find.where()
+                .ieq("question_id", this.getId().toString())
+                .ieq("correct", "1").findUnique();
     }
 }

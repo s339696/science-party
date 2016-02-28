@@ -29,8 +29,9 @@ public class Game extends Model {
     @GeneratedValue
     private Long id;
 
+    @OneToOne
     @Column(name="active_player")
-    private int activePlayer;
+    private Player activePlayer;
 
     @OneToOne
     @Column(name="active_question")
@@ -81,12 +82,20 @@ public class Game extends Model {
         this.gameStatus = gameStatus;
     }
 
-    public int getActivePlayer() {
+    public Player getActivePlayer() {
         return activePlayer;
     }
 
-    public void setActivePlayer(int active_player) {
-        this.activePlayer = active_player;
+    public void setActivePlayer(Player activePlayer) {
+        this.activePlayer = activePlayer;
+    }
+
+    public Question getActiveQuestion() {
+        return activeQuestion;
+    }
+
+    public void setActiveQuestion(Question activeQuestion) {
+        this.activeQuestion = activeQuestion;
     }
 
     public Timestamp getWhenCreated() {
@@ -109,8 +118,9 @@ public class Game extends Model {
 
     /**
      * Change the id of the acitve player to the next player with status PLAYING
+     * and assign a new random question.
      */
-    public void setNextPlayerActive() {
+    public void nextTurn() {
         List<Player> players = Player.find.where()
                 .eq("game_id", this.getId())
                 .eq("player_status", Player.PlayerStatus.PLAYING)
@@ -119,7 +129,7 @@ public class Game extends Model {
             int activeIndex = 0;
             int nextIndex = 0;
             for (Player player: players) {
-                if (player.getId() == this.activePlayer) {
+                if (player.getId() == this.activePlayer.getId()) {
                     activeIndex = players.indexOf(player);
                 }
             }
@@ -130,10 +140,9 @@ public class Game extends Model {
                 nextIndex = activeIndex + 1;
             }
 
-            this.setActivePlayer(players.get(nextIndex).getId().intValue());
+            this.setActiveQuestion(Question.getRandomQuestion(this.getTopic()));
+            this.setActivePlayer(players.get(nextIndex));
             this.update();
-
-            System.out.println("Active player: " + this.getActivePlayer());
         }
     }
 }

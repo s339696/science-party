@@ -3,12 +3,11 @@ package controllers;
 import controllers.*;
 import exception.games.GameException;
 import exception.games.StartGameException;
+import exception.games.StopGameException;
 import manager.GameManager;
 import manager.LoginManager;
-import models.ebean.Game;
-import models.ebean.Player;
-import models.ebean.Topic;
-import models.ebean.User;
+import models.ebean.*;
+import models.form.AnswerForm;
 import models.form.CreateGameForm;
 import play.Logger;
 import play.data.Form;
@@ -93,7 +92,7 @@ public class Games extends Controller {
         Player player = GameManager.getPlayerOfGameAndUser(game, user);
 
         // Check if the logged in player is the active player and render the required environment
-        if (game.getActivePlayer() == player.getId()) {
+        if (game.getActivePlayer().getId() == player.getId()) {
             return renderGameActive(id);
         } else {
             return renderGameWaiting(id);
@@ -101,11 +100,26 @@ public class Games extends Controller {
     }
 
     public Result renderGameActive(Long id) {
+        Game game = GameManager.getGameById(id);
+        User user = LoginManager.getLoggedInUser();
 
-        return ok("Du bist an der Reihe.");
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
+
+        if (game == null) {
+            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
+        }
+
+        //TODO: Spielfeld mit Fragen rendern
+
+
+        return ok(game.getActiveQuestion().getText());
     }
 
     public Result renderGameWaiting(Long id) {
+
+        //TODO: Spielfeld rendern
 
         return ok("Du bist nicht an Reihe.");
     }
@@ -233,8 +247,51 @@ public class Games extends Controller {
         return ok("Das Spiel wurde verlassen.");
     }
 
+    /**
+     * Handles the response to the active question of the given game.
+     * <p>
+     * {
+     * "answerId":"1",
+     * }
+     *
+     * @param id
+     * @return
+     */
     public Result handleAnswer(Long id) {
-        return ok();
+        // Check game and user
+        Game game = GameManager.getGameById(id);
+        //User user = LoginManager.getLoggedInUser();
+
+/*        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }*/
+
+        if (game == null) {
+            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
+        }
+
+        // Parse answer
+        Form<AnswerForm> requestData = Form.form(AnswerForm.class).bindFromRequest();
+        if (requestData.hasErrors()) {
+            return badRequest("Es wurden nicht alle benötigten Felder ausgefüllt.");
+        }
+
+        AnswerForm answerForm = requestData.get();
+        Answer answer = Answer.find.byId((long)answerForm.getAnswerId());
+
+        // Give the answer to the game god and let him do
+
+        try {
+            if (GameManager.answerActiveQuestion(game, answer)) {
+                return ok("Die Frage wurde richtig beantwortet. Der nächste Spieler ist jetzt an der Reihe.");
+            } else {
+                return ok("Die Frage wurde falsch beantwortet. Der nächste Spieler ist jetzt an der Reihe.");
+            }
+        } catch (StopGameException e) {
+            return ok(e.getMessage());
+        } catch (GameException e) {
+            return badRequest(e.getMessage());
+        }
     }
 
 }

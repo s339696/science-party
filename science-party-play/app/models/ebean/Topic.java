@@ -25,6 +25,10 @@ public class Topic extends Model {
     @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
     private List<Question> questions;
 
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
