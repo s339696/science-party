@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.*;
+import controllers.routes;
 import exception.games.GameException;
 import exception.games.StartGameException;
 import exception.games.StopGameException;
@@ -13,6 +14,7 @@ import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.*;
+import views.html.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +30,24 @@ public class Games extends Controller {
      * @return
      */
     public Result renderGames() {
-        return redirect(controllers.routes.Games.renderRunningGames());
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
+
+        return ok(views.html.games.mainGame.render("Games"));
+    }
+
+    /**
+     * Renders the page to create a new game.
+     */
+    public Result renderCreateGame() {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
+
+        return ok(views.html.games.createGame.render("Neues Spiel erzeugen"));
     }
 
     /**
@@ -39,7 +58,7 @@ public class Games extends Controller {
     public Result renderPendingGames() {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         List<Game> pendingGames = GameManager.getPendingGames(user.getId());
@@ -59,7 +78,7 @@ public class Games extends Controller {
     public Result renderRunningGames() {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         List<Game> runningGames = GameManager.getRunningGames(user.getId());
@@ -68,7 +87,7 @@ public class Games extends Controller {
             Logger.info(game.getId().toString());
         }
 
-        return ok("Running Games");
+        return ok(views.html.games.loadGame.render("Laufende Spiele"));
     }
 
     /**

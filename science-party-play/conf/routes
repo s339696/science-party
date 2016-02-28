@@ -17,10 +17,11 @@ GET     /profile/:id                    controllers.Profil.renderProfil(id: Long
 GET     /logout                         controllers.Profil.handleLogout()
 
 #Gameplay
-GET     /games/                         controllers.Games.renderGames()
+GET     /games                          controllers.Games.renderGames()
 GET     /games/pending                  controllers.Games.renderPendingGames()
 GET     /games/load                     controllers.Games.renderRunningGames()
 GET     /games/play/:id                 controllers.Games.renderGame(id: Long)
+GET     /games/create                   controllers.Games.renderCreateGame()
 POST    /games/create                   controllers.Games.createGame()
 POST    /games/delete/:id               controllers.Games.deleteGame(id: Long)
 POST    /games/accept/:id               controllers.Games.respondGameInv(id: Long, action: Integer = 1)

@@ -13,7 +13,7 @@ public class Profil extends Controller {
 
     public Result renderOwnProfil() {
         User user = LoginManager.getLoggedInUser();
-        if (user==null) {
+        if (user == null) {
             return redirect(controllers.routes.Application.renderHome());
         } else {
             return redirect(controllers.routes.Profil.renderProfil(user.getId()));
