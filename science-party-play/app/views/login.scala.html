@@ -20,7 +20,7 @@
                     <input id="password" type="password" name="password" placeholder="Passwort" required>
                     <br>
                     <br>
-                    <input id="loginSubmit" type="submit" value="Anmelden">
+                    <input id="loginButton" type="submit" value="Anmelden">
                 </form>
             </div>
 
@@ -31,7 +31,8 @@
             </div>
         </div>
         <script>
-            $("#loginSubmit").click(function() {
+
+            $("#loginButton").click(function() {
 				var email = $("#email").val();
 				var password = $("#password").val();
 				$.ajax({
@@ -40,6 +41,7 @@
 					contentType: "application/json",
 					dataType: 'json',
 					data: JSON.stringify({
+					    action: "login",
 						email: email,
 						password: password,
 					}),
@@ -48,6 +50,7 @@
                         location.reload();
                     }
 				});
+
 			});
         </script>
 }

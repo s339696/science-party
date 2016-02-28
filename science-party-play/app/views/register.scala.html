@@ -19,7 +19,7 @@
                 <input id="lastname" type="text" name="lastname" placeholder="Nachname" required>
                 <br>
                 Geburtsdatum:<br>
-                <input id="birthday" type="date" name="birth" required>
+                <input id="birthday" type="date" name="birthday" required>
                 <br>
                 E-Mail Adresse:<br>
                 <input id="email" type="email" name="email" placeholder="E-Mail Adresse" required>
@@ -31,11 +31,11 @@
                 <input type="checkbox" name="agb" value="agb" required> Ich stimme den <a href="http://worldoftanks.eu/user_agreement">Endbenutzer-Lizenzvertrag</a> zu.
                 <br>
                 <br>
-                <input id="registerSubmit" type="submit" value="Registrieren">
+                <input id="registerButton" type="submit" value="Registrieren">
             </form>
         </div>
         <script>
-            $("#registerSubmit").click(function() {
+            $("#registerButton").click(function() {
                 var firstname = $("#firstname").val();
                 var lastname = $("#lastname").val();
                 var birthday = $("#birthday").val();
@@ -58,6 +58,7 @@
                         location.reload();
                     }
 				});
+
 			});
         </script>
 
