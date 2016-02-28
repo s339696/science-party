@@ -26,7 +26,8 @@
         </div>
         @content
         <script>
-            $("#logout").click(function() {
+            $("#logout").click(function(e) {
+                e.preventDefault();
 				$.ajax({
 					url: '/',
 					method: 'POST',

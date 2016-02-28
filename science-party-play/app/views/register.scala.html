@@ -11,7 +11,7 @@
         </div>
 
         <div class="formular">
-            <form>
+            <form id="registerForm">
                 Vorname:<br>
                 <input id="firstname" type="text" name="firstname" placeholder="Vorname" required>
                 <br>
@@ -35,7 +35,9 @@
             </form>
         </div>
         <script>
-            $("#registerButton").click(function() {
+            $("#registerForm").on('submit', function(e) {
+                e.preventDefault();
+                console.log("Klick!");
                 var firstname = $("#firstname").val();
                 var lastname = $("#lastname").val();
                 var birthday = $("#birthday").val();
@@ -47,6 +49,7 @@
 					contentType: "application/json",
 					dataType: 'json',
 					data: JSON.stringify({
+					    action: "register",
 						firstname: firstname,
 						lastname: lastname,
 						birthday: birthday,
