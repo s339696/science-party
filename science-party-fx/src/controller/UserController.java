@@ -62,7 +62,7 @@ public class UserController implements Initializable{
     private void showList(){
        ObservableList<String> data = FXCollections.observableArrayList("eins", "zwei", "drei");
 
-
+        //Schleife die alle User einträgt
         users.add(0,tim);
 
         for(User u: users){
@@ -77,6 +77,9 @@ public class UserController implements Initializable{
 
 
    }
+
+   // private
+
 
     @FXML
     private void handleUserInSelect(){
@@ -95,7 +98,6 @@ public class UserController implements Initializable{
         birthdateLabel.textProperty().set(user.getBirthDate());
 
     }
-
 
 
 
