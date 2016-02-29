@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="949.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
+  <tabs>
+    <Tab fx:id="UserTab" onSelectionChanged="#handleTab" text="Benutzerdaten"/>
+    <Tab fx:id="QuizTab" onSelectionChanged="#handleTab" text="Quiz-Editor" />
+    <Tab fx:id="StatisticsTab" onSelectionChanged="#handleTab" text="Statistiken" />
+    <Tab fx:id="QrTab" onSelectionChanged="#handleTab" text="QR-Codes" />
+  </tabs>
+</TabPane>
