@@ -94,11 +94,6 @@ public class UserController implements Initializable{
         emailLabel.textProperty().set(user.getEmail());
         birthdateLabel.textProperty().set(user.getBirthDate());
 
-
-
-        //System.out.println(lv.getSelectionModel().getSelectedItems().get(0));
-        //System.out.println(id);
-
     }
 
 

@@ -23,7 +23,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("view/gui_user.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view/gui_main.fxml"));
         primaryStage.setTitle("Sciene Party Author Tool");
 
 
