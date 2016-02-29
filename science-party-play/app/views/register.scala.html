@@ -1,8 +1,8 @@
 @(titel: String)
 
-@mainExtern("Registrierung") {
+    @mainExtern("Registrierung") {
 
-    <!-- LOGO [class="leftLogo"] -->
+        <!-- LOGO [class="leftLogo"] -->
 
         <div class="formular">
             <h1>
@@ -28,41 +28,43 @@
                 <input id="password" type="password" name="password" placeholder="Passwort" required>
                 <br>
                 <br>
-                <input type="checkbox" name="agb" value="agb" required> Ich stimme den <a href="http://worldoftanks.eu/user_agreement">Endbenutzer-Lizenzvertrag</a> zu.
+                <input type="checkbox" name="agb" value="agb" required>
+                Ich stimme den <a href="http://worldoftanks.eu/user_agreement">Endbenutzer-Lizenzvertrag</a> zu.
                 <br>
                 <br>
                 <input id="registerButton" type="submit" value="Registrieren">
             </form>
         </div>
         <script>
-            $("#registerForm").on('submit', function(e) {
-                e.preventDefault();
-                console.log("Klick!");
-                var firstname = $("#firstname").val();
-                var lastname = $("#lastname").val();
-                var birthday = $("#birthday").val();
-				var email = $("#email").val();
-				var password = $("#password").val();
-				$.ajax({
-					url: '/register',
-					method: 'POST',
-					contentType: "application/json",
-					dataType: 'json',
-					data: JSON.stringify({
-					    action: "register",
-						firstname: firstname,
-						lastname: lastname,
-						birthday: birthday,
-						email: email,
-						password: password,
-					}),
-                    success: function(data) {
-                        alert(data.resultMessage);
-                        location.reload();
-                    }
-				});
+                $("#registerForm").on('submit', function (e) {
+                    e.preventDefault();
+                    var firstname = $("#firstname").val();
+                    var lastname = $("#lastname").val();
+                    var birthday = $("#birthday").val();
+                    var email = $("#email").val();
+                    var password = $("#password").val();
+                    $.ajax({
+                        url: '/register',
+                        method: 'POST',
+                        contentType: "application/json",
+                        dataType: 'json',
+                        data: JSON.stringify({
+                            firstname: firstname,
+                            lastname: lastname,
+                            birthday: birthday,
+                            email: email,
+                            password: password,
+                        }),
+                        success: function(data,status,xhr) {
+                            alert(xhr.responseText);
+                            location.reload();
+                        },
+                        error: function(xhr,status,error) {
+                            alert(xhr.responseText);
+                        }
+                    });
 
-			});
+                });
         </script>
 
-}
+    }

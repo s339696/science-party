@@ -76,7 +76,7 @@ public class AuthorConnect extends Controller {
     private boolean requestIsAuthenticated() throws AuthenticationException {
         Form<LoginForm> requestData = Form.form(LoginForm.class).bindFromRequest();
         if (requestData.hasErrors()) {
-           throw new AuthenticationException("Die Anfrage erfordert Username und Passwort.");
+           throw new AuthenticationException("Die Anfrage erfordert E-Mail und Passwort.");
         } else {
             LoginForm loginForm = requestData.get();
             String email = loginForm.getEmail();

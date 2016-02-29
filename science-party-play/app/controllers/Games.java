@@ -87,7 +87,7 @@ public class Games extends Controller {
             Logger.info(game.getId().toString());
         }
 
-        return ok(views.html.games.loadGame.render("Laufende Spiele"));
+        return ok(views.html.games.loadGame.render(runningGames));
     }
 
     /**
