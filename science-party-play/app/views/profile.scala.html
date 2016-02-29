@@ -1,0 +1,27 @@
+@(user: models.ebean.User)
+
+
+@mainIntern("Profil von " + user.getFirstname) {
+<div>
+    <div class="Profilbild">
+        <!-- Format: 1x1 -->
+    </div>
+    <div class="userInfo">
+    @(user.getFirstname)
+    @(user.getLastname) <br>
+    @(user.getBirthdayAsString)
+    @(user.getEmail) <br>
+    </div>
+    <div class="userStatistics">
+
+    </div>
+    <div class="userPerks">
+        <a class="bigButton">+Perk</a>
+    </div>
+    <div class="formular">
+        <a class="bigButton" href="delete">
+            Account löschen!
+        </a>
+    </div>
+</div>
+}
