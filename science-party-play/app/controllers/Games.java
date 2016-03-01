@@ -47,7 +47,7 @@ public class Games extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        return ok(views.html.games.createGame.render("Neues Spiel erzeugen"));
+        return ok(views.html.games.createGame.render(Topic.find.all(),User.find.all()));
     }
 
     /**
