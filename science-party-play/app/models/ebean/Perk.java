@@ -15,7 +15,6 @@ public class Perk extends Model {
     public static Finder<Long,Perk> find = new Finder<>(Perk.class);
 
     // Columns
-
     @Id
     @GeneratedValue
     private Long id;
@@ -27,9 +26,8 @@ public class Perk extends Model {
     @Column(name="qr_code")
     private String qrCode;
 
-    @JoinTable(name="user_has_perks")
-    @ManyToMany(cascade=CascadeType.ALL)
-    List<User> users;
+    @OneToMany(mappedBy="perk", cascade= CascadeType.ALL)
+    private List<PerkPerUserAndTopic> perksPerUserAndTopic;
 
     public String getPerkName() {
         return perkName;
