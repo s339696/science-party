@@ -2,26 +2,35 @@
 
 
 @mainIntern("Profil von " + user.getFirstname) {
-<div>
-    <div class="Profilbild">
-        <!-- Format: 1x1 -->
-    </div>
-    <div class="userInfo">
-    @(user.getFirstname)
-    @(user.getLastname) <br>
-    @(user.getBirthdayAsString)
-    @(user.getEmail) <br>
-    </div>
-    <div class="userStatistics">
 
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="tabele">
+        <div class="Profilbild">
+            <!-- Format: 1x1 -->
+        </div>
+        <div class="userInfo">
+            <h3>Profil</h3>
+            Vorname: @(user.getFirstname)<br><br>
+            Nachname: @(user.getLastname) <br><br>
+            Geburtsdatum: @(user.getBirthdayAsString)<br><br>
+            E-Mail: @(user.getEmail) <br><br>
+        </div>
+        <div class="userStatistics">
+            <h3>Statistik</h3>
+            some statistics...
+        </div>
+        <div class="userPerks">
+            <h3>Fähigkeiten</h3>
+            <a class="addPerkButton">+Fähigkeit</a>
+        </div>
+        <div class="formular">
+            <a class="delete" href="delete">
+                Account löschen!
+            </a>
+        </div>
     </div>
-    <div class="userPerks">
-        <a class="bigButton">+Perk</a>
-    </div>
-    <div class="formular">
-        <a class="bigButton" href="delete">
-            Account löschen!
-        </a>
-    </div>
-</div>
 }
