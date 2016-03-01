@@ -9,8 +9,9 @@
         </div>
         <div class="tabele">
             <ul class="tabele">
-                <li class="tabele">Spielstand 1 <a class="bigButton" href="#speicherplatz1">Laden</a></li>
-                <li class="tabele">Spielstand 2 <a class="bigButton" href="#speicherplatz2">Laden</a></li>
+                @for(game <- games) {
+                    <li class="tabele">Spiel @game.getId() mit Thema: @game.getTopic.getName() <a class="bigButton" href="/games/play/@game.getId()">Laden</a></li>
+                }
             </ul>
         </div>
     </div>

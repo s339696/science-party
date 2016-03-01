@@ -32,18 +32,6 @@ public class Application extends Controller {
         }
     }
 
-    public Result blog() {
-        return ok(views.html.blog.render("Blog"));
-    }
-
-    public Result events() {
-        return ok(views.html.events.render("Events"));
-    }
-
-    public Result kontakt() {
-        return ok(views.html.kontakt.render("Kontakt"));
-    }
-
     /**
      * Time to play a bit and this doesn't mean to play a game...
      * --> Development in process.
