@@ -42,6 +42,9 @@ public class Player extends Model {
     @ManyToOne
     private Game game;
 
+    @OneToMany(mappedBy="player", cascade= CascadeType.ALL)
+    private List<PerkPerPlayer> perksPerPlayer;
+
     public Long getId() {
         return id;
     }

@@ -25,6 +25,9 @@ public class Topic extends Model {
     @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
     private List<Question> questions;
 
+    @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
+    private List<PerkPerUserAndTopic> perksPerUserAndTopic;
+
     public Long getId() {
         return id;
     }

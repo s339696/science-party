@@ -11,6 +11,12 @@ POST    /login                          controllers.Public.handleLoginRequest()
 
 POST    /register                       controllers.Public.handleRegisterRequest()
 
+GET     /friends                        controllers.Public.renderFriends()
+
+GET     /ranking                        controllers.Public.renderRanking()
+
+GET     /news                           controllers.Public.renderNews()
+
 #Profil
 GET     /profile                        controllers.Profil.renderOwnProfil()
 GET     /profile/:id                    controllers.Profil.renderProfil(id: Long)
