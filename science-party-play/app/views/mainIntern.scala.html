@@ -13,20 +13,21 @@
     <body>
         <div class="Navigator">
             <ul class="Navigator">
-                <li class="Navigator"><a class="Navigator" href="#START">Profil</a></li>
-                <li class="Navigator"><a class="Navigator" href="#PLAY">Freunde</a></li>
-                <li class="Navigator"><a class="Navigator" href="#FRIENDS">Spielen</a></li>
-                <li class="Navigator"><a class="Navigator" href="#MASSAGES">Ranking</a></li>
-                <li class="Navigator"><a class="Navigator" href="#RANKING">News</a></li>
+                <li class="Navigator"><a class="Navigator" href="/profile">Profil</a></li>
+                <li class="Navigator"><a class="Navigator" href="/friends">Freunde</a></li>
+                <li class="Navigator"><a class="Navigator" href="/games">Spielen</a></li>
+                <li class="Navigator"><a class="Navigator" href="/ranking">Ranking</a></li>
+                <li class="Navigator"><a class="Navigator" href="/news">News</a></li>
                 <ul class="topLoginSignin">
-                    <li class="topLoginSignin"><a class="topLoginSignin" href="messages">Message</a></li>
+                    <li class="topLoginSignin"><a class="topLoginSignin" href="/messages">Messages</a></li>
                     <li class="topLoginSignin"><a id="logout" class="topLoginSignin" href="/logout">Logout</a></li>
                 </ul>
             </ul>
         </div>
         @content
         <script>
-            $("#logout").click(function() {
+            $("#logout").click(function(e) {
+                e.preventDefault();
 				$.ajax({
 					url: '/',
 					method: 'POST',

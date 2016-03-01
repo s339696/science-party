@@ -107,4 +107,16 @@ public class Public extends Controller {
             }
         }
     }
+
+    public Result renderFriends() {
+        return ok(views.html.friends.render("Freunde"));
+    }
+
+    public Result renderRanking() {
+        return ok(views.html.ranking.render("Ranking"));
+    }
+
+    public Result renderNews() {
+        return ok(views.html.news.render("News"));
+    }
 }
