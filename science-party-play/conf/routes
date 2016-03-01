@@ -8,14 +8,12 @@ GET     /                               controllers.Application.renderHome()
 # Public Area
 GET     /login                          controllers.Public.renderLoginPage()
 POST    /login                          controllers.Public.handleLoginRequest()
-
 POST    /register                       controllers.Public.handleRegisterRequest()
-
-GET     /friends                        controllers.Public.renderFriends()
-
-GET     /ranking                        controllers.Public.renderRanking()
-
 GET     /news                           controllers.Public.renderNews()
+GET     /register                       controllers.Public.renderRegister()
+GET     /blog                           controllers.Public.renderBlog()
+GET     /events                         controllers.Public.renderEvents()
+GET     /kontakt                        controllers.Public.renderKontakt()
 
 #Profil
 GET     /profile                        controllers.Profil.renderOwnProfil()
@@ -35,11 +33,11 @@ POST    /games/decline/:id              controllers.Games.respondGameInv(id: Lon
 POST    /games/leave/:id                controllers.Games.leaveGame(id: Long)
 POST    /games/answer/:id               controllers.Games.handleAnswer(id: Long)
 
-# Todo
-GET     /register                       controllers.Public.renderRegister()
-GET     /blog                           controllers.Application.blog()
-GET     /events                         controllers.Application.events()
-GET     /kontakt                        controllers.Application.kontakt()
+# Friends
+GET     /friends                        controllers.Friends.renderFriends()
+
+# Ranking
+GET     /ranking                        controllers.Ranking.renderRanking()
 
 # Playground -> Let's play a bit
 GET     /playground                     controllers.Application.playground()
@@ -48,5 +46,5 @@ GET     /playground                     controllers.Application.playground()
 POST    /ac/user/list                   controllers.AuthorConnect.serveUserlist()
 POST    /ac/user/:id                    controllers.AuthorConnect.serveUser(id: Long)
 
-# Map static resources from the /public folder to the /assets URL path
+# Map static resources from the /publ folder to the /assets URL path
 GET     /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)
