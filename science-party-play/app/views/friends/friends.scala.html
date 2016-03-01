@@ -1,4 +1,4 @@
-@(titel: String)
+@(users: List[models.ebean.User])
 
 @mainIntern("Freunde") {
     <br>
@@ -13,7 +13,9 @@
         <!-- VORLÄUFIG PERSONEN SUCHEN VIA <Select> <Option> (Option -> Liste aller Personen) -->
         <form>
             <select class="search">
-                <option> Franz Joseph</option>
+                @for(user <- users) {
+                    <option value="@user.getId">@user.getFirstname @user.getLastname</option>
+                }
             </select>
             <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
         </form>
