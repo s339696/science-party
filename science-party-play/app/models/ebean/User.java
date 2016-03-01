@@ -59,7 +59,19 @@ public class User extends Model {
     private List<Perk> perks;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PerkPerUserAndTopic> perksPerUserAndTopic;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Player> players;
+
+    @OneToMany(mappedBy = "userSendReq", cascade = CascadeType.ALL)
+    private List<Friends> friendsSendReq;
+
+    @OneToMany(mappedBy = "userGetReq", cascade = CascadeType.ALL)
+    private List<Friends> friendsGetReq;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Message> messages;
 
     public Long getId() {
         return id;

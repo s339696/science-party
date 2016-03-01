@@ -1,6 +1,8 @@
 @(titel: String)
 
 @mainIntern("Freunde") {
+    <br>
+    <br>
     <div>
         <h1>
             Freunde
@@ -8,19 +10,45 @@
     </div>
     <br>
     <div class="tabele">
-        <form class="search">
-            <input type="search" placeholder="Vorname, Nachname oder E-Mail">
+        <!-- VORLÄUFIG PERSONEN SUCHEN VIA <Select> <Option> (Option -> Liste aller Personen) -->
+        <form>
+            <select class="search">
+                <option> Franz Joseph</option>
+            </select>
+            <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
         </form>
-        <ul class="tabele">
-            <li class="tabele"><a href="#profil">Person 1</a><a class="squareButton" href="#message">Nachricht senden</a><a class="squareButton" href="#deleteFriend">Freund entfernen</a></li>
-            <li class="tabele"><a href="#profil">Person 2</a><a class="squareButton" href="#message">Nachricht senden</a><a class="squareButton" href="#deleteFriend">Freund entfernen</a></li>
-        </ul>
+        <div class="list">
+            <ul class="tabele">
+                <li class="tabele">
+                    <a class="tabele" href="#profil">Person 1</a>
+                    <a class="squareButton" href="#message">Nachricht senden</a>
+                    <a class="squareButton" href="#deleteFriend">Freund entfernen</a>
+                </li>
+                <li class="tabele">
+                    <a class="tabele" href="#profil">Person 2</a>
+                    <a class="squareButton" href="#message">Nachricht senden</a>
+                    <a class="squareButton" href="#deleteFriend">Freund entfernen</a>
+                </li>
+            </ul>
+        </div>
         <br>
         <h2>Offene Freundschaftsanfragen</h2>
-        <ul class="tabele">
-            <li class="tabele"><a href="#profil">Person 1</a><a class="squareButton" href="#accept">Annehmen</a><a class="squareButton" href="#ignore">Ignorieren</a><a class="squareButton" href="#block">Blockieren</a></li>
-            <li class="tabele"><a href="#profil">Person 2</a><a class="squareButton" href="#accept">Annehmen</a><a class="squareButton" href="#ignore">Ignorieren</a><a class="squareButton" href="#block">Blockieren</a></li>
-        </ul>
+        <div class="list">
+            <ul class="tabele">
+                <li class="tabele">
+                    <a class="tabele" href="#profil">Person 1</a>
+                    <a class="squareButton" href="#accept">Annehmen</a>
+                    <a class="squareButton" href="#ignore">Ignorieren</a>
+                    <a class="squareButton" href="#block">Blockieren</a>
+                </li>
+                <li class="tabele">
+                    <a class="tabele" href="#profil">Person 2</a>
+                    <a class="squareButton" href="#accept">Annehmen</a>
+                    <a class="squareButton" href="#ignore">Ignorieren</a>
+                    <a class="squareButton" href="#block">Blockieren</a>
+                </li>
+            </ul>
+        </div>
     </div>
 
 }
