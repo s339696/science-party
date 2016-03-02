@@ -77,4 +77,20 @@ public class Friend extends Model {
     public void setWhenFriends(Timestamp whenFriends) {
         this.whenFriends = whenFriends;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Friend friend = (Friend) o;
+
+        return !(id != null ? !id.equals(friend.id) : friend.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

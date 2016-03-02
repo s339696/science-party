@@ -37,8 +37,8 @@ POST    /games/answer/:id               controllers.Games.handleAnswer(id: Long)
 GET     /friends                        controllers.Friends.renderFriends()
 POST    /friends/add/:id                controllers.Friends.addFriend(id: Long)
 POST    /friends/delete/:id             controllers.Friends.deleteFriend(id: Long)
-POST    /friends/accept/:id             controllers.Friends.acceptFriend(id: Long)
-POST    /friends/decline/:id            controllers.Friends.declineFriend(id: Long)
+POST    /friends/accept/:id             controllers.Friends.responseFriendRequest(id: Long, action: Integer = 1)
+POST    /friends/decline/:id            controllers.Friends.responseFriendRequest(id: Long, action: Integer = 0)
 
 # Ranking
 GET     /ranking                        controllers.Ranking.renderRanking()

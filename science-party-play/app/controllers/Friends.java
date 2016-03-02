@@ -1,5 +1,6 @@
 package controllers;
 
+import exception.friends.FriendRequestException;
 import manager.LoginManager;
 import models.ebean.Friend;
 import models.ebean.User;
@@ -19,10 +20,9 @@ public class Friends extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-
-        List<User> requestUsers = user.getFriendRequests();
-        List<User> friendUsers = null;
         List<User> users = User.find.all();
+        List<User> requestUsers = user.getFriendRequests();
+        List<User> friendUsers = user.getFriends();
 
         return ok(views.html.friends.friends.render(users,requestUsers,friendUsers));
     }
@@ -40,22 +40,53 @@ public class Friends extends Controller {
             return badRequest("Es gibt keinen User mit der Id #" + id);
         }
 
-        user.sendFriendRequest(newFriend);
+        try {
+            user.sendFriendRequestTo(newFriend);
+        } catch (FriendRequestException e) {
+            return badRequest(e.getMessage());
+        }
 
         return ok("Die Anfrage wurde verschickt.");
 
     }
 
     public Result deleteFriend(Long id) {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
 
-        return ok();
+        User friend = User.find.byId(id);
+        if (friend == null) {
+            return badRequest("Es gibt keinen User mit der Id #" + friend.getId() + ".");
+        }
+
+        Friend friendship = user.getFriendshipWith(friend);
+        if (friendship == null) {
+            return badRequest("Die beiden User sind keine Freunde.");
+        }
+
+        friendship.delete();
+
+        return ok("Eure Freundschaft wurde beendet.");
     }
 
-    public Result acceptFriend(Long id) {
-        return ok();
-    }
+    public Result responseFriendRequest(Long id, Integer action) {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
 
-    public Result declineFriend(Long id) {
+        User friend = User.find.byId(id);
+        if (friend == null) {
+            return badRequest("Es gibt keinen User mit der Id #" + id.toString() + ".");
+        }
+
+        try {
+            user.responeFriendRequestFrom(friend, (action == 1 ? true : false));
+        } catch (FriendRequestException e) {
+            return ok(e.getMessage());
+        }
         return ok();
     }
 }

@@ -1,4 +1,6 @@
-@(users: List[models.ebean.User], friendRequests: List[models.ebean.User], friends:List[models.ebean.User])
+@import models.ebean.User
+@(users: List[User], friendRequests: List[User], friends: List[User])
+
 
 @mainIntern("Freunde") {
     <br>
@@ -10,41 +12,38 @@
     </div>
     <br>
     <div class="tabele">
-        <!-- VORLÄUFIG PERSONEN SUCHEN VIA <Select> <Option> (Option -> Liste aller Personen) -->
+            <!-- VORLÄUFIG PERSONEN SUCHEN VIA <Select> <Option> (Option -> Liste aller Personen) -->
         <form>
             <select class="search">
-                @for(user <- users) {
-                    <option value="@user.getId">@user.getFirstname @user.getLastname</option>
-                }
+            @for( user <- users) {
+                <option value="@user.getId">@user.toString</option>
+            }
             </select>
-            <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
+                <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
         </form>
         <div class="list">
             <ul class="tabele">
+                @for( friend <- friends) {
+                    <li class="tabele">
+                        <a class="tabele" href="/profile/@friend.getId">@friend.toString</a>
+                        <a class="squareButton" href="/message/send/@friend.getId">Nachricht senden</a>
+                        <a class="squareButton" href="#deleteFriend">Freund entfernen</a>
+                    </li>
+                }
                 <li class="tabele">
-                    <a class="tabele" href="#profil">Person 1</a>
-                    <a class="squareButton" href="#message">Nachricht senden</a>
-                    <a class="squareButton" href="#deleteFriend">Freund entfernen</a>
-                </li>
-                <li class="tabele">
-                    <a class="tabele" href="#profil">Person 2</a>
-                    <a class="squareButton" href="#message">Nachricht senden</a>
-                    <a class="squareButton" href="#deleteFriend">Freund entfernen</a>
-                </li>
             </ul>
         </div>
         <br>
         <h2>Offene Freundschaftsanfragen</h2>
         <div class="list">
             <ul class="tabele">
-                @for(friendRequest <- friendRequests) {
-                    <li class="tabele">
-                        <a class="tabele" href="/profile/@friendRequest.getId">@friendRequest.getFirstname @friendRequest.getLastname</a>
-                        <a class="squareButton" href="/friends/accept/@friendRequest.getId">Annehmen</a>
-                        <a class="squareButton" href="/friends/decline/@friendRequest.getId">Ignorieren</a>
-                        <a class="squareButton" href="#block">Blockieren</a>
-                    </li>
-                }
+            @for( friendRequest <- friendRequests) {
+                <li class="tabele">
+                    <a class="tabele" href="/profile/@friendRequest.getId">@friendRequest.toString</a>
+                    <a class="squareButton" href="/friends/accept/@friendRequest.getId">Annehmen</a>
+                    <a class="squareButton" href="/friends/decline/@friendRequest.getId">Ignorieren</a>
+                </li>
+            }
             </ul>
         </div>
     </div>
