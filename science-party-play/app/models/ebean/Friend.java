@@ -12,28 +12,30 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="friends")
-public class Friends extends Model {
+public class Friend extends Model {
 
     // Finder
-    public static Finder<Long, Friends> find = new Finder<>(Friends.class);
+    public static Finder<Long, Friend> find = new Finder<>(Friend.class);
 
     // Columns
+    @Id
+    @GeneratedValue
+    private Long id;
+
     @ManyToOne
-    @Column(name = "user_send_id")
     private User userSendReq;
 
     @ManyToOne
-    @Column(name = "user_request_id")
     private User userGetReq;
 
     private boolean request;
 
     @CreatedTimestamp
-    @Column(name = "date_request")
+    @Column(name = "date_request", columnDefinition = "datetime")
     private Timestamp whenRequest;
 
     @UpdatedTimestamp
-    @Column(name = "date_friends")
+    @Column(name = "date_friends", columnDefinition = "datetime")
     private Timestamp whenFriends;
 
     public User getUserSendReq() {
@@ -74,5 +76,21 @@ public class Friends extends Model {
 
     public void setWhenFriends(Timestamp whenFriends) {
         this.whenFriends = whenFriends;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Friend friend = (Friend) o;
+
+        return !(id != null ? !id.equals(friend.id) : friend.id != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }

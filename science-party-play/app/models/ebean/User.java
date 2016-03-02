@@ -1,13 +1,20 @@
 package models.ebean;
 
+import com.avaje.ebean.Expr;
+import com.avaje.ebean.Expression;
+import com.avaje.ebean.ExpressionFactory;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+import controllers.Friends;
+import exception.friends.FriendRequestException;
+import javassist.expr.ExprEditor;
 import util.Helper;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,6 +35,7 @@ public class User extends Model {
     @Size(max = 45)
     private String lastname;
 
+    @Column(columnDefinition = "datetime")
     private Timestamp birthday;
 
     @Size(max = 60)
@@ -44,19 +52,15 @@ public class User extends Model {
     private boolean locked;
 
     @CreatedTimestamp
-    @Column(name = "date_created")
+    @Column(name = "date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
 
     @UpdatedTimestamp
-    @Column(name = "date_updated")
+    @Column(name = "date_updated", columnDefinition = "datetime")
     private Timestamp whenUpdated;
 
-    @Column(name = "last_online")
+    @Column(name = "last_online", columnDefinition = "datetime")
     private Timestamp lastOnline;
-
-    @JoinTable(name = "user_has_perks")
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Perk> perks;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<PerkPerUserAndTopic> perksPerUserAndTopic;
@@ -65,10 +69,10 @@ public class User extends Model {
     private List<Player> players;
 
     @OneToMany(mappedBy = "userSendReq", cascade = CascadeType.ALL)
-    private List<Friends> friendsSendReq;
+    private List<Friend> friendsSendReq;
 
     @OneToMany(mappedBy = "userGetReq", cascade = CascadeType.ALL)
-    private List<Friends> friendsGetReq;
+    private List<Friend> friendsGetReq;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Message> messages;
@@ -145,14 +149,6 @@ public class User extends Model {
         this.lastOnline = lastOnline;
     }
 
-    public List<Perk> getPerks() {
-        return perks;
-    }
-
-    public void setPerks(List<Perk> perks) {
-        this.perks = perks;
-    }
-
     public List<Player> getPlayers() {
         return players;
     }
@@ -177,12 +173,125 @@ public class User extends Model {
         this.author = author;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "firstname='" + firstname + '\'' +
-                ", lastname='" + lastname + '\'' +
-                ", email='" + email + '\'' +
-                '}';
+    public Friend sendFriendRequestTo(User to) throws FriendRequestException {
+        // Proof if there is already a friendship or request
+        Friend friend = getFriendshipOrRequestWith(to);
+        if (friend != null) {
+            throw new FriendRequestException("Es gibt bereits eine Freundschaft oder eine Freundschaftsanfrage zwischen diesen beiden Usern.");
+        }
+
+        friend = new Friend();
+        friend.setRequest(true);
+        friend.setUserSendReq(this);
+        friend.setUserGetReq(to);
+        friend.insert();
+
+        return friend;
     }
-}
+
+    public void responeFriendRequestFrom(User user, boolean accept) throws FriendRequestException {
+        Friend friendRequest = Friend.find.where()
+                .ieq("request", "1")
+                .ieq("user_get_req_id", this.getId().toString())
+                .ieq("user_send_req_id", user.getId().toString())
+                .findUnique();
+
+        if (friendRequest == null) {
+            throw new FriendRequestException("Es gibt keine Freundschaftsanfrage von " + user.toString() + " an " + this.toString() + ".");
+        } else {
+            if (accept == true) {
+                friendRequest.setRequest(false);
+                friendRequest.update();
+                throw new FriendRequestException("Die Freundschaftsanfrage wurde angenommen.");
+            } else {
+                friendRequest.delete();
+                throw new FriendRequestException("Die Freundschaftsanfrage wurde abgelehnt.");
+            }
+        }
+    }
+
+    public List<User> getFriendRequests() {
+        List<Friend> requestFriends = Friend.find.where()
+                .ieq("request", "1")
+                .ieq("user_get_req_id", this.getId().toString())
+                .findList();
+
+        List<User> requestUsers = new ArrayList<User>();
+        for (Friend friend : requestFriends) {
+            requestUsers.add(friend.getUserSendReq());
+        }
+
+        return requestUsers;
+    }
+
+    /**
+     * Returns all friends from a user.
+     *
+     * @return
+     */
+    public List<User> getFriends() {
+
+        List<Friend> friends = Friend.find.where()
+                .ieq("request", "0")
+                .or(Expr.ieq("user_get_req_id", this.getId().toString()),
+                        Expr.ieq("user_send_req_id", this.getId().toString()))
+                .findList();
+
+        // Add users which are friends to a userlist.
+        List<User> friendUsers = new ArrayList<User>();
+
+        for (Friend friend : friends) {
+            if (!friend.getUserGetReq().equals(this)) {
+                friendUsers.add(friend.getUserGetReq());
+            } else if (!friend.getUserSendReq().equals(this)) {
+                friendUsers.add(friend.getUserSendReq());
+            }
+        }
+
+        // TODO: Sort list by firstname
+
+        return friendUsers;
+    }
+
+    public Friend getFriendshipWith(User user) {
+        Friend friend = getFriendshipOrRequestWith(user);
+        if (friend.isRequest() == true) {
+            return null;
+        } else {
+            return friend;
+        }
+    }
+
+    private Friend getFriendshipOrRequestWith(User user) {
+        Expression friendship1 = Expr.and(Expr.ieq("user_get_req_id", this.getId().toString()),
+                Expr.ieq("user_send_req_id", user.getId().toString()));
+        Expression friendship2 = Expr.and(Expr.ieq("user_send_req_id", this.getId().toString()),
+                Expr.ieq("user_get_req_id", user.getId().toString()));
+        Friend friend = Friend.find.where()
+                .or(friendship1, friendship2)
+                .findUnique();
+
+        return friend;
+    }
+
+        @Override
+        public String toString () {
+            return getFirstname() + " " + getLastname();
+        }
+
+        @Override
+        public boolean equals (Object o){
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            User user = (User) o;
+
+            return id.equals(user.id);
+
+        }
+
+        @Override
+        public int hashCode () {
+            return id.hashCode();
+        }
+    }
