@@ -12,28 +12,26 @@ import java.sql.Timestamp;
  */
 @Entity
 @Table(name="friends")
-public class Friends extends Model {
+public class Friend extends Model {
 
     // Finder
-    public static Finder<Long, Friends> find = new Finder<>(Friends.class);
+    public static Finder<Long, Friend> find = new Finder<>(Friend.class);
 
     // Columns
     @ManyToOne
-    @Column(name = "user_send_id")
     private User userSendReq;
 
     @ManyToOne
-    @Column(name = "user_request_id")
     private User userGetReq;
 
     private boolean request;
 
     @CreatedTimestamp
-    @Column(name = "date_request")
+    @Column(name = "date_request", columnDefinition = "datetime")
     private Timestamp whenRequest;
 
     @UpdatedTimestamp
-    @Column(name = "date_friends")
+    @Column(name = "date_friends", columnDefinition = "datetime")
     private Timestamp whenFriends;
 
     public User getUserSendReq() {

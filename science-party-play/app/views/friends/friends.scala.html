@@ -1,4 +1,4 @@
-@(users: List[models.ebean.User])
+@(users: List[models.ebean.User], friendRequests: List[models.ebean.User], friends:List[models.ebean.User])
 
 @mainIntern("Freunde") {
     <br>
@@ -37,18 +37,14 @@
         <h2>Offene Freundschaftsanfragen</h2>
         <div class="list">
             <ul class="tabele">
-                <li class="tabele">
-                    <a class="tabele" href="#profil">Person 1</a>
-                    <a class="squareButton" href="#accept">Annehmen</a>
-                    <a class="squareButton" href="#ignore">Ignorieren</a>
-                    <a class="squareButton" href="#block">Blockieren</a>
-                </li>
-                <li class="tabele">
-                    <a class="tabele" href="#profil">Person 2</a>
-                    <a class="squareButton" href="#accept">Annehmen</a>
-                    <a class="squareButton" href="#ignore">Ignorieren</a>
-                    <a class="squareButton" href="#block">Blockieren</a>
-                </li>
+                @for(friendRequest <- friendRequests) {
+                    <li class="tabele">
+                        <a class="tabele" href="/profile/@friendRequest.getId">@friendRequest.getFirstname @friendRequest.getLastname</a>
+                        <a class="squareButton" href="/friends/accept/@friendRequest.getId">Annehmen</a>
+                        <a class="squareButton" href="/friends/decline/@friendRequest.getId">Ignorieren</a>
+                        <a class="squareButton" href="#block">Blockieren</a>
+                    </li>
+                }
             </ul>
         </div>
     </div>

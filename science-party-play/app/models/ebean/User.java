@@ -3,11 +3,13 @@ package models.ebean;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+import controllers.Friends;
 import util.Helper;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,6 +30,7 @@ public class User extends Model {
     @Size(max = 45)
     private String lastname;
 
+    @Column(columnDefinition = "datetime")
     private Timestamp birthday;
 
     @Size(max = 60)
@@ -44,14 +47,14 @@ public class User extends Model {
     private boolean locked;
 
     @CreatedTimestamp
-    @Column(name = "date_created")
+    @Column(name = "date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
 
     @UpdatedTimestamp
-    @Column(name = "date_updated")
+    @Column(name = "date_updated", columnDefinition = "datetime")
     private Timestamp whenUpdated;
 
-    @Column(name = "last_online")
+    @Column(name = "last_online", columnDefinition = "datetime")
     private Timestamp lastOnline;
 
     @JoinTable(name = "user_has_perks")
@@ -65,10 +68,10 @@ public class User extends Model {
     private List<Player> players;
 
     @OneToMany(mappedBy = "userSendReq", cascade = CascadeType.ALL)
-    private List<Friends> friendsSendReq;
+    private List<Friend> friendsSendReq;
 
     @OneToMany(mappedBy = "userGetReq", cascade = CascadeType.ALL)
-    private List<Friends> friendsGetReq;
+    private List<Friend> friendsGetReq;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Message> messages;
@@ -175,6 +178,34 @@ public class User extends Model {
 
     public void setAuthor(boolean author) {
         this.author = author;
+    }
+
+    public Friend sendFriendRequest(User to) {
+        Friend friend = new Friend();
+        friend.setRequest(true);
+        friend.setUserSendReq(this);
+        friend.setUserGetReq(to);
+        friend.insert();
+
+        return friend;
+    }
+
+    public List<User> getFriendRequests() {
+        List<Friend> requestFriends = Friend.find.where()
+                .ieq("request", "1")
+                .ieq("user_get_req_id", this.getId().toString())
+                .findList();
+
+        List<User> requestUsers = new ArrayList<User>();
+        for (Friend friend: requestFriends) {
+            requestUsers.add(friend.getUserSendReq());
+        }
+
+        return requestUsers;
+    }
+
+    public List<User> getFriends() {
+        return null;
     }
 
     @Override

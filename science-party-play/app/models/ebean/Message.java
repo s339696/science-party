@@ -29,6 +29,6 @@ public class Message {
     private String text;
 
     @CreatedTimestamp
-    @Column(name = "date_created")
+    @Column(name = "date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
 }

@@ -33,8 +33,12 @@ POST    /games/decline/:id              controllers.Games.respondGameInv(id: Lon
 POST    /games/leave/:id                controllers.Games.leaveGame(id: Long)
 POST    /games/answer/:id               controllers.Games.handleAnswer(id: Long)
 
-# Friends
+# Friend
 GET     /friends                        controllers.Friends.renderFriends()
+#POST    /friends/add/:id                controllers.Friends.addFriend(id: Long)
+#POST    /friends/delete/:id             controllers.Friends.deleteFriend(id: Long)
+#POST    /friends/accept/:id             controllers.Friends.acceptFriend(id: Long)
+#POST    /friends/decline/:id            controllers.Friends.declineFriend(id: Long)
 
 # Ranking
 GET     /ranking                        controllers.Ranking.renderRanking()

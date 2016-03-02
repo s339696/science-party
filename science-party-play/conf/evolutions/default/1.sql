@@ -21,8 +21,8 @@ create table friends (
   user_send_req_id          bigint,
   user_get_req_id           bigint,
   request                   tinyint(1) default 0,
-  date_request              datetime(6) not null,
-  date_friends              datetime(6) not null)
+  date_request              datetime not null,
+  date_friends              datetime not null)
 ;
 
 create table games (
@@ -31,8 +31,8 @@ create table games (
   active_question_id        bigint,
   game_status               varchar(1),
   topic_id                  bigint,
-  date_created              datetime(6) not null,
-  date_updated              datetime(6) not null,
+  date_created              datetime not null,
+  date_updated              datetime not null,
   constraint ck_games_game_status check (game_status in ('A','P','F')),
   constraint uq_games_active_player_id unique (active_player_id),
   constraint uq_games_active_question_id unique (active_question_id),
@@ -43,7 +43,7 @@ create table messages (
   user_id                   bigint,
   chat_id                   bigint,
   text                      varchar(1000),
-  date_created              datetime(6) not null)
+  date_created              datetime not null)
 ;
 
 create table perks (
@@ -96,15 +96,15 @@ create table users (
   id                        bigint auto_increment not null,
   firstname                 varchar(45),
   lastname                  varchar(45),
-  birthday                  datetime(6),
+  birthday                  datetime,
   email                     varchar(60),
   password                  varchar(32),
   author                    tinyint(1) default 0,
   points                    integer,
   locked                    tinyint(1) default 0,
-  last_online               datetime(6),
-  date_created              datetime(6) not null,
-  date_updated              datetime(6) not null,
+  last_online               datetime,
+  date_created              datetime not null,
+  date_updated              datetime not null,
   constraint uq_users_email unique (email),
   constraint pk_users primary key (id))
 ;
