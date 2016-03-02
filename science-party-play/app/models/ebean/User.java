@@ -57,10 +57,6 @@ public class User extends Model {
     @Column(name = "last_online", columnDefinition = "datetime")
     private Timestamp lastOnline;
 
-    @JoinTable(name = "user_has_perks")
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Perk> perks;
-
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<PerkPerUserAndTopic> perksPerUserAndTopic;
 
@@ -146,14 +142,6 @@ public class User extends Model {
 
     public void setLastOnline(Timestamp lastOnline) {
         this.lastOnline = lastOnline;
-    }
-
-    public List<Perk> getPerks() {
-        return perks;
-    }
-
-    public void setPerks(List<Perk> perks) {
-        this.perks = perks;
     }
 
     public List<Player> getPlayers() {

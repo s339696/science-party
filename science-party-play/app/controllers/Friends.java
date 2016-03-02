@@ -14,9 +14,17 @@ import java.util.List;
 public class Friends extends Controller {
 
     public Result renderFriends() {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
+
+
+        List<User> requestUsers = user.getFriendRequests();
+        List<User> friendUsers = null;
         List<User> users = User.find.all();
 
-        return ok(views.html.friends.friends.render(users,users,users));
+        return ok(views.html.friends.friends.render(users,requestUsers,friendUsers));
     }
 
     public Result addFriend(Long id) {

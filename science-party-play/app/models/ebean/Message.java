@@ -18,9 +18,12 @@ public class Message {
     public static Model.Finder<Long, Message> find = new Model.Finder<>(Message.class);
 
     // Columns
+    @Id
+    @GeneratedValue
+    private Long id;
+
     @ManyToOne
     private User user;
-
 
     @ManyToOne
     private Chat chat;

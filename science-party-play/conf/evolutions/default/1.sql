@@ -18,11 +18,13 @@ create table chats (
 ;
 
 create table friends (
+  id                        bigint auto_increment not null,
   user_send_req_id          bigint,
   user_get_req_id           bigint,
   request                   tinyint(1) default 0,
   date_request              datetime not null,
-  date_friends              datetime not null)
+  date_friends              datetime not null,
+  constraint pk_friends primary key (id))
 ;
 
 create table games (
@@ -40,10 +42,12 @@ create table games (
 ;
 
 create table messages (
+  id                        bigint auto_increment not null,
   user_id                   bigint,
   chat_id                   bigint,
   text                      varchar(1000),
-  date_created              datetime not null)
+  date_created              datetime not null,
+  constraint pk_messages primary key (id))
 ;
 
 create table perks (
@@ -115,12 +119,6 @@ create table user_has_chats (
   users_id                       bigint not null,
   constraint pk_user_has_chats primary key (chats_id, users_id))
 ;
-
-create table user_has_perks (
-  users_id                       bigint not null,
-  perks_id                       bigint not null,
-  constraint pk_user_has_perks primary key (users_id, perks_id))
-;
 alter table answers add constraint fk_answers_question_1 foreign key (question_id) references questions (id) on delete restrict on update restrict;
 create index ix_answers_question_1 on answers (question_id);
 alter table friends add constraint fk_friends_userSendReq_2 foreign key (user_send_req_id) references users (id) on delete restrict on update restrict;
@@ -160,10 +158,6 @@ alter table user_has_chats add constraint fk_user_has_chats_chats_01 foreign key
 
 alter table user_has_chats add constraint fk_user_has_chats_users_02 foreign key (users_id) references users (id) on delete restrict on update restrict;
 
-alter table user_has_perks add constraint fk_user_has_perks_users_01 foreign key (users_id) references users (id) on delete restrict on update restrict;
-
-alter table user_has_perks add constraint fk_user_has_perks_perks_02 foreign key (perks_id) references perks (id) on delete restrict on update restrict;
-
 # --- !Downs
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -193,8 +187,6 @@ drop table questions;
 drop table topics;
 
 drop table users;
-
-drop table user_has_perks;
 
 SET FOREIGN_KEY_CHECKS=1;
 

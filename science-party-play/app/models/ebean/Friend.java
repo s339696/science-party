@@ -18,6 +18,10 @@ public class Friend extends Model {
     public static Finder<Long, Friend> find = new Finder<>(Friend.class);
 
     // Columns
+    @Id
+    @GeneratedValue
+    private Long id;
+
     @ManyToOne
     private User userSendReq;
 
