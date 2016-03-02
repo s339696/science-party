@@ -1,16 +1,20 @@
 @(titel: String)
 
-@mainIntern("Friends") {
+@mainIntern("Nachrichten") {
     <br>
     <br>
     <br>
     <br>
 
-    <div class="messageBox">
-        <form class="messageBox">
-            <textarea name="message" rows="10" cols="50"></textarea>
-            <input name="Senden" type="submit">
-        </form>
+    <div class="list">
+        <ul class="tabele">
+            @for(){
+            <li class="tabele">
+                <a class="tabele" href="/messages/:id">Chat 1</a>
+                <a class="squareButton" href="/messages/delete/:id">Chat löschen</a>
+            </li>
+            }
+        </ul>
     </div>
 
 }

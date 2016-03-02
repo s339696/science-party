@@ -35,6 +35,9 @@ POST    /games/answer/:id               controllers.Games.handleAnswer(id: Long)
 
 # Friends
 GET     /friends                        controllers.Friends.renderFriends()
+POST    /friends/messages/:id           controllers.Friends.sendFriendMessage()
+POST    /friends/add/:id                controllers.Friends.addFriend()
+POST    /friends/delete/:id             controllers.Friends.deleteFriend()
 
 # Ranking
 GET     /ranking                        controllers.Ranking.renderRanking()

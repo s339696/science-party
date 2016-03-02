@@ -21,6 +21,8 @@ div.Navigator{
 div.formular {
 	width: 340px;
 	padding: 40px;
+	background-color: #888;
+	border-radius: 4px;
 }
 
 div.startLoginButton {

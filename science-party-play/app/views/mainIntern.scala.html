@@ -25,24 +25,5 @@
             </ul>
         </div>
         @content
-        <script>
-            $("#logout").click(function(e) {
-                e.preventDefault();
-				$.ajax({
-					url: '/',
-					method: 'POST',
-					contentType: "application/json",
-					dataType: 'json',
-					data: JSON.stringify({
-						action: "logout",
-					}),
-                    success: function(data) {
-                        alert(data.resultMessage);
-                        location.reload();
-                    }
-				});
-
-			});
-        </script>
     </body>
 </html>

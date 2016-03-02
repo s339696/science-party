@@ -15,10 +15,14 @@
         <div class="formular">
             <form>
                 <select name="Thema">
-                    <option value="thema1">Thema 1</option>
-                    <option value="thema2">Thema 2</option>
-                    <option value="thema3">Thema 3</option>
-                    <option value="thema4">Thema 4</option>
+                    @for(topic <- topics) {
+                        <option value="@game.getTopic.getId()">@game.getTopic.getName()</option>    <!-- Ist das so richtig? -->
+                    }
+                </select>
+                <select name="Mitspieler">
+                    @for(user <- users) {
+                    <option value="@user.getId">@user.getFirstname @user.getLastname</option>
+                    }
                 </select>
                 <input name="Senden" type="submit">
             </form>

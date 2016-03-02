@@ -17,38 +17,34 @@
                     <option value="@user.getId">@user.getFirstname @user.getLastname</option>
                 }
             </select>
+            <a class="squareButton" href="/profile/:id">Profil</a>
+            <a class="squareButton" href="/friends/messages/:id">Nachricht senden</a>
+            <a class="squareButton" href="/friends/add/:id">Freund hinzufügen</a>
             <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
         </form>
         <div class="list">
             <ul class="tabele">
+                @for(){
                 <li class="tabele">
-                    <a class="tabele" href="#profil">Person 1</a>
-                    <a class="squareButton" href="#message">Nachricht senden</a>
-                    <a class="squareButton" href="#deleteFriend">Freund entfernen</a>
+                    <a class="tabele" href="/profile/:id">Person 1</a>
+                    <a class="squareButton" href="/friends/messages/:id">Nachricht senden</a>
+                    <a class="squareButton" href="/friends/delete/:id">Freund entfernen</a>
                 </li>
-                <li class="tabele">
-                    <a class="tabele" href="#profil">Person 2</a>
-                    <a class="squareButton" href="#message">Nachricht senden</a>
-                    <a class="squareButton" href="#deleteFriend">Freund entfernen</a>
-                </li>
+                }
             </ul>
         </div>
         <br>
         <h2>Offene Freundschaftsanfragen</h2>
         <div class="list">
             <ul class="tabele">
+                @for(){
                 <li class="tabele">
                     <a class="tabele" href="#profil">Person 1</a>
                     <a class="squareButton" href="#accept">Annehmen</a>
                     <a class="squareButton" href="#ignore">Ignorieren</a>
                     <a class="squareButton" href="#block">Blockieren</a>
                 </li>
-                <li class="tabele">
-                    <a class="tabele" href="#profil">Person 2</a>
-                    <a class="squareButton" href="#accept">Annehmen</a>
-                    <a class="squareButton" href="#ignore">Ignorieren</a>
-                    <a class="squareButton" href="#block">Blockieren</a>
-                </li>
+                }
             </ul>
         </div>
     </div>
