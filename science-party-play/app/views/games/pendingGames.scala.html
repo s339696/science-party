@@ -1,0 +1,29 @@
+@(games: List[models.ebean.Game],users: List[models.ebean.User])
+
+@mainIntern("Spiel erstellen") {
+<br>
+<br>
+<br>
+<br>
+
+<div>
+    <div class="formular">
+        <h1>
+            Anstehende Spiele
+        </h1>
+    </div>
+    <div class="tabele">
+        <div class="list">
+            <ul class="tabele">
+                @for() {
+                <li class="tabele">
+                    <a class="tabele" href="/profile/@user.getId()"> </a>
+                    <a class="squareButton" href="/games/accept/@game.getId">Annehmen</a>
+                    <a class="squareButton" href="/games/decline/@game.getId">Ignorieren</a>
+                </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+}
