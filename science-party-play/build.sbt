@@ -40,14 +40,17 @@ fork in run := true
 
 fork in run := true
 
-<<<<<<< HEAD
+
+fork in run := true
+
+fork in run := true
+
+fork in run := true
+
+fork in run := true
+
+
 =======
-fork in run := true
-
-fork in run := true
-
-fork in run := true
-
 fork in run := true
 
 >>>>>>> master
