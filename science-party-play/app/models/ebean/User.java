@@ -1,9 +1,6 @@
 package models.ebean;
 
-import com.avaje.ebean.Expr;
-import com.avaje.ebean.Expression;
-import com.avaje.ebean.ExpressionFactory;
-import com.avaje.ebean.Model;
+import com.avaje.ebean.*;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
 import controllers.Friends;
@@ -173,6 +170,29 @@ public class User extends Model {
         this.author = author;
     }
 
+    /*
+     * METHODS TO MANAGE GAMES OF A USER
+     */
+
+    /**
+     * Returns a list with all pending games for the user.
+     *
+     * @return
+     */
+    public List<Game> getPendingGames() {
+        return Game.find
+                .where()
+                .ieq("game_status", "P")
+                .eq("players.user", this)
+                .ne("player_status", "L")
+                .ne("player_status", "D")
+                .findList();
+    }
+
+    /*
+     * METHODS TO MANAGE FRIENDS OF A USER
+     */
+
     public Friend sendFriendRequestTo(User to) throws FriendRequestException {
         // Proof if there is already a friendship or request
         Friend friend = getFriendshipOrRequestWith(to);
@@ -189,15 +209,15 @@ public class User extends Model {
         return friend;
     }
 
-    public void responeFriendRequestFrom(User user, boolean accept) throws FriendRequestException {
+    public void responeFriendRequestFrom(User from, boolean accept) throws FriendRequestException {
         Friend friendRequest = Friend.find.where()
                 .ieq("request", "1")
                 .ieq("user_get_req_id", this.getId().toString())
-                .ieq("user_send_req_id", user.getId().toString())
+                .ieq("user_send_req_id", from.getId().toString())
                 .findUnique();
 
         if (friendRequest == null) {
-            throw new FriendRequestException("Es gibt keine Freundschaftsanfrage von " + user.toString() + " an " + this.toString() + ".");
+            throw new FriendRequestException("Es gibt keine Freundschaftsanfrage von " + from.toString() + " an " + this.toString() + ".");
         } else {
             if (accept == true) {
                 friendRequest.setRequest(false);
@@ -274,24 +294,24 @@ public class User extends Model {
         return friend;
     }
 
-        @Override
-        public String toString () {
-            return getFirstname() + " " + getLastname();
-        }
-
-        @Override
-        public boolean equals (Object o){
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            User user = (User) o;
-
-            return id.equals(user.id);
-
-        }
-
-        @Override
-        public int hashCode () {
-            return id.hashCode();
-        }
+    @Override
+    public String toString() {
+        return getFirstname() + " " + getLastname();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return id.equals(user.id);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
+}

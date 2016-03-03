@@ -40,10 +40,10 @@ public class Application extends Controller {
      */
     public Result playground() {
 
-        Game game = Game.find.byId(1L);
-        game.nextTurn();
-        System.out.println(game.getActivePlayer());
-        System.out.println(game.getActiveQuestion().getId());
+        Game game = User.find.byId(1L).getPendingGames().get(0);
+        game.getPlayerForUser(User.find.byId(2L));
+
+
         return ok("Play!");
     }
 

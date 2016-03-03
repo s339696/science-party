@@ -1,29 +1,33 @@
-@(games: List[models.ebean.Game],users: List[models.ebean.User])
+@import models.ebean.Player
 
-@mainIntern("Spiel erstellen") {
-<br>
-<br>
-<br>
-<br>
+@(user: models.ebean.User)
 
-<div>
-    <div class="formular">
-        <h1>
-            Anstehende Spiele
-        </h1>
-    </div>
-    <div class="tabele">
-        <div class="list">
-            <ul class="tabele">
-                @for() {
-                <li class="tabele">
-                    <a class="tabele" href="/profile/@user.getId()"> </a>
-                    <a class="squareButton" href="/games/accept/@game.getId">Annehmen</a>
-                    <a class="squareButton" href="/games/decline/@game.getId">Ignorieren</a>
-                </li>
+@mainIntern("Spieleinladungen") {
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div>
+        <div class="formular">
+            <h1>
+                Spieleinladungen
+            </h1>
+        </div>
+        <div class="tabele">
+            <div class="list">
+                <ul class="tabele">
+                @for(game <- user.getPendingGames) {
+                    <li class="tabele">
+                    ID: @game.getId Thema: @game.getTopic
+                        @if(game.getPlayerForUser(user).getPlayerStatus() == Player.PlayerStatus.INVITED) {
+                            <a class="squareButton" href="/games/accept/@game.getId">Annehmen</a>
+                            <a class="squareButton" href="/games/decline/@game.getId">Ignorieren</a>
+                        }
+                    </li>
                 }
-            </ul>
+                </ul>
+            </div>
         </div>
     </div>
-</div>
 }
