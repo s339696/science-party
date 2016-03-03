@@ -1,20 +1,20 @@
 @(games: List[models.ebean.Game])
 
 @mainIntern("Spiel laden") {
-<div>
-    <div class="formular">
-        <h1>
-            Spiel laden
-        </h1>
-    </div>
-    <div class="tabele">
+    <div>
+        <div class="formular">
+            <h1>
+                Spiel laden
+            </h1>
+        </div>
+        <div class="tabele">
 
-        <ul>
-            @for(game <- games){
-            <li class="tabele">Spielstand @games.getId() <a class="bigButton" href="/play/:@games.getId()">Laden</a></li>
-            }
-        </ul>
+            <ul class="tabele">
+                @for(game <- games) {
+                    <li class="tabele">Spiel @game.getId() mit Thema: @game.getTopic.getName() <a class="bigButton" href="/games/play/@game.getId()">Laden</a></li>
+                }
+            </ul>
 
+        </div>
     </div>
-</div>
 }

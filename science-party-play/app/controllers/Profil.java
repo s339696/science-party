@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.*;
 import manager.LoginManager;
 import models.ebean.User;
 import play.mvc.*;
@@ -7,7 +8,7 @@ import play.mvc.*;
 import static play.mvc.Results.redirect;
 
 /**
- * The public class handles all requests related to the Useraccount.
+ * The publ class handles all requests related to the Useraccount.
  */
 public class Profil extends Controller {
 
@@ -21,8 +22,12 @@ public class Profil extends Controller {
     }
 
     public Result renderProfil(long id) {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
 
-        return ok(views.html.profile.render(User.find.byId(id)));
+        return ok(views.html.profile.profile.render(User.find.byId(id)));
     }
 
     public Result handleProfileUpdate() {

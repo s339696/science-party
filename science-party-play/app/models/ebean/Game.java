@@ -41,11 +41,11 @@ public class Game extends Model {
     private GameStatus gameStatus;
 
     @CreatedTimestamp
-    @Column(name="date_created")
+    @Column(name="date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
 
     @UpdatedTimestamp
-    @Column(name="date_updated")
+    @Column(name="date_updated", columnDefinition = "datetime")
     private Timestamp whenUpdated;
 
     @ManyToOne
