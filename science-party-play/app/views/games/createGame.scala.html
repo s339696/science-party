@@ -1,4 +1,4 @@
-@(topics: List[models.ebean.Topic],users: List[models.ebean.User])
+@(topics: List[models.ebean.Topic], users: List[models.ebean.User])
 
 @mainIntern("Spiel erstellen") {
     <br>
@@ -16,7 +16,7 @@
             <form>
                 <select name="Thema">
                     @for(topic <- topics) {
-                        <option value="@topic.getId()">@topic.getName()</option>    <!-- Ist das so richtig? -->
+                        <option value="@topic.getId">@topic.getName</option>
                     }
                 </select>
                 <input id="multiplayerCheckbox" type="checkbox" name="Multiplayer" value="mp">Multiplayer-Modus: Spiele zusammen mit einem Freund.
