@@ -14,15 +14,15 @@
         </div>
             <!-- VORLÄUFIG PERSONEN SUCHEN VIA <Select> <Option> (Option -> Liste aller Personen) -->
         <form>
-            <select class="search">
+            <select class="search" onchange="userSelected(this.options[this.selectedIndex].value)">
             @for( user <- users) {
                 <option value="@user.getId">@user.toString</option>
             }
             </select>
                 <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
-            <a class="squareButton" href="/friends/add/:id">Freund hinzufügen</a>
-            <a class="squareButton" href="/friends/messages/:id">Nachricht senden</a>
-            <a class="squareButton" href="/profile/:id">Profil</a>
+            <a class="squareButton" id="addFriend" href="javascript:addFriend(0);">Freund hinzufügen</a>
+            <a class="squareButton" id="sendMessage"  href="/friends/messages">Nachricht senden</a>
+            <a class="squareButton" id="viewProfile" href="/profile">Profil</a>
         </form>
         <br>
         <br>
@@ -34,7 +34,7 @@
                     <li class="tabele">
                         <a class="tabele" href="/profile/@friend.getId">@friend.toString</a>
                         <a class="squareButton" href="/message/send/@friend.getId">Nachricht senden</a>
-                        <a class="squareButton" onclick="deleteFriend(@friend.getId)"  href="#deleteFriend">Freund entfernen</a>
+                        <a class="squareButton" onclick="deleteFriend(@friend.getId)" href="#">Freund entfernen</a>
                     </li>
                 }
                 <li class="tabele">
@@ -56,8 +56,12 @@
     </div>
 
     <script>
+        window.onload = init();
+            function init() {
+
+            }
+
             function deleteFriend(id) {
-                alert("Click from " +id);
                 $.ajax({
                     url: "/friends/delete/" + id,
                     method: "POST",
@@ -69,6 +73,57 @@
                         alert(xhr.responseText);
                     }
                 });
+            }
+
+            function addFriend(id) {
+                if (id != 0) {
+                    $.ajax({
+                        url: "/friends/add/" + id,
+                        method: "POST",
+                        dataType: "text",
+                        success: function(data,status,xhr) {
+                            alert(xhr.responseText);
+                            location.reload();
+                        },
+                        error: function(xhr,status,error) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                }
+            }
+
+            function acceptFriend(id) {
+                $.ajax({
+                    url: "/friends/.../" + id,
+                    method: "POST",
+                    dataType: "text",
+                    success: function(data,status,xhr) {
+                        location.reload();
+                    },
+                    error: function(xhr,status,error) {
+                        alert(xhr.responseText);
+                    }
+                });
+            }
+
+            function declineFriend(id) {
+                $.ajax({
+                    url: "/friends/.../" + id,
+                    method: "POST",
+                    dataType: "text",
+                    success: function(data,status,xhr) {
+                        location.reload();
+                    },
+                    error: function(xhr,status,error) {
+                        alert(xhr.responseText);
+                    }
+                });
+            }
+
+            function userSelected(id) {
+                $("#addFriend").attr("href", "javascript:addFriend(" + id + ");");
+                $("#sendMessage").attr("href", "messages/send/" + id);
+                $("#viewProfile").attr("href", "profile/" + id);
             }
     </script>
 }
