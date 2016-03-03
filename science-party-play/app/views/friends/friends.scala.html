@@ -5,13 +5,13 @@
 @mainIntern("Freunde") {
     <br>
     <br>
-    <div>
-        <h1>
-            Freunde
-        </h1>
-    </div>
     <br>
     <div class="tabele">
+        <div>
+            <h1>
+                Freunde
+            </h1>
+        </div>
             <!-- VORLÄUFIG PERSONEN SUCHEN VIA <Select> <Option> (Option -> Liste aller Personen) -->
         <form>
             <select class="search">
@@ -19,11 +19,15 @@
                 <option value="@user.getId">@user.toString</option>
             }
             </select>
-            <a class="squareButton" href="/profile/:id">Profil</a>
-            <a class="squareButton" href="/friends/messages/:id">Nachricht senden</a>
+            <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
             <a class="squareButton" href="/friends/add/:id">Freund hinzufügen</a>
-                <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
+            <a class="squareButton" href="/friends/messages/:id">Nachricht senden</a>
+            <a class="squareButton" href="/profile/:id">Profil</a>
         </form>
+        <br>
+        <br>
+        <br>
+        <br>
         <div class="list">
             <ul class="tabele">
                 @for( friend <- friends) {
