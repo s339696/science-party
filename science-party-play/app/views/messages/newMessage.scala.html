@@ -1,4 +1,4 @@
-@(titel: String)
+@(friends: List[models.ebean.User])
 
 @mainIntern("Nachricht") {
 <br>
@@ -10,7 +10,7 @@
     <form class="messageBox">
         <select>
             @for(friend <- friends) {
-            <option value="@friend.getId">@user.getFirstname @user.getLastname</option>
+            <option value="@friend.getId">@friend.getFirstname @friend.getLastname</option>
             }
         </select>
         <textarea name="message" rows="10" cols="50"></textarea>
