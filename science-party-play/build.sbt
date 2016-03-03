@@ -27,31 +27,3 @@ routesGenerator := InjectedRoutesGenerator
 
 
 fork in run := true
-
-fork in run := true
-
-fork in run := true
-
-fork in run := true
-
-fork in run := true
-
-fork in run := true
-
-fork in run := true
-
-
-fork in run := true
-
-fork in run := true
-
-fork in run := true
-
-fork in run := true
-
-
-=======
-fork in run := true
-
->>>>>>> master
-fork in run := true
