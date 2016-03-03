@@ -1,16 +1,16 @@
 @(game: models.ebean.Game)
-
+// @(question: models.ebean.Game)
 
 @mainIntern("Science Party") {
 <div class="Spielinformationen">
     <h1>Science Party</h1>
-    <p>Thema: @game.getTopic()</p>
+    <p>Thema: @game.getTopic.getName()</p>
     <p>Spielbeginn: @game.getWhenCreated()</p>
 
 </div>
 
-<div class="Spieler">
-
+<div class="Frage">
+// <p>@question.getId()</p>
 
 </div>
 

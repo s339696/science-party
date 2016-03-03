@@ -133,14 +133,24 @@ public class Games extends Controller {
         //TODO: Spielfeld mit Fragen rendern
 
 
-        return ok(game.getActiveQuestion().getText());
+        return ok(views.html.games.playGame.render(game));
     }
 
     public Result renderGameWaiting(Long id) {
+        Game game = GameManager.getGameById(id);
+        User user = LoginManager.getLoggedInUser();
+
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
+
+        if (game == null) {
+            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
+        }
 
         //TODO: Spielfeld rendern
 
-        return ok("Du bist nicht an Reihe.");
+        return  ok(views.html.games.playGame.render(game));
     }
 
     /**
