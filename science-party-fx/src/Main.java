@@ -15,10 +15,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        
         Parent root = FXMLLoader.load(getClass().getResource("view/gui_login.fxml"));
         primaryStage.setTitle("Sciene Party Author Tool");
-
-
 
         primaryStage.setScene(new Scene(root, 949, 632));
         primaryStage.show();
@@ -27,11 +26,6 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-
-
-
-
-
       launch(args);
     }
 
