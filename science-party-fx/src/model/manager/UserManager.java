@@ -19,9 +19,7 @@ public class UserManager {
     static UserManager userManager = new UserManager();
 
 
-    public ObservableList<User> getAllUsers() throws IOException {
-        ObservableList<User> allUsers = FXCollections.observableArrayList();
-
+    public List<User> getAllUsers() throws IOException {
         String users = Database.sendPost("user/list");
 
         //den String users noch irgendwie zu ner Liste mappen
@@ -33,7 +31,7 @@ public class UserManager {
 
        // List<User> userList = mapper.convertValue(users, mapper.getTypeFactory().constructCollectionType(List.class, User.class));
 
-        return allUsers;
+        return userList;
     }
 
     public User getUserById(int id) throws IOException {
@@ -67,7 +65,9 @@ public class UserManager {
         //User u = userManager.getUserById(1);
         //System.out.println(u.getFirstname());
 
-        userManager.getAllUsers();
+        List<User> userList = userManager.getAllUsers();
+        System.out.println(userList.toString());
+        System.out.println(userList.size());
 
 
 
