@@ -48,10 +48,10 @@
                     var email = $("#email").val();
                     var password = $("#password").val();
                     $.ajax({
-                        url: '/register',
-                        method: 'POST',
+                        url: "/register",
+                        method: "POST",
                         contentType: "application/json",
-                        dataType: 'json',
+                        dataType: "text",
                         data: JSON.stringify({
                             firstname: firstname,
                             lastname: lastname,
@@ -60,7 +60,6 @@
                             password: password,
                         }),
                         success: function(data,status,xhr) {
-                            alert(xhr.responseText);
                             location.reload();
                         },
                         error: function(xhr,status,error) {
