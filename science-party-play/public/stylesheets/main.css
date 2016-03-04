@@ -29,8 +29,10 @@ div.startLoginButton {
 	border: none;
 }
 
-div#loginContainer {
+div.loginContainer {
 	width: 423px;
+	background-color: #D0D0D0;
+	border-radius: 4px;
 }
 
 div.topLoginSignin {
@@ -51,9 +53,10 @@ form {
 	margin: auto;
 }
 
-select {
-	width: 100%;
-	padding: 12px;
+select.search {
+	float: left;
+	width: 48%;
+	padding: 20px 0;
 	margin: 8px 0;
 	display: inline-block;
 	border: 1px solid #CCC;
@@ -63,6 +66,21 @@ select {
 
 a.bigButton {
 	width: 100%;
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	background-color: #4CAF50;
+	color: white;
+	padding: 25px 0;
+	margin: 8px 0;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+a.squareButton {
+	float: right;
+	width: 15%;
 	display: inline-block;
 	text-align: center;
 	text-decoration: none;

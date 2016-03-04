@@ -61,13 +61,13 @@ public class Games extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        List<Game> pendingGames = GameManager.getPendingGames(user.getId());
-
-        for (Game game : pendingGames) {
-            Logger.info(game.getId().toString());
+        // For debug
+        List<Game> games = user.getPendingGames();
+        for (Game game:games) {
+            game.getPlayerForUser(user).getPlayerStatus();
         }
 
-        return ok("Pending Games");
+        return ok(views.html.games.pendingGames.render(user));
     }
 
     /**

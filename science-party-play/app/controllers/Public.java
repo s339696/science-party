@@ -12,7 +12,7 @@ import play.data.Form;
 
 
 /**
- * The public class handles all requests for the public area.
+ * The publ class handles all requests for the publ area.
  */
 public class Public extends Controller {
 
@@ -24,7 +24,7 @@ public class Public extends Controller {
         if (LoginManager.isLoggedIn()) {
             return redirect(controllers.routes.Application.renderHome());
         }
-        return ok(views.html.login.render("Anmeldung"));
+        return ok(views.html.publ.login.render());
     }
 
     /**
@@ -69,7 +69,7 @@ public class Public extends Controller {
         if (LoginManager.isLoggedIn()) {
             return redirect(controllers.routes.Application.renderHome());
         }
-        return ok(views.html.register.render("Registrierung"));
+        return ok(views.html.publ.register.render());
     }
 
     /**
@@ -108,15 +108,19 @@ public class Public extends Controller {
         }
     }
 
-    public Result renderFriends() {
-        return ok(views.html.friends.render("Freunde"));
-    }
-
-    public Result renderRanking() {
-        return ok(views.html.ranking.render("Ranking"));
-    }
-
     public Result renderNews() {
-        return ok(views.html.news.render("News"));
+        return ok(views.html.publ.news.render());
+    }
+
+    public Result renderBlog() {
+        return ok(views.html.publ.blog.render());
+    }
+
+    public Result renderEvents() {
+        return ok(views.html.publ.events.render());
+    }
+
+    public Result renderKontakt() {
+        return ok(views.html.publ.kontakt.render());
     }
 }

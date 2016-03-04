@@ -1,0 +1,21 @@
+@(friends: List[models.ebean.User])
+
+@mainIntern("Nachricht") {
+<br>
+<br>
+<br>
+<br>
+
+<div class="messageBox">
+    <form class="messageBox">
+        <select>
+            @for(friend <- friends) {
+            <option value="@friend.getId">@friend.getFirstname @friend.getLastname</option>
+            }
+        </select>
+        <textarea name="message" rows="10" cols="50"></textarea>
+        <input name="Senden" type="submit">
+    </form>
+</div>
+
+}

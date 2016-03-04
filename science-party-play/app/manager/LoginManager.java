@@ -77,8 +77,9 @@ public class LoginManager {
             //User user = User.find.byId(1L);
             if (user == null) {
                 logout();
+            } else {
+                updateLastOnline(user);
             }
-            updateLastOnline(user);
             return user;
         }
     }

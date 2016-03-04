@@ -1,4 +1,4 @@
-@(titel: String)
+@()
 
 @mainExtern("Anmeldung") {
     <br>
@@ -8,13 +8,12 @@
 
     <!-- LOGO [class="leftLogo"] -->
 
-    <div class="formular">
-        <h1>
-            Anmelden
-        </h1>
-    </div>
-
-    <div id="loginContainer">
+    <div class="loginContainer">
+        <div class="formular">
+            <h1>
+                Anmelden
+            </h1>
+        </div>
         <div class="formular">
             <form id="loginForm">
                 E-Mail Adresse:<br>
@@ -50,7 +49,6 @@
                         password: password,
                     }),
                     success: function(data,status,xhr) {
-                        alert(xhr.responseText);
                         location.reload();
                     },
                     error: function(xhr,status,error) {

@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.EnumValue;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+import com.sun.media.jfxmedia.events.PlayerStateEvent;
 import play.Logger;
 
 import javax.persistence.*;
@@ -41,29 +42,21 @@ public class Game extends Model {
     private GameStatus gameStatus;
 
     @CreatedTimestamp
-    @Column(name="date_created")
+    @Column(name="date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
 
     @UpdatedTimestamp
-    @Column(name="date_updated")
+    @Column(name="date_updated", columnDefinition = "datetime")
     private Timestamp whenUpdated;
 
     @ManyToOne
     private Topic topic;
 
-    @OneToMany(mappedBy="game", cascade= CascadeType.ALL)
+    @OneToMany(mappedBy="game", cascade=CascadeType.ALL)
     List<Player> players;
 
     public Long getId() {
         return id;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<Player> players) {
-        this.players = players;
     }
 
     public Topic getTopic() {
@@ -144,5 +137,38 @@ public class Game extends Model {
             this.setActivePlayer(players.get(nextIndex));
             this.update();
         }
+    }
+
+    /*
+     * METHODS TO MANAGE PLAYER OF A GAME
+     */
+
+    /**
+     * Returns a list with all players.
+     *
+     * @return
+     */
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Return the player for a given user to this game.
+     *
+     * @param user
+     * @return
+     */
+    public Player getPlayerForUser(User user) {
+        System.out.println("Spiel #" + this.getId());
+        List<Player> players = this.getPlayers();
+        System.out.println("Amount of Player: " + players.size());
+
+        for (Player player: players) {
+            if (player.getUser().equals(user)) {
+                System.out.println("match!");
+                return player;
+            }
+        }
+        return null;
     }
 }

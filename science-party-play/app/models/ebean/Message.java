@@ -18,9 +18,12 @@ public class Message {
     public static Model.Finder<Long, Message> find = new Model.Finder<>(Message.class);
 
     // Columns
+    @Id
+    @GeneratedValue
+    private Long id;
+
     @ManyToOne
     private User user;
-
 
     @ManyToOne
     private Chat chat;
@@ -29,6 +32,6 @@ public class Message {
     private String text;
 
     @CreatedTimestamp
-    @Column(name = "date_created")
+    @Column(name = "date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
 }

@@ -229,24 +229,6 @@ public class GameManager {
     }
 
     /**
-     * Returns a list with all pending games for a given user id.
-     *
-     * @param userId
-     * @return
-     */
-    public static List<Game> getPendingGames(Long userId) {
-        List<Game> pendingGames = Game.find
-                .fetch("players")
-                .where()
-                .ieq("game_status", "P")
-                .eq("user_id", userId)
-                .ne("player_status", "L")
-                .findList();
-
-        return pendingGames;
-    }
-
-    /**
      * Returns a list with all running games for a given user id.
      *
      * @param userId
