@@ -7,9 +7,9 @@
 
 <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="949.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.MainController">
   <tabs>
-    <Tab fx:id="UserTab" onSelectionChanged="#handleTab" text="Benutzerdaten"/>
-    <Tab fx:id="QuizTab" onSelectionChanged="#handleTab" text="Quiz-Editor" />
-    <Tab fx:id="StatisticsTab" onSelectionChanged="#handleTab" text="Statistiken" />
-    <Tab fx:id="QrTab" onSelectionChanged="#handleTab" text="QR-Codes" />
+    <Tab fx:id="UserTab" text="Benutzerdaten" />
+    <Tab fx:id="QuizTab" text="Quiz-Editor" />
+    <Tab fx:id="StatisticsTab" text="Statistiken" />
+    <Tab fx:id="QrTab" text="QR-Codes" />
   </tabs>
 </TabPane>

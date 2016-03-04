@@ -55,19 +55,19 @@ public class UserController implements Initializable{
 
     }
 
-    User tim = new User(0, "Tim", "Tschauder", "linksradikal@gaude.net", "hose1234", new Date(), null);
-    User user = new User(0,null,null,null,null,null,null);
+
+    User user = new User(0, null, null, null,null, null, false, 0, false, null, null, null, null, null, null, null, null);
     ObservableList<User> users = FXCollections.observableArrayList();
     @FXML
     private void showList(){
        ObservableList<String> data = FXCollections.observableArrayList("eins", "zwei", "drei");
 
         //Schleife die alle User einträgt
-        users.add(0,tim);
+        //users.add(0,tim);
 
         for(User u: users){
             int i=0;
-            data.add(i,u.getId() + ": " +u.getFirstName() + " " + u.getLastName());
+            data.add(i,u.getId() + ": " +u.getFirstname() + " " + u.getLastname());
             i++;
         }
 
@@ -92,10 +92,10 @@ public class UserController implements Initializable{
         user = users.get(id);
 
         idLabel.textProperty().set(String.valueOf(user.getId()));
-        firstNameLabel.textProperty().set(user.getFirstName());
-        lastNameLabel.textProperty().set(user.getLastName());
+        firstNameLabel.textProperty().set(user.getFirstname());
+        lastNameLabel.textProperty().set(user.getLastname());
         emailLabel.textProperty().set(user.getEmail());
-        birthdateLabel.textProperty().set(user.getBirthDate());
+        birthdateLabel.textProperty().set(user.getBirthdayAsString());
 
     }
 

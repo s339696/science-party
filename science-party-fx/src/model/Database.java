@@ -15,8 +15,15 @@ import java.net.URL;
  * Created by Bastian on 29.02.2016.
  */
 public class Database {
+    public static ObjectNode recentUser = JsonNodeFactory.instance.objectNode();
 
-    public String sendPost(ObjectNode login, String body) throws IOException {
+    public static void setRecentUser(String email, String password) {
+        recentUser.put("email", email);
+        recentUser.put("password", password);
+
+    }
+
+    public static String sendPost(String body) throws IOException {
 
         // user/list    ->  gibt Liste aller User aus
         // user/:id     ->  gibt User mit bestimmter id aus
@@ -36,7 +43,7 @@ public class Database {
 
         OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
 
-        outWriter.write(login.toString());
+        outWriter.write(recentUser.toString());
         outWriter.flush();
 
 
@@ -67,13 +74,8 @@ public class Database {
 
     public static void main(String[] args) throws IOException {
 
-        ObjectNode recentUser = JsonNodeFactory.instance.objectNode();
-        recentUser.put("email", "bastian95@live.de");
-        recentUser.put("password", "56CF1CCC7D53E570FE333734BE911548");
+        Database.setRecentUser("bastian95@live.de","56CF1CCC7D53E570FE333734BE911548");
 
-
-        Database db = new Database();
-       // db.sendPost(recentUser);
-
+        Database.sendPost("user/1");
     }
  }
