@@ -194,7 +194,7 @@ public class Games extends Controller {
             return ok("Das Spiel mit der Id #" + e.getGame().getId() + " wurde erfolgreich erzeugt, " +
                     "konnte aber noch nicht gestartet werden.");
         } catch (Exception e) {
-            // TODO:
+            return badRequest(e.getMessage());
         }
         if (game == null) {
             return badRequest("Das Spiel konnte nicht erzeugt werden.");

@@ -29,7 +29,6 @@ public class GameManager {
         Game game = new Game();
         game.setGameStatus(Game.GameStatus.PENDING);
         game.setTopic(topic);
-        game.setActiveQuestion(Question.getRandomQuestion(topic));
 
         game.insert();
 
@@ -152,6 +151,7 @@ public class GameManager {
 
         // Set starting player, starting question and start game
         game.setActivePlayer(players.get(startNumb));
+        game.setActiveQuestion(Question.getRandomQuestion(game.getTopic()));
         game.setGameStatus(Game.GameStatus.ACTIVE);
         game.update();
     }
