@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import exception.ac.AuthenticationException;
+import manager.LoginManager;
 import models.ebean.User;
 
 import models.form.LoginForm;
@@ -24,6 +25,9 @@ import java.util.List;
  *
  */
 public class AuthorConnect extends Controller {
+    /*
+     * USER
+     */
 
     /**
      * Returns the userdata for the user with the given ID as JSON.
@@ -51,7 +55,7 @@ public class AuthorConnect extends Controller {
      * Returns all Users as JSON.
      * @return
      */
-    public Result serveUserlist() {
+    public Result serveUserList() {
         try {
             requestIsAuthenticated();
         } catch (AuthenticationException e) {
@@ -68,11 +72,231 @@ public class AuthorConnect extends Controller {
     }
 
     /**
+     * Updates the data of a user in the database.
+     *
+     * @param id
+     * @return
+     */
+    public Result handleUserUpdate(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    /**
+     * Inserts a new user into the database.
+     *
+     * @return
+     */
+    public Result handleUserInsert() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleUserDelete(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    /*
+     * TOPIC
+     */
+    public Result serveTopic(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result serveTopicList() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleTopicUpdate(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleTopicInsert() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleTopicDelete(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    /*
+     * QUESTION
+     */
+    public Result serveQuestion(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result serveQuestionList(Long topicId) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleQuestionUpdate(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleQuestionInsert() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleQuestionDelete(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    /*
+     * ANSWER
+     */
+    public Result serveAnswer(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result serveAnswerList(Long questionId) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleAnswerUpdate(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleAnswerInsert() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleAnswerDelete(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    /**
      * Private helper method to check if the request contains valid userdata from a autor.
      *
      * @return
      * @throws AuthenticationException
      */
+
+    /* FIXME: DEPRACTED */
     private boolean requestIsAuthenticated() throws AuthenticationException {
         Form<LoginForm> requestData = Form.form(LoginForm.class).bindFromRequest();
         if (requestData.hasErrors()) {
@@ -93,5 +317,22 @@ public class AuthorConnect extends Controller {
             }
         }
         return true;
+    }
+
+    /**
+     * Checks if a user is logged in and authorized to change data.
+     *
+     * @return
+     */
+    private User isAuthorized() throws AuthenticationException {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            throw new AuthenticationException("Es ist kein User eingeloggt.");
+        } else {
+            if (!user.isAuthor()) {
+                throw new AuthenticationException("Der eingeloggte User ist kein Autor.");
+            }
+        }
+        return user;
     }
 }
