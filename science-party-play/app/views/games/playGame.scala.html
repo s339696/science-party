@@ -8,6 +8,13 @@
 
     </div>
 
+
+
+
+
+
+
+
     <div class="Frage">
         <p> Frage @game.getActiveQuestion.getId() : @game.getActiveQuestion.getText() </p>
 
@@ -42,6 +49,7 @@
 
     </div>
 
+
 <script>
         $("#answerForm").on('submit', function (e) {
             e.preventDefault();
@@ -59,7 +67,7 @@
                 answerId=document.answer[2].value();
 
             }
-            }
+
 
 
             $.ajax({
@@ -83,6 +91,6 @@
         });
 
 
-
 </script>
+
 }
