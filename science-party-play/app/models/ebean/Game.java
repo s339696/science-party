@@ -55,6 +55,16 @@ public class Game extends Model {
     @OneToMany(mappedBy="game", cascade=CascadeType.ALL)
     List<Player> players;
 
+    /**
+     * Returns the game with the given id.
+     *
+     * @param id
+     * @return
+     */
+    public static Game getGameById(Long id) {
+        return Game.find.byId(id);
+    }
+
     public Long getId() {
         return id;
     }
