@@ -3,7 +3,6 @@ package controllers;
 
 import exception.LoginException;
 import manager.LoginManager;
-import manager.UserManager;
 import models.ebean.User;
 import models.form.LoginForm;
 import models.form.RegisterForm;
@@ -98,7 +97,8 @@ public class Public extends Controller {
         } else {
             RegisterForm regForm = requestData.get();
             try {
-                User user = UserManager.createUser(regForm.getFirstname(),regForm.getLastname(),regForm.getBirthday(),regForm.getEmail(),regForm.getPassword());
+                User user = User.createUser(regForm.getFirstname(),regForm.getLastname(),
+                        regForm.getBirthday(),regForm.getEmail(),regForm.getPassword());
                 user = LoginManager.login(regForm.getEmail(), regForm.getPassword());
 
                 return ok("Der Account wurde erfolgreich erstellt und du bist jetzt eingeloggt.");

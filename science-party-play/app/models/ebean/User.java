@@ -4,6 +4,7 @@ import com.avaje.ebean.*;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
 import controllers.Friends;
+import exception.UserException;
 import exception.friends.FriendRequestException;
 import javassist.expr.ExprEditor;
 import util.Helper;
@@ -11,6 +12,7 @@ import util.Helper;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,6 +75,77 @@ public class User extends Model {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Message> messages;
+
+    /**
+     * Creates a new User into the Database with given parameters.
+     * @param firstname
+     * @param lastname
+     * @param birthday
+     * @param email
+     * @param password
+     * @return
+     * @throws UserException
+     */
+    public static User createUser(String firstname, String lastname, String birthday, String email, String password) throws UserException {
+        User user = new User();
+
+        /* TODO: Check data for validity */
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setBirthday(checkAndConvertBirthday(birthday));
+        user.setEmail(checkEmail(email));
+        user.setPassword(Helper.getMD5fromString(password));
+        user.setLocked(false);
+        user.setPoints(0);
+
+        // Insert into Database
+        try {
+            user.insert();
+        }catch (Exception e) {
+            throw new UserException("Es konnte leider kein neuer User erstellt werden.");
+        }
+
+        return user;
+    }
+
+    /**
+     * Checks if a mail address already exists in the database.
+     *
+     * @param email
+     * @return
+     * @throws UserException
+     */
+    private static String checkEmail(String email) throws UserException {
+        //Check if email address already exist in DB.
+        if (User.find.where().like("email",email).findUnique() != null) {
+            throw new UserException("Es ist bereits ein User mit dieser Mailadresse vorhanden.");
+        }
+        //TODO: Check for format
+        return email;
+    }
+
+    /**
+     * Check format of a given birthday string and converts to Timestamp.
+     * @param birthday
+     * @return
+     * @throws UserException
+     */
+    private static Timestamp checkAndConvertBirthday(String birthday) throws UserException {
+        int day;
+        int month;
+        int year;
+
+        if (!birthday.matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
+            throw new UserException("Der angegebene Geburtstag hat nicht das richtige Format (dd.mm.yyyy).");
+        }
+        String[] splitedBirth = birthday.split("\\.");
+        day = Integer.parseInt(splitedBirth[0]);
+        month = Integer.parseInt(splitedBirth[1]);
+        year = Integer.parseInt(splitedBirth[2]);
+        Timestamp ts =  Timestamp.valueOf(LocalDateTime.of(year,month,day,0,0));
+        return ts;
+    }
+
 
     public Long getId() {
         return id;
@@ -187,6 +260,23 @@ public class User extends Model {
                 .ne("player_status", "L")
                 .ne("player_status", "D")
                 .findList();
+    }
+
+    /**
+     * Returns a list with all running games for this user
+     *
+     * @return
+     */
+    public List<Game> getRunningGames() {
+        List<Game> runningGames = Game.find
+                .fetch("players")
+                .where()
+                .ilike("game_status", "A")
+                .eq("user_id", this.getId())
+                .ne("player_status", "L")
+                .findList();
+
+        return runningGames;
     }
 
     /*

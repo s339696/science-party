@@ -1,7 +1,5 @@
 package controllers;
 
-import controllers.*;
-import controllers.routes;
 import exception.games.GameException;
 import exception.games.StartGameException;
 import exception.games.StopGameException;
@@ -14,7 +12,6 @@ import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.*;
-import views.html.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +78,7 @@ public class Games extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        List<Game> runningGames = GameManager.getRunningGames(user.getId());
+        List<Game> runningGames = user.getRunningGames();
 
         for (Game game : runningGames) {
             Logger.info(game.getId().toString());
@@ -97,7 +94,7 @@ public class Games extends Controller {
      * @return
      */
     public Result renderGame(Long id) {
-        Game game = GameManager.getGameById(id);
+        Game game = Game.getGameById(id);
         User user = LoginManager.getLoggedInUser();
 
         if (user == null) {
@@ -119,7 +116,7 @@ public class Games extends Controller {
     }
 
     public Result renderGameActive(Long id) {
-        Game game = GameManager.getGameById(id);
+        Game game = Game.getGameById(id);
         User user = LoginManager.getLoggedInUser();
 
         if (user == null) {
@@ -216,7 +213,7 @@ public class Games extends Controller {
      * @return
      */
     public Result respondGameInv(Long id, Integer action) {
-        Game game = GameManager.getGameById(id);
+        Game game = Game.getGameById(id);
         User user = LoginManager.getLoggedInUser();
 
         Boolean accept = (action == 1) ? true : false;
@@ -247,7 +244,7 @@ public class Games extends Controller {
      * @return
      */
     public Result leaveGame(Long id) {
-        Game game = GameManager.getGameById(id);
+        Game game = Game.getGameById(id);
         User user = LoginManager.getLoggedInUser();
 
         if (user == null) {
@@ -278,7 +275,7 @@ public class Games extends Controller {
      */
     public Result handleAnswer(Long id) {
         // Check game and user
-        Game game = GameManager.getGameById(id);
+        Game game = Game.getGameById(id);
         //User user = LoginManager.getLoggedInUser();
 
 /*        if (user == null) {
