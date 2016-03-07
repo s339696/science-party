@@ -16,8 +16,10 @@ GET     /events                         controllers.Public.renderEvents()
 GET     /kontakt                        controllers.Public.renderKontakt()
 
 #Profil
-GET     /profile                        controllers.Profil.renderOwnProfil()
-GET     /profile/:id                    controllers.Profil.renderProfil(id: Long)
+GET     /profile                        controllers.Profil.renderOwnProfile()
+GET     /profile/delete                 controllers.Profil.handleProfileDelete(confirmed: Boolean ?= false)
+POST    /profile/update                 controllers.Profil.handleProfileUpdate()
+GET     /profile/:id                    controllers.Profil.renderProfile(id: Long)
 GET     /logout                         controllers.Profil.handleLogout()
 
 #Gameplay
@@ -33,7 +35,7 @@ POST    /games/decline/:id              controllers.Games.respondGameInv(id: Lon
 POST    /games/leave/:id                controllers.Games.leaveGame(id: Long)
 POST    /games/answer/:id               controllers.Games.handleAnswer(id: Long)
 
-# Friend
+#Friends
 GET     /friends                        controllers.Friends.renderFriends()
 POST    /friends/add/:id                controllers.Friends.addFriend(id: Long)
 POST    /friends/delete/:id             controllers.Friends.deleteFriend(id: Long)

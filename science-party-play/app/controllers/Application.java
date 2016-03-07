@@ -26,7 +26,7 @@ public class Application extends Controller {
      */
     public Result renderHome() {
         if (LoginManager.isLoggedIn()) {
-            return redirect(controllers.routes.Profil.renderOwnProfil());
+            return redirect(controllers.routes.Profil.renderOwnProfile());
         } else {
             return ok(views.html.home.render("Willkommen bei Science Party"));
         }
