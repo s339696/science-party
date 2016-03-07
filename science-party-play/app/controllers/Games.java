@@ -107,47 +107,7 @@ public class Games extends Controller {
 
         Player player = Player.getPlayerOfGameAndUser(game, user);
 
-        // Check if the logged in player is the active player and render the required environment
-        if (game.getActivePlayer().getId() == player.getId()) {
-            return renderGameActive(id);
-        } else {
-            return renderGameWaiting(id);
-        }
-    }
-
-    public Result renderGameActive(Long id) {
-        Game game = Game.getGameById(id);
-        User user = LoginManager.getLoggedInUser();
-
-        if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
-        }
-
-        if (game == null) {
-            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
-        }
-
-        //TODO: Spielfeld mit Fragen rendern
-
-
-        return ok(views.html.games.playGame.render(game));
-    }
-
-    public Result renderGameWaiting(Long id) {
-        Game game = GameManager.getGameById(id);
-        User user = LoginManager.getLoggedInUser();
-
-        if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
-        }
-
-        if (game == null) {
-            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
-        }
-
-        //TODO: Spielfeld rendern
-
-        return  ok(views.html.games.playGame.render(game));
+        return ok(views.html.games.playGame.render(player, game));
     }
 
     /**

@@ -1,4 +1,4 @@
-@(game: models.ebean.Game)
+@(player: models.ebean.Player, game: models.ebean.Game)
 
 @mainIntern("Science Party") {
     <div class="Spielinformationen">
@@ -7,13 +7,6 @@
         <p>Spielbeginn: @game.getWhenCreated()</p>
 
     </div>
-
-
-
-
-
-
-
 
     <div class="Frage">
         <p> Frage @game.getActiveQuestion.getId() : @game.getActiveQuestion.getText() </p>
