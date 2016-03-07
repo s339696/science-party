@@ -1,0 +1,96 @@
+@(game: models.ebean.Game)
+
+@mainIntern("Science Party") {
+    <div class="Spielinformationen">
+        <h1>Science Party</h1>
+        <p>Thema: @game.getTopic.getName()</p>
+        <p>Spielbeginn: @game.getWhenCreated()</p>
+
+    </div>
+
+
+
+
+
+
+
+
+    <div class="Frage">
+        <p> Frage @game.getActiveQuestion.getId() : @game.getActiveQuestion.getText() </p>
+
+        <form id="answerForm">
+
+
+            <ul>
+                frage @game.getActiveQuestion.getId() : @game.getActiveQuestion.getText()
+
+                <fieldset>
+                    <input type="radio" id="a1" name="answer"
+                    value="@game.getActiveQuestion.getAnswers.get(1).getId">
+                      <label for="a1">  1: @game.getActiveQuestion.getAnswers.get(1).getText()  </label>
+
+
+                    <input type="radio" id="a2" name="answer"
+                    value="@game.getActiveQuestion.getAnswers.get(2).getId">
+                    <label for="a2">    2: @game.getActiveQuestion.getAnswers.get(2).getText() </label>
+
+
+                    <input type="radio" id="a3" name="answer"
+                    value="@game.getActiveQuestion.getAnswers.get(3).getId">
+                    <label for="a3">   3: @game.getActiveQuestion.getAnswers.get(3).getText() </label>
+                </fieldset>
+            </ul>
+            <button type="submit">Antworten</button>
+        </form>
+    </div>
+
+    <div class="Spielfeld">
+
+
+    </div>
+
+
+<script>
+        $("#answerForm").on('submit', function (e) {
+            e.preventDefault();
+            var answerId;
+
+            if(document.answer[0].checked == true) {
+                answerId=document.answer[0].value();
+            }
+            else
+            if(document.answer[1].checked == true) {
+                answerId=document.answer[1].value();
+            }
+            else
+            if(document.answer[2].checked == true) {
+                answerId=document.answer[2].value();
+
+            }
+
+
+
+            $.ajax({
+                url: '/games/answer/@game.getId()',
+                method: 'POST',
+                contentType: "application/json",
+                dataType: "text",
+                data: JSON.stringify({
+                 answerId: answerId,
+
+                }),
+                success: function(data,status,xhr) {
+                    alert(xhr.responseText);
+                    location.reload();
+                },
+                error: function(xhr,status,error) {
+                    alert(xhr.responseText);
+                }
+            });
+
+        });
+
+
+</script>
+
+}
