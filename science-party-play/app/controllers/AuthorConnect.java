@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import exception.ac.AuthenticationException;
 import manager.LoginManager;
+import models.ebean.Answer;
+import models.ebean.Question;
+import models.ebean.Topic;
 import models.ebean.User;
 
 import models.form.LoginForm;
@@ -20,6 +23,7 @@ import java.util.List;
  * The logged in user has to be marked in the database as author.
  */
 public class AuthorConnect extends Controller {
+
     /*
      * USER
      */
@@ -35,7 +39,7 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
         User userServed = User.find.byId(id);
@@ -55,7 +59,7 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
         List<User> userlist = User.find.all();
@@ -69,18 +73,28 @@ public class AuthorConnect extends Controller {
     /**
      * Updates the data of a user in the database.
      *
-     * @param id
+     * @param
      * @return
      */
-    public Result handleUserUpdate(Long id) {
+    public Result handleUserUpdate() {
         User user;
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            User updateUser = mapper.convertValue(json, User.class);
+            updateUser.update();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Der User wurde verändert.");
     }
 
     /**
@@ -93,21 +107,33 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            User insertUser = mapper.convertValue(json, User.class);
+            insertUser.setId(null);
+            insertUser.insert();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Der User wurde hinzugefügt.");
     }
 
     public Result handleUserDelete(Long id) {
         User user;
         try {
             user = isAuthorized();
-        } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            User.find.byId(id).delete();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        return ok("Der User wurde gelöscht.");
     }
 
     /*
@@ -118,10 +144,15 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        Topic topicServed = Topic.find.byId(id);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(topicServed, JsonNode.class);
+
+        return ok(node);
     }
 
     public Result serveTopicList() {
@@ -129,18 +160,23 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        List<Topic> topiclist = Topic.find.all();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(topiclist, JsonNode.class);
+
+        return ok(node);
     }
 
-    public Result handleTopicUpdate(Long id) {
+    public Result handleTopicUpdate() {
         User user;
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
         return ok();
@@ -151,7 +187,7 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
         return ok();
@@ -161,11 +197,12 @@ public class AuthorConnect extends Controller {
         User user;
         try {
             user = isAuthorized();
-        } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            Topic.find.byId(id).delete();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        return ok("Der Topic wurde gelöscht.");
     }
 
     /*
@@ -176,10 +213,15 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        Question questionServed = Question.find.byId(id);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(questionServed, JsonNode.class);
+
+        return ok(node);
     }
 
     public Result serveQuestionList(Long topicId) {
@@ -187,18 +229,23 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        List<Question> questionlist = Topic.find.byId(topicId).getQuestions();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(questionlist, JsonNode.class);
+
+        return ok(node);
     }
 
-    public Result handleQuestionUpdate(Long id) {
+    public Result handleQuestionUpdate() {
         User user;
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
         return ok();
@@ -209,7 +256,7 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
         return ok();
@@ -219,11 +266,12 @@ public class AuthorConnect extends Controller {
         User user;
         try {
             user = isAuthorized();
-        } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            Question.find.byId(id).delete();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        return ok("Die Frage wurde gelöscht.");
     }
 
     /*
@@ -234,10 +282,15 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        Answer answerServed = Answer.find.byId(id);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(answerServed, JsonNode.class);
+
+        return ok(node);
     }
 
     public Result serveAnswerList(Long questionId) {
@@ -245,18 +298,23 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        List<Answer> answerlist = Question.find.byId(questionId).getAnswers();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(answerlist, JsonNode.class);
+
+        return ok(node);
     }
 
-    public Result handleAnswerUpdate(Long id) {
+    public Result handleAnswerUpdate() {
         User user;
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
         return ok();
@@ -267,7 +325,7 @@ public class AuthorConnect extends Controller {
         try {
             user = isAuthorized();
         } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            return badRequest(e.getMessage());
         }
 
         return ok();
@@ -277,11 +335,12 @@ public class AuthorConnect extends Controller {
         User user;
         try {
             user = isAuthorized();
-        } catch (AuthenticationException e) {
-            badRequest(e.getMessage());
+            Answer.find.byId(id).delete();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
         }
 
-        return ok();
+        return ok("Die Antwort wurde gelöscht.");
     }
 
     /**

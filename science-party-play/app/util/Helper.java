@@ -1,5 +1,7 @@
 package util;
 
+import exception.UserException;
+
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -25,5 +27,28 @@ public class Helper {
 
         LocalDateTime ldt = timestamp.toLocalDateTime();
         return ldt.toLocalDate().format(DateTimeFormatter.ofPattern(pattern));
+    }
+
+    /**
+     * Converts a dd.mm.yyyy String to a TimeStamp
+     *
+     * @param date
+     * @return
+     * @throws UserException
+     */
+    public static Timestamp getTimestampFromString(String date) {
+        int day;
+        int month;
+        int year;
+
+        if (!date.matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
+            return null;
+        }
+        String[] splitedBirth = date.split("\\.");
+        day = Integer.parseInt(splitedBirth[0]);
+        month = Integer.parseInt(splitedBirth[1]);
+        year = Integer.parseInt(splitedBirth[2]);
+        Timestamp ts =  Timestamp.valueOf(LocalDateTime.of(year,month,day,0,0));
+        return ts;
     }
 }
