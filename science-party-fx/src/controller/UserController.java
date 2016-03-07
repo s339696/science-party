@@ -8,8 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import model.Database;
 import model.User;
+import model.manager.UserManager;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -51,7 +54,11 @@ public class UserController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb){
         System.out.println("klappt");
-        showList();
+        try {
+            showList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -59,12 +66,16 @@ public class UserController implements Initializable{
     User user = new User(0, null, null, null,null, null, false, 0, false, null, null, null, null, null, null, null, null);
     ObservableList<User> users = FXCollections.observableArrayList();
     @FXML
-    private void showList(){
+    private void showList() throws IOException {
        ObservableList<String> data = FXCollections.observableArrayList("eins", "zwei", "drei");
 
         //Schleife die alle User einträgt
         //users.add(0,tim);
+        UserManager um = new UserManager();
+        users = (ObservableList<User>) um.getAllUsers();
 
+
+        Database.sendPost("user/list");
         for(User u: users){
             int i=0;
             data.add(i,u.getId() + ": " +u.getFirstname() + " " + u.getLastname());

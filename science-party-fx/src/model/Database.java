@@ -23,6 +23,19 @@ public class Database {
 
     }
 
+    public static boolean connectedToDatabase() throws IOException {
+        String urlPath = "http://localhost:9000/ac/user";
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        int respond = connection.getResponseCode();
+        boolean connected = false;
+        if(respond== HttpURLConnection.HTTP_OK){
+            connected=true;
+        }
+        return connected;
+    }
+
     public static String sendPost(String body) throws IOException {
 
         // user/list    ->  gibt Liste aller User aus
@@ -72,10 +85,55 @@ public class Database {
 
     }
 
+    public static String sendLoginRequest() throws IOException {
+        String urlPath = "http://localhost:9000/ac/login";
+
+        URL url = new URL(urlPath);
+
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+        connection.setDoInput(true);
+
+        connection.setRequestMethod("POST");
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
+
+        outWriter.write(recentUser.toString());
+        outWriter.flush();
+
+
+
+        //System.out.println(login.toString());
+
+        StringBuilder sb = new StringBuilder();
+        int HttpResult = connection.getResponseCode();
+        if(HttpResult == HttpURLConnection.HTTP_OK){
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(),"utf-8"));
+            String line = null;
+            while ((line = br.readLine()) != null) {
+                sb.append(line + "\n");
+            }
+
+            br.close();
+
+            System.out.println(""+sb.toString());
+
+
+        }else{
+            System.out.println(connection.getResponseMessage());
+        }
+
+        return sb.toString();
+    }
+
     public static void main(String[] args) throws IOException {
 
         Database.setRecentUser("bastian95@live.de","56CF1CCC7D53E570FE333734BE911548");
 
-        Database.sendPost("user/1");
+        //Database.sendPost("user/list");
+
+        Database.sendLoginRequest();
     }
  }
