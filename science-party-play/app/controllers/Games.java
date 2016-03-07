@@ -105,7 +105,7 @@ public class Games extends Controller {
             return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
         }
 
-        Player player = GameManager.getPlayerOfGameAndUser(game, user);
+        Player player = Player.getPlayerOfGameAndUser(game, user);
 
         // Check if the logged in player is the active player and render the required environment
         if (game.getActivePlayer().getId() == player.getId()) {
