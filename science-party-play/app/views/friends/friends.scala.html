@@ -15,6 +15,7 @@
             <!-- VORLÄUFIG PERSONEN SUCHEN VIA <Select> <Option> (Option -> Liste aller Personen) -->
         <form>
             <select class="search" onchange="userSelected(this.options[this.selectedIndex].value)">
+                <option value="">Wähle eine Person</option>
             @for( user <- users) {
                 <option value="@user.getId">@user.toString</option>
             }
@@ -47,8 +48,8 @@
             @for( friendRequest <- friendRequests) {
                 <li class="tabele">
                     <a class="tabele" href="/profile/@friendRequest.getId">@friendRequest.toString</a>
-                    <a class="squareButton" href="/friends/accept/@friendRequest.getId">Annehmen</a>
-                    <a class="squareButton" href="/friends/decline/@friendRequest.getId">Ignorieren</a>
+                    <a class="squareButton" onclick="acceptFriend(@friendRequest.getId)">Annehmen</a>
+                    <a class="squareButton" onclick="declineFriend(@friendRequest.getId)">Ignorieren</a>
                 </li>
             }
             </ul>
@@ -94,7 +95,7 @@
 
             function acceptFriend(id) {
                 $.ajax({
-                    url: "/friends/.../" + id,
+                    url: "/friends/accept/" + id,
                     method: "POST",
                     dataType: "text",
                     success: function(data,status,xhr) {
@@ -108,7 +109,7 @@
 
             function declineFriend(id) {
                 $.ajax({
-                    url: "/friends/.../" + id,
+                    url: "/friends/decline/" + id,
                     method: "POST",
                     dataType: "text",
                     success: function(data,status,xhr) {
