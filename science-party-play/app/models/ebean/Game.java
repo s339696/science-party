@@ -159,13 +159,9 @@ public class Game extends Model {
      * @return
      */
     public Player getPlayerForUser(User user) {
-        System.out.println("Spiel #" + this.getId());
         List<Player> players = this.getPlayers();
-        System.out.println("Amount of Player: " + players.size());
-
         for (Player player: players) {
             if (player.getUser().equals(user)) {
-                System.out.println("match!");
                 return player;
             }
         }
