@@ -174,15 +174,21 @@ public class GameManager {
 
             for (Player player : players) {
                 if (player.getPlayerStatus() == Player.PlayerStatus.PLAYING) {
+                    // Change player status for playing players
                     player.setPlayerStatus(Player.PlayerStatus.FINISHED);
                     player.update();
+                    // Update global ranking
+                    User userOfPlayer = player.getUser();
+                    userOfPlayer.setPoints(userOfPlayer.getPoints() + player.getFieldPosition());
+                    userOfPlayer.update();
                 }
+
+
             }
         } else {
             throw new GameException("Das Spiel kann nicht gestoppt werden.");
         }
 
-        //TODO: Maybe update ranking
         return true;
     }
 
@@ -217,6 +223,9 @@ public class GameManager {
 
         // Check if active player reached 40points
         if (activePlayer.getFieldPosition() >= 40) {
+            // Set points to 40 to avoid more then 40 points per game and a invalid map position
+            activePlayer.setFieldPosition(40);
+            activePlayer.update();
             if (stopGame(game)) {
                 throw new StopGameException("Du hast das Ziel erreicht und das Spiel gewonnen.");
             }
