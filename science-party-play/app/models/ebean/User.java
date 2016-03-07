@@ -3,7 +3,9 @@ package models.ebean;
 import com.avaje.ebean.*;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+import com.fasterxml.jackson.annotation.*;
 import controllers.Friends;
+import exception.UserException;
 import exception.friends.FriendRequestException;
 import javassist.expr.ExprEditor;
 import util.Helper;
@@ -11,6 +13,7 @@ import util.Helper;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,23 +62,103 @@ public class User extends Model {
     @Column(name = "last_online", columnDefinition = "datetime")
     private Timestamp lastOnline;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<PerkPerUserAndTopic> perksPerUserAndTopic;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Player> players;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "userSendReq", cascade = CascadeType.ALL)
     private List<Friend> friendsSendReq;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "userGetReq", cascade = CascadeType.ALL)
     private List<Friend> friendsGetReq;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Message> messages;
 
+    /**
+     * Creates a new User into the Database with given parameters.
+     * @param firstname
+     * @param lastname
+     * @param birthday
+     * @param email
+     * @param password
+     * @return
+     * @throws UserException
+     */
+    public static User createUser(String firstname, String lastname, String birthday, String email, String password) throws UserException {
+        User user = new User();
+
+        /* TODO: Check data for validity */
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setBirthday(checkAndConvertBirthday(birthday));
+        user.setEmail(checkEmail(email));
+        user.setPassword(Helper.getMD5fromString(password));
+        user.setLocked(false);
+        user.setPoints(0);
+
+        // Insert into Database
+        try {
+            user.insert();
+        }catch (Exception e) {
+            throw new UserException("Es konnte leider kein neuer User erstellt werden.");
+        }
+
+        return user;
+    }
+
+    /**
+     * Checks if a mail address already exists in the database.
+     *
+     * @param email
+     * @return
+     * @throws UserException
+     */
+    private static String checkEmail(String email) throws UserException {
+        //Check if email address already exist in DB.
+        if (User.find.where().like("email",email).findUnique() != null) {
+            throw new UserException("Es ist bereits ein User mit dieser Mailadresse vorhanden.");
+        }
+        //TODO: Check for format
+        return email;
+    }
+
+    /**
+     * Check format of a given birthday string and converts to Timestamp.
+     * @param birthday
+     * @return
+     * @throws UserException
+     */
+    private static Timestamp checkAndConvertBirthday(String birthday) throws UserException {
+        int day;
+        int month;
+        int year;
+
+        if (!birthday.matches("\\d{2}\\.\\d{2}\\.\\d{4}")) {
+            throw new UserException("Der angegebene Geburtstag hat nicht das richtige Format (dd.mm.yyyy).");
+        }
+        String[] splitedBirth = birthday.split("\\.");
+        day = Integer.parseInt(splitedBirth[0]);
+        month = Integer.parseInt(splitedBirth[1]);
+        year = Integer.parseInt(splitedBirth[2]);
+        Timestamp ts =  Timestamp.valueOf(LocalDateTime.of(year,month,day,0,0));
+        return ts;
+    }
+
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstname() {
@@ -118,16 +201,24 @@ public class User extends Model {
         this.email = email;
     }
 
+    @JsonIgnore
     public Timestamp getBirthday() {
         return birthday;
     }
 
+
+    @JsonProperty("birthday")
     public String getBirthdayAsString() {
         return Helper.getStringFromTimestamp(getBirthday(), "dd.MM.YYYY");
     }
 
     public void setBirthday(Timestamp birthday) {
         this.birthday = birthday;
+    }
+
+    @JsonProperty("birthday")
+    public void setBirthdayByString(String birthday) {
+        this.setBirthday(Helper.getTimestampFromString(birthday));
     }
 
     public String getLastname() {
@@ -138,6 +229,7 @@ public class User extends Model {
         this.lastname = lastname;
     }
 
+    @JsonIgnore
     public Timestamp getLastOnline() {
         return lastOnline;
     }
@@ -146,6 +238,7 @@ public class User extends Model {
         this.lastOnline = lastOnline;
     }
 
+    @JsonIgnore
     public List<Player> getPlayers() {
         return players;
     }
@@ -154,10 +247,12 @@ public class User extends Model {
         this.players = players;
     }
 
+    @JsonIgnore
     public Timestamp getWhenUpdated() {
         return whenUpdated;
     }
 
+    @JsonIgnore
     public Timestamp getWhenCreated() {
         return whenCreated;
     }
@@ -179,6 +274,7 @@ public class User extends Model {
      *
      * @return
      */
+    @JsonIgnore
     public List<Game> getPendingGames() {
         return Game.find
                 .where()
@@ -187,6 +283,24 @@ public class User extends Model {
                 .ne("player_status", "L")
                 .ne("player_status", "D")
                 .findList();
+    }
+
+    /**
+     * Returns a list with all running games for this user
+     *
+     * @return
+     */
+    @JsonIgnore
+    public List<Game> getRunningGames() {
+        List<Game> runningGames = Game.find
+                .fetch("players")
+                .where()
+                .ilike("game_status", "A")
+                .eq("user_id", this.getId())
+                .ne("player_status", "L")
+                .findList();
+
+        return runningGames;
     }
 
     /*
@@ -230,6 +344,7 @@ public class User extends Model {
         }
     }
 
+    @JsonIgnore
     public List<User> getFriendRequests() {
         List<Friend> requestFriends = Friend.find.where()
                 .ieq("request", "1")
@@ -249,6 +364,7 @@ public class User extends Model {
      *
      * @return
      */
+    @JsonIgnore
     public List<User> getFriends() {
 
         List<Friend> friends = Friend.find.where()
@@ -273,6 +389,7 @@ public class User extends Model {
         return friendUsers;
     }
 
+    @JsonIgnore
     public Friend getFriendshipWith(User user) {
         Friend friend = getFriendshipOrRequestWith(user);
         if (friend.isRequest() == true) {
@@ -282,6 +399,7 @@ public class User extends Model {
         }
     }
 
+    @JsonIgnore
     private Friend getFriendshipOrRequestWith(User user) {
         Expression friendship1 = Expr.and(Expr.ieq("user_get_req_id", this.getId().toString()),
                 Expr.ieq("user_send_req_id", user.getId().toString()));

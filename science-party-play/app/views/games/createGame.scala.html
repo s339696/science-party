@@ -13,20 +13,103 @@
             </h1>
         </div>
         <div class="formular">
-            <form>
-                <select name="Thema">
+            <form id="createGameForm">
+                <select id="topicId" name="Thema">
+                    <option value="">Wähle ein Thema</option>
                     @for(topic <- topics) {
                         <option value="@topic.getId">@topic.getName</option>
                     }
                 </select>
-                <input id="multiplayerCheckbox" type="checkbox" name="Multiplayer" value="mp">Multiplayer-Modus: Spiele zusammen mit einem Freund.
-                <select name="Mitspieler">
+                <br>
+                <select id="multiplayer" name="anzahlMitspieler">
+                    <option value="">Wähle Anzahl Mitspieler</option>
+                    <option value="">Keine</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                </select>
+                <br>
+                <select id="playerOne" name="Mitspieler" style="display:none">
+                    <option value="">Wähle einen Mitspieler</option>
                     @for(user <- users) {
                     <option value="@user.getId">@user.getFirstname @user.getLastname</option>
                     }
                 </select>
+                <br>
+                <select id="playerTwo" name="Mitspieler" style="display:none">
+                    <option value="">Wähle einen Mitspieler</option>
+                    @for(user <- users) {
+                    <option value="@user.getId">@user.getFirstname @user.getLastname</option>
+                    }
+                </select>
+                <br>
+                <select id="playerThree" name="Mitspieler" style="display:none">
+                    <option value="">Wähle einen Mitspieler</option>
+                    @for(user <- users) {
+                    <option value="@user.getId">@user.getFirstname @user.getLastname</option>
+                    }
+                </select>
+                <br>
                 <input name="Senden" type="submit">
             </form>
         </div>
     </div>
+
+    <script>
+
+
+        $('#multiplayer').change(function() {
+            var playerAnzahl = this.options[this.selectedIndex].value;
+            $("#playerOne, #playerTwo, #playerThree").hide();
+            if(playerAnzahl == 1){
+                $("#playerOne").show();
+            };
+            if(playerAnzahl == 2){
+                $("#playerOne").show();
+                $("#playerTwo").show();
+            };
+            if(playerAnzahl == 3){
+                $("#playerOne").show();
+                $("#playerTwo").show();
+                $("#playerThree").show();
+            };
+        });
+
+        $("#createGameForm").on('submit', function (e) {
+                e.preventDefault(); {
+                var getTopicId = document.getElementById("topicId");
+                var topicId = getTopicId.options[getTopicId.selectedIndex].value;
+
+                var getPlayerOne = document.getElementById("playerOne");
+                var playerOne = getPlayerOne.options[getPlayerOne.selectedIndex].value;
+
+                var getPlayerTwo = document.getElementById("playerTwo");
+                var playerTwo = getPlayerTwo.options[getPlayerTwo.selectedIndex].value;
+
+                var getPlayerThree = document.getElementById("playerThree");
+                var playerThree = getPlayerThree.options[getPlayerThree.selectedIndex].value;
+
+                var playerIds = [playerOne, playerTwo, playerThree];
+
+                $.ajax({
+                    url: "/games/create",
+                    method: "POST",
+                    contentType: "application/json",
+                    dataType: "text",
+                    data: JSON.stringify({
+                        topicId: topicId,
+                        playerIds: playerIds,
+                    }),
+                    success: function(data,status,xhr) {
+                        alert(xhr.responseText);
+                        window.open("/games/pending","_self")
+                    },
+                    error: function(xhr,status,error) {
+                        alert(xhr.responseText);
+                    }
+                });
+            }
+        });
+
+    </script>
 }

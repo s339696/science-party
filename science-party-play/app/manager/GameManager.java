@@ -29,7 +29,6 @@ public class GameManager {
         Game game = new Game();
         game.setGameStatus(Game.GameStatus.PENDING);
         game.setTopic(topic);
-        game.setActiveQuestion(Question.getRandomQuestion(topic));
 
         game.insert();
 
@@ -68,7 +67,7 @@ public class GameManager {
      * @throws Exception
      */
     public static void respondGameInvite(Game game, User user, boolean accept) throws Exception {
-        Player player = getPlayerOfGameAndUser(game, user);
+        Player player = Player.getPlayerOfGameAndUser(game, user);
 
         // Accept if player found
         if (player == null || player.getPlayerStatus() != Player.PlayerStatus.INVITED) {
@@ -94,7 +93,7 @@ public class GameManager {
      */
     public static void leaveGame(Game game, User user) throws GameException {
         // Leave game
-        Player player = getPlayerOfGameAndUser(game, user);
+        Player player = Player.getPlayerOfGameAndUser(game, user);
 
         if (player == null || player.getPlayerStatus() != Player.PlayerStatus.PLAYING) {
             throw new GameException("Der angegebene User ist kein aktives Mitglied dieses Spieles.");
@@ -152,6 +151,7 @@ public class GameManager {
 
         // Set starting player, starting question and start game
         game.setActivePlayer(players.get(startNumb));
+        game.setActiveQuestion(Question.getRandomQuestion(game.getTopic()));
         game.setGameStatus(Game.GameStatus.ACTIVE);
         game.update();
     }
@@ -174,15 +174,21 @@ public class GameManager {
 
             for (Player player : players) {
                 if (player.getPlayerStatus() == Player.PlayerStatus.PLAYING) {
+                    // Change player status for playing players
                     player.setPlayerStatus(Player.PlayerStatus.FINISHED);
                     player.update();
+                    // Update global ranking
+                    User userOfPlayer = player.getUser();
+                    userOfPlayer.setPoints(userOfPlayer.getPoints() + player.getFieldPosition());
+                    userOfPlayer.update();
                 }
+
+
             }
         } else {
             throw new GameException("Das Spiel kann nicht gestoppt werden.");
         }
 
-        //TODO: Maybe update ranking
         return true;
     }
 
@@ -217,6 +223,9 @@ public class GameManager {
 
         // Check if active player reached 40points
         if (activePlayer.getFieldPosition() >= 40) {
+            // Set points to 40 to avoid more then 40 points per game and a invalid map position
+            activePlayer.setFieldPosition(40);
+            activePlayer.update();
             if (stopGame(game)) {
                 throw new StopGameException("Du hast das Ziel erreicht und das Spiel gewonnen.");
             }
@@ -226,47 +235,5 @@ public class GameManager {
         game.nextTurn();
 
         return result;
-    }
-
-    /**
-     * Returns a list with all running games for a given user id.
-     *
-     * @param userId
-     * @return
-     */
-    public static List<Game> getRunningGames(Long userId) {
-        List<Game> runningGames = Game.find
-                .fetch("players")
-                .where()
-                .ilike("game_status", "A")
-                .eq("user_id", userId)
-                .ne("player_status", "L")
-                .findList();
-
-        return runningGames;
-    }
-
-    /**
-     * Return the player object that matches the given game and user.
-     *
-     * @param game
-     * @param user
-     * @return
-     */
-    public static Player getPlayerOfGameAndUser(Game game, User user) {
-        return Player.find.where()
-                .eq("user_id", user.getId())
-                .eq("game_id", game.getId())
-                .findUnique();
-    }
-
-    /**
-     * Returns the game with the given id.
-     *
-     * @param id
-     * @return
-     */
-    public static Game getGameById(Long id) {
-        return Game.find.byId(id);
     }
 }

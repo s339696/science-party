@@ -8,6 +8,7 @@
             </h1>
         </div>
         <div class="tabele">
+
             <ul class="tabele">
                 @for(game <- games) {
                     <li class="tabele">Spiel @game.getId() mit Thema: @game.getTopic.getName()
@@ -15,6 +16,7 @@
                     </li>
                 }
             </ul>
+
         </div>
     </div>
 }

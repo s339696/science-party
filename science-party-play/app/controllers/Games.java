@@ -1,7 +1,5 @@
 package controllers;
 
-import controllers.*;
-import controllers.routes;
 import exception.games.GameException;
 import exception.games.StartGameException;
 import exception.games.StopGameException;
@@ -14,7 +12,6 @@ import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.*;
-import views.html.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +78,7 @@ public class Games extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        List<Game> runningGames = GameManager.getRunningGames(user.getId());
+        List<Game> runningGames = user.getRunningGames();
 
         for (Game game : runningGames) {
             Logger.info(game.getId().toString());
@@ -97,7 +94,7 @@ public class Games extends Controller {
      * @return
      */
     public Result renderGame(Long id) {
-        Game game = GameManager.getGameById(id);
+        Game game = Game.getGameById(id);
         User user = LoginManager.getLoggedInUser();
 
         if (user == null) {
@@ -108,39 +105,9 @@ public class Games extends Controller {
             return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
         }
 
-        Player player = GameManager.getPlayerOfGameAndUser(game, user);
+        Player player = Player.getPlayerOfGameAndUser(game, user);
 
-        // Check if the logged in player is the active player and render the required environment
-        if (game.getActivePlayer().getId() == player.getId()) {
-            return renderGameActive(id);
-        } else {
-            return renderGameWaiting(id);
-        }
-    }
-
-    public Result renderGameActive(Long id) {
-        Game game = GameManager.getGameById(id);
-        User user = LoginManager.getLoggedInUser();
-
-        if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
-        }
-
-        if (game == null) {
-            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
-        }
-
-        //TODO: Spielfeld mit Fragen rendern
-
-
-        return ok(game.getActiveQuestion().getText());
-    }
-
-    public Result renderGameWaiting(Long id) {
-
-        //TODO: Spielfeld rendern
-
-        return ok("Du bist nicht an Reihe.");
+        return ok(views.html.games.playGame.render(player, game));
     }
 
     /**
@@ -194,7 +161,7 @@ public class Games extends Controller {
             return ok("Das Spiel mit der Id #" + e.getGame().getId() + " wurde erfolgreich erzeugt, " +
                     "konnte aber noch nicht gestartet werden.");
         } catch (Exception e) {
-            // TODO:
+            return badRequest(e.getMessage());
         }
         if (game == null) {
             return badRequest("Das Spiel konnte nicht erzeugt werden.");
@@ -216,7 +183,7 @@ public class Games extends Controller {
      * @return
      */
     public Result respondGameInv(Long id, Integer action) {
-        Game game = GameManager.getGameById(id);
+        Game game = Game.getGameById(id);
         User user = LoginManager.getLoggedInUser();
 
         Boolean accept = (action == 1) ? true : false;
@@ -247,7 +214,7 @@ public class Games extends Controller {
      * @return
      */
     public Result leaveGame(Long id) {
-        Game game = GameManager.getGameById(id);
+        Game game = Game.getGameById(id);
         User user = LoginManager.getLoggedInUser();
 
         if (user == null) {
@@ -278,7 +245,7 @@ public class Games extends Controller {
      */
     public Result handleAnswer(Long id) {
         // Check game and user
-        Game game = GameManager.getGameById(id);
+        Game game = Game.getGameById(id);
         //User user = LoginManager.getLoggedInUser();
 
 /*        if (user == null) {

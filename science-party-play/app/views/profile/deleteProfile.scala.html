@@ -1,0 +1,18 @@
+@(user: models.ebean.User)
+
+
+@mainIntern("Profil von " + user.getFirstname) {
+
+    <br>
+    <br>
+    <br>
+    <br>
+    <p>Bist du dir sicher, dass du deinen Account löschen willst?</p>
+    <div class="tabele">
+        <div class="formular">
+            <a class="delete" href="/profile/delete?confirmed=true">
+                Account löschen!
+            </a>
+        </div>
+    </div>
+}

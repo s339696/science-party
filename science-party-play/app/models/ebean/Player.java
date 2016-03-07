@@ -45,6 +45,20 @@ public class Player extends Model {
     @OneToMany(mappedBy="player", cascade= CascadeType.ALL)
     private List<PerkPerPlayer> perksPerPlayer;
 
+    /**
+     * Return the player object that matches the given game and user.
+     *
+     * @param game
+     * @param user
+     * @return
+     */
+    public static Player getPlayerOfGameAndUser(Game game, User user) {
+        return Player.find.where()
+                .eq("user_id", user.getId())
+                .eq("game_id", game.getId())
+                .findUnique();
+    }
+
     public Long getId() {
         return id;
     }

@@ -4,6 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import exception.ac.AuthenticationException;
+import manager.LoginManager;
+import models.ebean.Answer;
+import models.ebean.Question;
+import models.ebean.Topic;
 import models.ebean.User;
 
 import models.form.LoginForm;
@@ -14,35 +18,34 @@ import play.mvc.*;
 import java.util.List;
 
 /**
- * The AuthorConnect class is a interface to serve requested data via HTTP messages to the administration application.
- * To get data from this interface, the request has to include the username and password of a user which is marked as author.
- * Request data as JSON (the password has to be a MD5 Hash):
- * {
- * "email":"value",
- * "password":"81DC9BDB52D04DC20036DBD8313ED055"
- * }
- *
+ * The AuthorConnect class is a interface to serve requested data via HTTP messages to the author tool application.
+ * To get data from this interface, the request has to include the session which is provided by a /login request.
+ * The logged in user has to be marked in the database as author.
  */
 public class AuthorConnect extends Controller {
 
+    /*
+     * USER
+     */
+
     /**
-     * Returns the userdata for the user with the given ID as JSON.
+     * Returns the userdata for the user with the given Id as JSON.
      *
      * @param id
      * @return
      */
     public Result serveUser(Long id) {
+        User user;
         try {
-            requestIsAuthenticated();
+            user = isAuthorized();
         } catch (AuthenticationException e) {
             return badRequest(e.getMessage());
         }
 
-        User user = User.find.byId(id);
-
+        User userServed = User.find.byId(id);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = null;
-        node = mapper.convertValue(user, JsonNode.class);
+        node = mapper.convertValue(userServed, JsonNode.class);
 
         return ok(node);
     }
@@ -51,15 +54,15 @@ public class AuthorConnect extends Controller {
      * Returns all Users as JSON.
      * @return
      */
-    public Result serveUserlist() {
+    public Result serveUserList() {
+        User user;
         try {
-            requestIsAuthenticated();
+            user = isAuthorized();
         } catch (AuthenticationException e) {
             return badRequest(e.getMessage());
         }
 
         List<User> userlist = User.find.all();
-
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = null;
         node = mapper.convertValue(userlist, JsonNode.class);
@@ -68,30 +71,292 @@ public class AuthorConnect extends Controller {
     }
 
     /**
-     * Private helper method to check if the request contains valid userdata from a autor.
+     * Updates the data of a user in the database.
+     *
+     * @param
+     * @return
+     */
+    public Result handleUserUpdate() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            User updateUser = mapper.convertValue(json, User.class);
+            updateUser.update();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Der User wurde verändert.");
+    }
+
+    /**
+     * Inserts a new user into the database.
      *
      * @return
-     * @throws AuthenticationException
      */
-    private boolean requestIsAuthenticated() throws AuthenticationException {
-        Form<LoginForm> requestData = Form.form(LoginForm.class).bindFromRequest();
-        if (requestData.hasErrors()) {
-           throw new AuthenticationException("Die Anfrage erfordert E-Mail und Passwort.");
+    public Result handleUserInsert() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            User insertUser = mapper.convertValue(json, User.class);
+            insertUser.setId(null);
+            insertUser.insert();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Der User wurde hinzugefügt.");
+    }
+
+    public Result handleUserDelete(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+            User.find.byId(id).delete();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Der User wurde gelöscht.");
+    }
+
+    /*
+     * TOPIC
+     */
+    public Result serveTopic(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        Topic topicServed = Topic.find.byId(id);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(topicServed, JsonNode.class);
+
+        return ok(node);
+    }
+
+    public Result serveTopicList() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        List<Topic> topiclist = Topic.find.all();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(topiclist, JsonNode.class);
+
+        return ok(node);
+    }
+
+    public Result handleTopicUpdate() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleTopicInsert() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleTopicDelete(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+            Topic.find.byId(id).delete();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Der Topic wurde gelöscht.");
+    }
+
+    /*
+     * QUESTION
+     */
+    public Result serveQuestion(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        Question questionServed = Question.find.byId(id);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(questionServed, JsonNode.class);
+
+        return ok(node);
+    }
+
+    public Result serveQuestionList(Long topicId) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        List<Question> questionlist = Topic.find.byId(topicId).getQuestions();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(questionlist, JsonNode.class);
+
+        return ok(node);
+    }
+
+    public Result handleQuestionUpdate() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleQuestionInsert() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleQuestionDelete(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+            Question.find.byId(id).delete();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Die Frage wurde gelöscht.");
+    }
+
+    /*
+     * ANSWER
+     */
+    public Result serveAnswer(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        Answer answerServed = Answer.find.byId(id);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(answerServed, JsonNode.class);
+
+        return ok(node);
+    }
+
+    public Result serveAnswerList(Long questionId) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        List<Answer> answerlist = Question.find.byId(questionId).getAnswers();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(answerlist, JsonNode.class);
+
+        return ok(node);
+    }
+
+    public Result handleAnswerUpdate() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleAnswerInsert() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok();
+    }
+
+    public Result handleAnswerDelete(Long id) {
+        User user;
+        try {
+            user = isAuthorized();
+            Answer.find.byId(id).delete();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Die Antwort wurde gelöscht.");
+    }
+
+    /**
+     * Checks if a user is logged in and authorized to change data.
+     *
+     * @return
+     */
+    private User isAuthorized() throws AuthenticationException {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            throw new AuthenticationException("Es ist kein User eingeloggt.");
         } else {
-            LoginForm loginForm = requestData.get();
-            String email = loginForm.getEmail();
-            String password = loginForm.getPassword();
-            User user = User.find.where().like("email", email).findUnique();
-            if (user == null) {
-                throw new AuthenticationException("Der angegebene User ist nicht vorhanden.");
-            }
-            if (!user.getPassword().equals(password)) {
-                throw new AuthenticationException("Das Passwort für den angegeben User ist falsch.");
-            }
             if (!user.isAuthor()) {
-                throw new AuthenticationException("Der angegebene User ist kein Autor.");
+                throw new AuthenticationException("Der eingeloggte User ist kein Autor.");
             }
         }
-        return true;
+        return user;
     }
 }

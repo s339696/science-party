@@ -2,8 +2,12 @@ package controllers;
 
 import controllers.*;
 import manager.LoginManager;
+import models.ebean.Game;
+import models.ebean.Player;
 import models.ebean.User;
 import play.mvc.*;
+
+import java.util.List;
 
 import static play.mvc.Results.redirect;
 
@@ -12,16 +16,16 @@ import static play.mvc.Results.redirect;
  */
 public class Profil extends Controller {
 
-    public Result renderOwnProfil() {
+    public Result renderOwnProfile() {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
             return redirect(controllers.routes.Application.renderHome());
         } else {
-            return redirect(controllers.routes.Profil.renderProfil(user.getId()));
+            return redirect(controllers.routes.Profil.renderProfile(user.getId()));
         }
     }
 
-    public Result renderProfil(long id) {
+    public Result renderProfile(long id) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
@@ -34,8 +38,29 @@ public class Profil extends Controller {
         return ok();
     }
 
-    public Result handleProfileDelete() {
-        return ok();
+    public Result handleProfileDelete(Boolean confirmed) {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
+
+        if (confirmed) {
+            // Check games if user is active player and set it to the next one
+            List<Game> runningGames = user.getRunningGames();
+            for (Game game : runningGames) {
+                Player player = game.getPlayerForUser(user);
+                if (game.getActivePlayer().equals(player)) {
+                    game.nextTurn();
+                }
+            }
+
+            // Logout and delete Account
+            LoginManager.logout();
+            user.delete();
+            return redirect(controllers.routes.Application.renderHome());
+        } else {
+            return ok(views.html.profile.deleteProfile.render(user));
+        }
     }
 
     public Result handleLogout() {
