@@ -57,7 +57,6 @@
 
     <script>
 
-
         $('#multiplayer').change(function() {
             var playerAnzahl = this.options[this.selectedIndex].value;
             $("#playerOne, #playerTwo, #playerThree").hide();
@@ -73,10 +72,15 @@
                 $("#playerTwo").show();
                 $("#playerThree").show();
             };
+            return playerAnzahl;
         });
 
         $("#createGameForm").on('submit', function (e) {
                 e.preventDefault(); {
+
+                var getPlayerAnzahl = document.getElementById("multiplayer");
+                var playerAnzahl = getPlayerAnzahl.options[getPlayerAnzahl.selectedIndex].value;
+
                 var getTopicId = document.getElementById("topicId");
                 var topicId = getTopicId.options[getTopicId.selectedIndex].value;
 
@@ -89,13 +93,24 @@
                 var getPlayerThree = document.getElementById("playerThree");
                 var playerThree = getPlayerThree.options[getPlayerThree.selectedIndex].value;
 
-                var playerIds = [playerOne, playerTwo, playerThree];
+                if(playerAnzahl == 1){
+                    var playerIds = [playerOne];
+                };
+
+                if(playerAnzahl == 2){
+                    var playerIds = [playerOne, playerTwo];
+                };
+
+                if(playerAnzahl == 2){
+                    var playerIds = [playerOne, playerTwo, playerThree];
+                };
 
                 $.ajax({
                     url: "/games/create",
                     method: "POST",
                     contentType: "application/json",
                     dataType: "text",
+                    contentType:"application/json",
                     data: JSON.stringify({
                         topicId: topicId,
                         playerIds: playerIds,
