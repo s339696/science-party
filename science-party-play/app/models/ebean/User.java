@@ -430,6 +430,20 @@ public class User extends Model {
         return perks;
     }
 
+    @JsonIgnore
+    public List<PerkPerUser>  getPerksPerUserAndTopic(Topic topic) {
+        List<PerkPerUser> perks = PerkPerUser.find
+                .fetch("perkPerTopic")
+                .fetch("perkPerTopic.perk")
+                .fetch("perkPerTopic.topic")
+                .where()
+                .ieq("user_id", this.getId().toString())
+                .ieq("perkPerTopic.topic", topic.getId().toString())
+                .orderBy().asc("perkPerTopic.perk.id")
+                .findList();
+        return perks;
+    }
+
     /**
      * Adds a perk represented by a qr code to the perk inventory of a user.
      *
@@ -449,6 +463,9 @@ public class User extends Model {
         }
     }
 
+    /*
+     * OVERRITTEN METHODS
+     */
     @Override
     public String toString() {
         return getFirstname() + " " + getLastname();

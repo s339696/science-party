@@ -60,6 +60,7 @@ create table perks_per_player (
   id                        bigint auto_increment not null,
   player_id                 bigint,
   perk_per_user_id          bigint,
+  used                      tinyint(1) default 0,
   constraint pk_perks_per_player primary key (id))
 ;
 
