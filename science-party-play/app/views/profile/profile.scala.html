@@ -25,6 +25,9 @@
         </div>
         <div class="userPerks">
             <h3>Fähigkeiten</h3>
+            @for(perk <- user.getPerks) {
+                <p>Fähigkeit "@perk.getPerkPerTopic.getPerk.getName" für @perk.getPerkPerTopic.getTopic.getName</p>
+            }
             <a class="addPerkButton">+Fähigkeit</a>
         </div>
         <div class="formular">

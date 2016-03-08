@@ -99,6 +99,7 @@ create table questions (
 create table topics (
   id                        bigint auto_increment not null,
   name                      varchar(255),
+  constraint uq_topics_name unique (name),
   constraint pk_topics primary key (id))
 ;
 

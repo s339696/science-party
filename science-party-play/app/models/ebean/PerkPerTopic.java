@@ -31,6 +31,11 @@ public class PerkPerTopic extends Model {
     @OneToMany(mappedBy="perkPerTopic", cascade= CascadeType.ALL)
     private List<PerkPerUser> usersPerPerk;
 
+    static public PerkPerTopic getPerkPerTopicByQrCode(String qrCode) {
+        return PerkPerTopic.find.where()
+                .ieq("qrCode", qrCode).findUnique();
+    }
+
     public Long getId() {
         return id;
     }
@@ -69,4 +74,5 @@ public class PerkPerTopic extends Model {
     public void setTopic(Topic topic) {
         this.topic = topic;
     }
+
 }

@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.*;
+import exception.perks.GetPerkException;
 import manager.LoginManager;
 import models.ebean.Game;
 import models.ebean.Player;
@@ -16,6 +17,11 @@ import static play.mvc.Results.redirect;
  */
 public class Profil extends Controller {
 
+    /**
+     * Renders the own profile
+     *
+     * @return
+     */
     public Result renderOwnProfile() {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
@@ -25,6 +31,12 @@ public class Profil extends Controller {
         }
     }
 
+    /**
+     * Renders the profile with the given id
+     *
+     * @param id
+     * @return
+     */
     public Result renderProfile(long id) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
@@ -34,10 +46,21 @@ public class Profil extends Controller {
         return ok(views.html.profile.profile.render(User.find.byId(id)));
     }
 
+    /**
+     * TODO: Implementation und documentation
+     *
+     * @return
+     */
     public Result handleProfileUpdate() {
         return ok();
     }
 
+    /**
+     * Handle the request to delete a profile
+     *
+     * @param confirmed
+     * @return
+     */
     public Result handleProfileDelete(Boolean confirmed) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
@@ -69,6 +92,15 @@ public class Profil extends Controller {
     }
 
     /**
+     * Renders the page to scan a QR code
+     *
+     * @return
+     */
+    public Result renderScanQr() {
+        return ok();
+    }
+
+    /**
      * Handle the scan of a qr code
      *
      * @param code
@@ -80,8 +112,11 @@ public class Profil extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-
-
-        return ok();
+        try {
+            user.addPerkFromQr(code);
+        } catch (GetPerkException e) {
+            badRequest(e.getMessage());
+        }
+        return ok("Die Fähigkeit wurde erfolgreich hinzugefügt und kann jetzt verwendet werden.");
     }
 }

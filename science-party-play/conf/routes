@@ -19,6 +19,8 @@ GET     /kontakt                        controllers.Public.renderKontakt()
 GET     /profile                        controllers.Profil.renderOwnProfile()
 GET     /profile/delete                 controllers.Profil.handleProfileDelete(confirmed: Boolean ?= false)
 POST    /profile/update                 controllers.Profil.handleProfileUpdate()
+GET     /profile/scan                   controllers.Profil.renderScanQr()
+GET     /profile/scan/:qr               controllers.Profil.handleScanQr(qr: String)
 GET     /profile/:id                    controllers.Profil.renderProfile(id: Long)
 GET     /logout                         controllers.Profil.handleLogout()
 

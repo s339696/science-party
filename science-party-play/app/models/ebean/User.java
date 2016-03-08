@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.*;
 import controllers.Friends;
 import exception.UserException;
 import exception.friends.FriendRequestException;
+import exception.perks.GetPerkException;
 import javassist.expr.ExprEditor;
 import util.Helper;
 
@@ -410,6 +411,42 @@ public class User extends Model {
                 .findUnique();
 
         return friend;
+    }
+
+    /*
+     * METHODS TO MANAGE PERKS OF A USER
+     */
+    @JsonIgnore
+    public List<PerkPerUser>  getPerks() {
+        List<PerkPerUser> perks = PerkPerUser.find
+                .fetch("perkPerTopic")
+                .fetch("perkPerTopic.perk")
+                .fetch("perkPerTopic.topic")
+                .where()
+                .ieq("user_id", this.getId().toString())
+                .orderBy().asc("perkPerTopic.topic.name")
+                .orderBy().asc("perkPerTopic.perk.id")
+                .findList();
+        return perks;
+    }
+
+    /**
+     * Adds a perk represented by a qr code to the perk inventory of a user.
+     *
+     * @param qrCode
+     * @throws GetPerkException
+     */
+    @JsonIgnore
+    public void addPerkFromQr(String qrCode) throws GetPerkException {
+        PerkPerTopic perk = PerkPerTopic.getPerkPerTopicByQrCode(qrCode);
+        if (perk == null) {
+            throw new GetPerkException("Es wurde keine gültige Fähigkeit übergeben.");
+        } else {
+            PerkPerUser perkPerUser = new PerkPerUser();
+            perkPerUser.setPerkPerTopic(perk);
+            perkPerUser.setUser(this);
+            perkPerUser.insert();
+        }
     }
 
     @Override

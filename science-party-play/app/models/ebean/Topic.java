@@ -18,6 +18,7 @@ public class Topic extends Model {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     String name;
 
     @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
