@@ -2,17 +2,14 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import exception.ac.AuthenticationException;
 import manager.LoginManager;
+import manager.PerkManager;
 import models.ebean.Answer;
 import models.ebean.Question;
 import models.ebean.Topic;
 import models.ebean.User;
 
-import models.form.LoginForm;
-import play.data.Form;
-import play.libs.Json;
 import play.mvc.*;
 
 import java.util.List;
@@ -179,6 +176,8 @@ public class AuthorConnect extends Controller {
             return badRequest(e.getMessage());
         }
 
+        PerkManager.updatePerksPerTopic();
+
         return ok();
     }
 
@@ -189,6 +188,8 @@ public class AuthorConnect extends Controller {
         } catch (AuthenticationException e) {
             return badRequest(e.getMessage());
         }
+
+        PerkManager.updatePerksPerTopic();
 
         return ok();
     }
@@ -201,6 +202,8 @@ public class AuthorConnect extends Controller {
         } catch (Exception e) {
             return badRequest(e.getMessage());
         }
+
+        PerkManager.updatePerksPerTopic();
 
         return ok("Der Topic wurde gelöscht.");
     }

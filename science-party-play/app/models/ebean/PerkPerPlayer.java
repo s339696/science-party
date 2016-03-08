@@ -24,6 +24,5 @@ public class PerkPerPlayer {
     private Player player;
 
     @ManyToOne
-    private PerkPerUserAndTopic perk;
-
+    private PerkPerUser perkPerUser;
 }

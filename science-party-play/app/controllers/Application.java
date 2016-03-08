@@ -4,6 +4,7 @@ package controllers;
 import exception.games.StartGameException;
 import manager.GameManager;
 import manager.LoginManager;
+import manager.PerkManager;
 import models.ebean.Game;
 import models.ebean.Question;
 import models.ebean.Topic;
@@ -40,9 +41,8 @@ public class Application extends Controller {
      */
     public Result playground() {
 
-        Game game = User.find.byId(1L).getPendingGames().get(0);
-        game.getPlayerForUser(User.find.byId(2L));
-
+        //Topic.find.byId(5L).delete();
+        PerkManager.updatePerksPerTopic();
 
         return ok("Play!");
     }

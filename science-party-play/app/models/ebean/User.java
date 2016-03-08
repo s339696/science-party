@@ -64,7 +64,7 @@ public class User extends Model {
 
     @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<PerkPerUserAndTopic> perksPerUserAndTopic;
+    private List<PerkPerUser> perksPerUser;
 
     @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

@@ -67,4 +67,21 @@ public class Profil extends Controller {
         LoginManager.logout();
         return redirect(controllers.routes.Application.renderHome());
     }
+
+    /**
+     * Handle the scan of a qr code
+     *
+     * @param code
+     * @return
+     */
+    public Result handleScanQr(String code) {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
+
+
+
+        return ok();
+    }
 }
