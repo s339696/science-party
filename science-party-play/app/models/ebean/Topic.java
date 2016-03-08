@@ -34,6 +34,10 @@ public class Topic extends Model {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getName() {
         return name;
     }
@@ -60,6 +64,16 @@ public class Topic extends Model {
     @JsonIgnore
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    @JsonIgnore
+    public List<PerkPerTopic> getPerksPerTopic() {
+        return perksPerTopic;
+    }
+
+    @JsonIgnore
+    public void setPerksPerTopic(List<PerkPerTopic> perksPerTopic) {
+        this.perksPerTopic = perksPerTopic;
     }
 
     @Override
