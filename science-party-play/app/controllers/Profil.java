@@ -43,7 +43,12 @@ public class Profil extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        return ok(views.html.profile.profile.render(User.find.byId(id)));
+        boolean ownProfile = false;
+        if (user.getId() == id) {
+            ownProfile = true;
+        }
+
+        return ok(views.html.profile.profile.render(User.find.byId(id), ownProfile));
     }
 
     /**
@@ -52,6 +57,11 @@ public class Profil extends Controller {
      * @return
      */
     public Result handleProfileUpdate() {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
+
         return ok();
     }
 
