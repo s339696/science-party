@@ -27,11 +27,13 @@
         </div>
         <div class="userPerks">
             <h3>Fähigkeiten</h3>
-            <p>some perks...</p>
+            @for(perk <- user.getPerks) {
+                <p>Fähigkeit "@perk.getPerkPerTopic.getPerk.getName" für @perk.getPerkPerTopic.getTopic.getName</p>
+            }
             <a class="addPerkButton">+Fähigkeit</a>
         </div>
         <div class="formular">
-            <a class="delete" href="delete">
+            <a class="delete" href="/profile/delete">
                 Account löschen!
             </a>
         </div>

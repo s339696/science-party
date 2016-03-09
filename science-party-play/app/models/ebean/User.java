@@ -3,9 +3,11 @@ package models.ebean;
 import com.avaje.ebean.*;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+import com.fasterxml.jackson.annotation.*;
 import controllers.Friends;
 import exception.UserException;
 import exception.friends.FriendRequestException;
+import exception.perks.GetPerkException;
 import javassist.expr.ExprEditor;
 import util.Helper;
 
@@ -61,18 +63,23 @@ public class User extends Model {
     @Column(name = "last_online", columnDefinition = "datetime")
     private Timestamp lastOnline;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<PerkPerUserAndTopic> perksPerUserAndTopic;
+    private List<PerkPerUser> perksPerUser;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Player> players;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "userSendReq", cascade = CascadeType.ALL)
     private List<Friend> friendsSendReq;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "userGetReq", cascade = CascadeType.ALL)
     private List<Friend> friendsGetReq;
 
+    @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Message> messages;
 
@@ -151,6 +158,10 @@ public class User extends Model {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getFirstname() {
         return firstname;
     }
@@ -191,16 +202,24 @@ public class User extends Model {
         this.email = email;
     }
 
+    @JsonIgnore
     public Timestamp getBirthday() {
         return birthday;
     }
 
+
+    @JsonProperty("birthday")
     public String getBirthdayAsString() {
         return Helper.getStringFromTimestamp(getBirthday(), "dd.MM.YYYY");
     }
 
     public void setBirthday(Timestamp birthday) {
         this.birthday = birthday;
+    }
+
+    @JsonProperty("birthday")
+    public void setBirthdayByString(String birthday) {
+        this.setBirthday(Helper.getTimestampFromString(birthday));
     }
 
     public String getLastname() {
@@ -211,6 +230,7 @@ public class User extends Model {
         this.lastname = lastname;
     }
 
+    @JsonIgnore
     public Timestamp getLastOnline() {
         return lastOnline;
     }
@@ -219,6 +239,7 @@ public class User extends Model {
         this.lastOnline = lastOnline;
     }
 
+    @JsonIgnore
     public List<Player> getPlayers() {
         return players;
     }
@@ -227,10 +248,12 @@ public class User extends Model {
         this.players = players;
     }
 
+    @JsonIgnore
     public Timestamp getWhenUpdated() {
         return whenUpdated;
     }
 
+    @JsonIgnore
     public Timestamp getWhenCreated() {
         return whenCreated;
     }
@@ -252,6 +275,7 @@ public class User extends Model {
      *
      * @return
      */
+    @JsonIgnore
     public List<Game> getPendingGames() {
         return Game.find
                 .where()
@@ -267,6 +291,7 @@ public class User extends Model {
      *
      * @return
      */
+    @JsonIgnore
     public List<Game> getRunningGames() {
         List<Game> runningGames = Game.find
                 .fetch("players")
@@ -320,6 +345,7 @@ public class User extends Model {
         }
     }
 
+    @JsonIgnore
     public List<User> getFriendRequests() {
         List<Friend> requestFriends = Friend.find.where()
                 .ieq("request", "1")
@@ -339,6 +365,7 @@ public class User extends Model {
      *
      * @return
      */
+    @JsonIgnore
     public List<User> getFriends() {
 
         List<Friend> friends = Friend.find.where()
@@ -363,6 +390,7 @@ public class User extends Model {
         return friendUsers;
     }
 
+    @JsonIgnore
     public Friend getFriendshipWith(User user) {
         Friend friend = getFriendshipOrRequestWith(user);
         if (friend.isRequest() == true) {
@@ -372,6 +400,7 @@ public class User extends Model {
         }
     }
 
+    @JsonIgnore
     private Friend getFriendshipOrRequestWith(User user) {
         Expression friendship1 = Expr.and(Expr.ieq("user_get_req_id", this.getId().toString()),
                 Expr.ieq("user_send_req_id", user.getId().toString()));
@@ -384,6 +413,59 @@ public class User extends Model {
         return friend;
     }
 
+    /*
+     * METHODS TO MANAGE PERKS OF A USER
+     */
+    @JsonIgnore
+    public List<PerkPerUser>  getPerks() {
+        List<PerkPerUser> perks = PerkPerUser.find
+                .fetch("perkPerTopic")
+                .fetch("perkPerTopic.perk")
+                .fetch("perkPerTopic.topic")
+                .where()
+                .ieq("user_id", this.getId().toString())
+                .orderBy().asc("perkPerTopic.topic.name")
+                .orderBy().asc("perkPerTopic.perk.id")
+                .findList();
+        return perks;
+    }
+
+    @JsonIgnore
+    public List<PerkPerUser>  getPerksPerUserAndTopic(Topic topic) {
+        List<PerkPerUser> perks = PerkPerUser.find
+                .fetch("perkPerTopic")
+                .fetch("perkPerTopic.perk")
+                .fetch("perkPerTopic.topic")
+                .where()
+                .ieq("user_id", this.getId().toString())
+                .ieq("perkPerTopic.topic", topic.getId().toString())
+                .orderBy().asc("perkPerTopic.perk.id")
+                .findList();
+        return perks;
+    }
+
+    /**
+     * Adds a perk represented by a qr code to the perk inventory of a user.
+     *
+     * @param qrCode
+     * @throws GetPerkException
+     */
+    @JsonIgnore
+    public void addPerkFromQr(String qrCode) throws GetPerkException {
+        PerkPerTopic perk = PerkPerTopic.getPerkPerTopicByQrCode(qrCode);
+        if (perk == null) {
+            throw new GetPerkException("Es wurde keine gültige Fähigkeit übergeben.");
+        } else {
+            PerkPerUser perkPerUser = new PerkPerUser();
+            perkPerUser.setPerkPerTopic(perk);
+            perkPerUser.setUser(this);
+            perkPerUser.insert();
+        }
+    }
+
+    /*
+     * OVERRITTEN METHODS
+     */
     @Override
     public String toString() {
         return getFirstname() + " " + getLastname();

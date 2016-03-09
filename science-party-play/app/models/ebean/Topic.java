@@ -1,6 +1,7 @@
 package models.ebean;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,6 +18,7 @@ public class Topic extends Model {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     String name;
 
     @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
@@ -26,7 +28,7 @@ public class Topic extends Model {
     private List<Question> questions;
 
     @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
-    private List<PerkPerUserAndTopic> perksPerUserAndTopic;
+    private List<PerkPerTopic> perksPerTopic;
 
     public Long getId() {
         return id;
@@ -40,18 +42,22 @@ public class Topic extends Model {
         this.name = name;
     }
 
+    @JsonIgnore
     public List<Game> getGames() {
         return games;
     }
 
+    @JsonIgnore
     public void setGames(List<Game> games) {
         this.games = games;
     }
 
+    @JsonIgnore
     public List<Question> getQuestions() {
         return questions;
     }
 
+    @JsonIgnore
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
     }

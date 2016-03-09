@@ -1,6 +1,7 @@
 package models.ebean;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -48,22 +49,35 @@ public class Question extends Model {
         this.difficulty = difficulty;
     }
 
+    @JsonIgnore
     public Topic getTopic() {
         return topic;
     }
 
+    @JsonIgnore
     public void setTopic(Topic topic) {
         this.topic = topic;
     }
 
+    public Long getTopicId() {
+        return topic.getId();
+    }
+
+    public void setTopicId(Long id) {
+        this.topic = topic.find.byId(id);
+    }
+
+    @JsonIgnore
     public List<Answer> getAnswers() {
         return answers;
     }
 
+    @JsonIgnore
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
     }
 
+    @JsonIgnore
     public static Question getRandomQuestion(Topic topic) {
         return Question.find.where()
                 .ieq("topic_id", topic.getId().toString())
@@ -75,6 +89,7 @@ public class Question extends Model {
      *
      * @return
      */
+    @JsonIgnore
     public Answer getCorrectAnswer() {
         return Answer.find.where()
                 .ieq("question_id", this.getId().toString())

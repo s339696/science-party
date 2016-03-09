@@ -52,24 +52,31 @@ create table messages (
 
 create table perks (
   id                        bigint auto_increment not null,
-  perk_name                 varchar(255),
-  qr_code                   varchar(32),
+  name                      varchar(255),
   constraint pk_perks primary key (id))
 ;
 
 create table perks_per_player (
   id                        bigint auto_increment not null,
   player_id                 bigint,
-  perk_id                   bigint,
+  perk_per_user_id          bigint,
+  used                      tinyint(1) default 0,
   constraint pk_perks_per_player primary key (id))
 ;
 
-create table perks_per_user_and_topic (
+create table perks_per_topic (
   id                        bigint auto_increment not null,
-  user_id                   bigint,
+  qr_code                   varchar(32),
   perk_id                   bigint,
   topic_id                  bigint,
-  constraint pk_perks_per_user_and_topic primary key (id))
+  constraint pk_perks_per_topic primary key (id))
+;
+
+create table perks_per_user (
+  id                        bigint auto_increment not null,
+  user_id                   bigint,
+  perk_per_topic_id         bigint,
+  constraint pk_perks_per_user primary key (id))
 ;
 
 create table players (
@@ -93,6 +100,7 @@ create table questions (
 create table topics (
   id                        bigint auto_increment not null,
   name                      varchar(255),
+  constraint uq_topics_name unique (name),
   constraint pk_topics primary key (id))
 ;
 
@@ -137,20 +145,22 @@ alter table messages add constraint fk_messages_chat_8 foreign key (chat_id) ref
 create index ix_messages_chat_8 on messages (chat_id);
 alter table perks_per_player add constraint fk_perks_per_player_player_9 foreign key (player_id) references players (id) on delete restrict on update restrict;
 create index ix_perks_per_player_player_9 on perks_per_player (player_id);
-alter table perks_per_player add constraint fk_perks_per_player_perk_10 foreign key (perk_id) references perks_per_user_and_topic (id) on delete restrict on update restrict;
-create index ix_perks_per_player_perk_10 on perks_per_player (perk_id);
-alter table perks_per_user_and_topic add constraint fk_perks_per_user_and_topic_user_11 foreign key (user_id) references users (id) on delete restrict on update restrict;
-create index ix_perks_per_user_and_topic_user_11 on perks_per_user_and_topic (user_id);
-alter table perks_per_user_and_topic add constraint fk_perks_per_user_and_topic_perk_12 foreign key (perk_id) references perks (id) on delete restrict on update restrict;
-create index ix_perks_per_user_and_topic_perk_12 on perks_per_user_and_topic (perk_id);
-alter table perks_per_user_and_topic add constraint fk_perks_per_user_and_topic_topic_13 foreign key (topic_id) references topics (id) on delete restrict on update restrict;
-create index ix_perks_per_user_and_topic_topic_13 on perks_per_user_and_topic (topic_id);
-alter table players add constraint fk_players_user_14 foreign key (user_id) references users (id) on delete restrict on update restrict;
-create index ix_players_user_14 on players (user_id);
-alter table players add constraint fk_players_game_15 foreign key (game_id) references games (id) on delete restrict on update restrict;
-create index ix_players_game_15 on players (game_id);
-alter table questions add constraint fk_questions_topic_16 foreign key (topic_id) references topics (id) on delete restrict on update restrict;
-create index ix_questions_topic_16 on questions (topic_id);
+alter table perks_per_player add constraint fk_perks_per_player_perkPerUser_10 foreign key (perk_per_user_id) references perks_per_user (id) on delete restrict on update restrict;
+create index ix_perks_per_player_perkPerUser_10 on perks_per_player (perk_per_user_id);
+alter table perks_per_topic add constraint fk_perks_per_topic_perk_11 foreign key (perk_id) references perks (id) on delete restrict on update restrict;
+create index ix_perks_per_topic_perk_11 on perks_per_topic (perk_id);
+alter table perks_per_topic add constraint fk_perks_per_topic_topic_12 foreign key (topic_id) references topics (id) on delete restrict on update restrict;
+create index ix_perks_per_topic_topic_12 on perks_per_topic (topic_id);
+alter table perks_per_user add constraint fk_perks_per_user_user_13 foreign key (user_id) references users (id) on delete restrict on update restrict;
+create index ix_perks_per_user_user_13 on perks_per_user (user_id);
+alter table perks_per_user add constraint fk_perks_per_user_perkPerTopic_14 foreign key (perk_per_topic_id) references perks_per_topic (id) on delete restrict on update restrict;
+create index ix_perks_per_user_perkPerTopic_14 on perks_per_user (perk_per_topic_id);
+alter table players add constraint fk_players_user_15 foreign key (user_id) references users (id) on delete restrict on update restrict;
+create index ix_players_user_15 on players (user_id);
+alter table players add constraint fk_players_game_16 foreign key (game_id) references games (id) on delete restrict on update restrict;
+create index ix_players_game_16 on players (game_id);
+alter table questions add constraint fk_questions_topic_17 foreign key (topic_id) references topics (id) on delete restrict on update restrict;
+create index ix_questions_topic_17 on questions (topic_id);
 
 
 
@@ -178,7 +188,9 @@ drop table perks;
 
 drop table perks_per_player;
 
-drop table perks_per_user_and_topic;
+drop table perks_per_topic;
+
+drop table perks_per_user;
 
 drop table players;
 

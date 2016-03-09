@@ -16,8 +16,12 @@ GET     /events                         controllers.Public.renderEvents()
 GET     /kontakt                        controllers.Public.renderKontakt()
 
 #Profil
-GET     /profile                        controllers.Profil.renderOwnProfil()
-GET     /profile/:id                    controllers.Profil.renderProfil(id: Long)
+GET     /profile                        controllers.Profil.renderOwnProfile()
+GET     /profile/delete                 controllers.Profil.handleProfileDelete(confirmed: Boolean ?= false)
+POST    /profile/update                 controllers.Profil.handleProfileUpdate()
+GET     /profile/scan                   controllers.Profil.renderScanQr()
+GET     /profile/scan/:qr               controllers.Profil.handleScanQr(qr: String)
+GET     /profile/:id                    controllers.Profil.renderProfile(id: Long)
 GET     /logout                         controllers.Profil.handleLogout()
 
 #Gameplay
@@ -33,7 +37,7 @@ POST    /games/decline/:id              controllers.Games.respondGameInv(id: Lon
 POST    /games/leave/:id                controllers.Games.leaveGame(id: Long)
 POST    /games/answer/:id               controllers.Games.handleAnswer(id: Long)
 
-# Friend
+#Friends
 GET     /friends                        controllers.Friends.renderFriends()
 POST    /friends/add/:id                controllers.Friends.addFriend(id: Long)
 POST    /friends/delete/:id             controllers.Friends.deleteFriend(id: Long)
@@ -50,25 +54,25 @@ GET     /playground                     controllers.Application.playground()
 #AC-User
 GET    /ac/get/user/list                controllers.AuthorConnect.serveUserList()
 GET    /ac/get/user/:id                 controllers.AuthorConnect.serveUser(id: Long)
-POST   /ac/update/user/:id              controllers.AuthorConnect.handleUserUpdate(id: Long)
+POST   /ac/update/user                  controllers.AuthorConnect.handleUserUpdate()
 PUT    /ac/insert/user                  controllers.AuthorConnect.handleUserInsert()
 DELETE /ac/delete/user/:id              controllers.AuthorConnect.handleUserDelete(id: Long)
 #AC-Topic
 GET    /ac/get/topic/list               controllers.AuthorConnect.serveTopicList()
 GET    /ac/get/topic/:id                controllers.AuthorConnect.serveTopic(id: Long)
-POST   /ac/update/topic/:id             controllers.AuthorConnect.handleTopicUpdate(id: Long)
+POST   /ac/update/topic                 controllers.AuthorConnect.handleTopicUpdate()
 PUT    /ac/insert/topic                 controllers.AuthorConnect.handleTopicInsert()
 DELETE /ac/delete/topic/:id             controllers.AuthorConnect.handleTopicDelete(id: Long)
 #AC-Question
 GET    /ac/get/question/list/:tid       controllers.AuthorConnect.serveQuestionList(tid: Long)
 GET    /ac/get/question/:id             controllers.AuthorConnect.serveQuestion(id: Long)
-POST   /ac/update/question/:id          controllers.AuthorConnect.handleQuestionUpdate(id: Long)
+POST   /ac/update/question              controllers.AuthorConnect.handleQuestionUpdate()
 PUT    /ac/insert/question              controllers.AuthorConnect.handleQuestionInsert()
 DELETE /ac/delete/question/:id          controllers.AuthorConnect.handleQuestionDelete(id: Long)
 #AC-Answer
 GET    /ac/get/answer/list/:qid         controllers.AuthorConnect.serveAnswerList(qid: Long)
 GET    /ac/get/answer/:id               controllers.AuthorConnect.serveAnswer(id: Long)
-POST   /ac/update/answer/:id            controllers.AuthorConnect.handleAnswerUpdate(id: Long)
+POST   /ac/update/answer                controllers.AuthorConnect.handleAnswerUpdate()
 PUT    /ac/insert/answer                controllers.AuthorConnect.handleAnswerInsert()
 DELETE /ac/delete/answer/:id            controllers.AuthorConnect.handleAnswerDelete(id: Long)
 

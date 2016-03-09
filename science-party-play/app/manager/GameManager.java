@@ -1,5 +1,6 @@
 package manager;
 
+import exception.games.CreateGameException;
 import exception.games.GameException;
 import exception.games.StartGameException;
 import exception.games.StopGameException;
@@ -22,8 +23,10 @@ public class GameManager {
      * @param users
      * @return
      */
-    public static Game createGame(Topic topic, List<User> users) throws Exception {
-        // TODO: Nullpointercheck for topic
+    public static Game createGame(Topic topic, List<User> users) throws GameException {
+        if (topic == null) {
+            throw new CreateGameException("Das ausgewählte Thema ist ungültig.");
+        }
 
         // Create actual game
         Game game = new Game();
@@ -34,10 +37,11 @@ public class GameManager {
 
         // Create Players for the Games, each user represent a player
         if (users.size() < 1 || users.size() > 4) {
-            //TODO: Invalid amount of players
+            throw new CreateGameException("Die Anzahl der Spieler ist ungültig.");
         }
         List<Player> players = new ArrayList<Player>();
         for (User user : users) {
+            // Create player for this game
             Player player = new Player();
             player.setFieldPosition(0);
             player.setPlayerStatus(Player.PlayerStatus.INVITED);
@@ -48,8 +52,17 @@ public class GameManager {
             if (LoginManager.getLoggedInUser().getId() == user.getId()) {
                 player.setPlayerStatus(Player.PlayerStatus.ACCEPTED);
             }
-
             player.insert();
+
+            // Create perks for this player
+            List<PerkPerUser> perksPerUser = user.getPerksPerUserAndTopic(topic);
+            for (PerkPerUser perkPerUser : perksPerUser) {
+                PerkPerPlayer perkPerPlayer = new PerkPerPlayer();
+                perkPerPlayer.setPlayer(player);
+                perkPerPlayer.setPerkPerUser(perkPerUser);
+                perkPerPlayer.setUsed(false);
+                perkPerPlayer.insert();
+            }
         }
 
         //Try to start game directly if it is a one player game
@@ -174,15 +187,21 @@ public class GameManager {
 
             for (Player player : players) {
                 if (player.getPlayerStatus() == Player.PlayerStatus.PLAYING) {
+                    // Change player status for playing players
                     player.setPlayerStatus(Player.PlayerStatus.FINISHED);
                     player.update();
+                    // Update global ranking
+                    User userOfPlayer = player.getUser();
+                    userOfPlayer.setPoints(userOfPlayer.getPoints() + player.getFieldPosition());
+                    userOfPlayer.update();
                 }
+
+
             }
         } else {
             throw new GameException("Das Spiel kann nicht gestoppt werden.");
         }
 
-        //TODO: Maybe update ranking
         return true;
     }
 
@@ -217,6 +236,9 @@ public class GameManager {
 
         // Check if active player reached 40points
         if (activePlayer.getFieldPosition() >= 40) {
+            // Set points to 40 to avoid more then 40 points per game and a invalid map position
+            activePlayer.setFieldPosition(40);
+            activePlayer.update();
             if (stopGame(game)) {
                 throw new StopGameException("Du hast das Ziel erreicht und das Spiel gewonnen.");
             }
