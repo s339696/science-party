@@ -5,7 +5,7 @@ import exception.LoginException;
 import manager.LoginManager;
 import models.ebean.User;
 import models.form.LoginForm;
-import models.form.RegisterForm;
+import models.form.UserAccountForm;
 import play.mvc.*;
 import play.data.Form;
 
@@ -91,11 +91,11 @@ public class Public extends Controller {
             return badRequest("Es ist bereits ein User eingeloggt.");
         }
 
-        Form<RegisterForm> requestData = Form.form(RegisterForm.class).bindFromRequest();
+        Form<UserAccountForm> requestData = Form.form(UserAccountForm.class).bindFromRequest();
         if (requestData.hasErrors()) {
             return badRequest("Es wurden nicht alle benötigten Felder ausgefüllt.");
         } else {
-            RegisterForm regForm = requestData.get();
+            UserAccountForm regForm = requestData.get();
             try {
                 User user = User.createUser(regForm.getFirstname(),regForm.getLastname(),
                         regForm.getBirthday(),regForm.getEmail(),regForm.getPassword());

@@ -6,7 +6,10 @@ import manager.LoginManager;
 import models.ebean.Game;
 import models.ebean.Player;
 import models.ebean.User;
+import models.form.UserAccountForm;
+import play.data.Form;
 import play.mvc.*;
+import util.Helper;
 
 import java.util.List;
 
@@ -52,7 +55,16 @@ public class Profil extends Controller {
     }
 
     /**
-     * TODO: Implementation und documentation
+     * Handles the update of a profile.
+     * If the password is net changed, the password field can be missing ore "".
+     * Required data:
+     * {
+     * "firstname": "Erik",
+     * "lastname": "Wolf",
+     * "email": "erik.wolf.29@gmail.com",
+     * "password": "1234",
+     * "birthday": "29.10.1986"
+     * }
      *
      * @return
      */
@@ -62,7 +74,27 @@ public class Profil extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        return ok();
+        Form<UserAccountForm> requestData = Form.form(UserAccountForm.class).bindFromRequest();
+        if (requestData.hasErrors()) {
+            return badRequest("Es wurden nicht alle benötigten Felder ausgefüllt.");
+        } else {
+            UserAccountForm regForm = requestData.get();
+            try {
+                user.setFirstname(regForm.getFirstname());
+                user.setLastname(regForm.getLastname());
+                user.setBirthdayByString(regForm.getBirthday());
+                user.update();
+                if (regForm.getPassword() != null && !regForm.getPassword().equals("") && !Helper.getMD5fromString(regForm.getPassword()).equals(user.getPassword())) {
+                    user.setPassword(Helper.getMD5fromString(regForm.getPassword()));
+                    user.update();
+                    LoginManager.logout();
+                    return ok("Das Profil wurde erfolgreich geändert. Da das Passwort geändert wurde, musst du dich neu anmelden.");
+                }
+                return ok("Das Profil wurde erfolgreich geändert.");
+            } catch (Exception e) {
+                return badRequest(e.getMessage());
+            }
+        }
     }
 
     /**
@@ -96,6 +128,11 @@ public class Profil extends Controller {
         }
     }
 
+    /**
+     * Proceed a logout for the current user.
+     *
+     * @return
+     */
     public Result handleLogout() {
         LoginManager.logout();
         return redirect(controllers.routes.Application.renderHome());

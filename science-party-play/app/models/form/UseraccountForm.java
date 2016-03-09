@@ -2,10 +2,12 @@ package models.form;
 
 import play.data.validation.Constraints;
 
+import javax.validation.Constraint;
+
 /**
  * Form to parse payload of a register request
  */
-public class RegisterForm {
+public class UserAccountForm {
 
     @Constraints.Required()
     private String firstname;
@@ -19,7 +21,6 @@ public class RegisterForm {
     @Constraints.Required()
     private String email;
 
-    @Constraints.Required()
     private String password;
 
     public String getFirstname() {
