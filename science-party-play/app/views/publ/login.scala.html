@@ -1,0 +1,61 @@
+@()
+
+@mainExtern("Anmeldung") {
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <!-- LOGO [class="leftLogo"] -->
+
+    <div class="loginContainer">
+        <div class="formular">
+            <h1>
+                Anmelden
+            </h1>
+        </div>
+        <div class="formular">
+            <form id="loginForm">
+                E-Mail Adresse:<br>
+                <input id="email" type="email" name="email" placeholder="E-Mail Adresse" required>
+                <br>
+                Passwort:<br>
+                <input id="password" type="password" name="password" placeholder="Passwort" required>
+                <br>
+                <br>
+                <input id="loginButton" type="submit" value="Anmelden">
+            </form>
+        </div>
+
+        <div class="formular">
+            <a class="bigButton" href="/register">
+                Registrieren
+            </a>
+        </div>
+    </div>
+    <script>
+            $("#loginForm").on('submit', function (e) {
+                e.preventDefault();
+                var email = $("#email").val();
+                var password = $("#password").val();
+                $.ajax({
+                    url: '/login',
+                    method: 'POST',
+                    contentType: "application/json",
+                    dataType: "text",
+                    data: JSON.stringify({
+                        action: "login",
+                        email: email,
+                        password: password,
+                    }),
+                    success: function(data,status,xhr) {
+                        location.reload();
+                    },
+                    error: function(xhr,status,error) {
+                        alert(xhr.responseText);
+                    }
+                });
+
+            });
+    </script>
+}

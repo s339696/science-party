@@ -1,0 +1,21 @@
+@(users: List[models.ebean.User])
+
+@mainIntern("Ranking") {
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div>
+        <div>
+            <h1>
+                Ranking
+            </h1>
+        </div>
+        <div class="rankingList">
+            @for((user,index) <- users.zipWithIndex) {
+                <p>@{index+1}. @user mit @user.getPoints Punkten</p>
+            }
+        </div>
+    </div>
+}

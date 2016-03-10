@@ -4,6 +4,8 @@ import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.EnumValue;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+import com.sun.media.jfxmedia.events.PlayerStateEvent;
+import play.Logger;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -28,32 +30,43 @@ public class Game extends Model {
     @GeneratedValue
     private Long id;
 
+    @OneToOne
     @Column(name="active_player")
-    private int activePlayer;
+    private Player activePlayer;
+
+    @OneToOne
+    @Column(name="active_question")
+    private Question activeQuestion;
 
     @Column(name="game_status")
     private GameStatus gameStatus;
 
     @CreatedTimestamp
-    @Column(name="date_created")
+    @Column(name="date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
 
     @UpdatedTimestamp
-    @Column(name="date_updated")
+    @Column(name="date_updated", columnDefinition = "datetime")
     private Timestamp whenUpdated;
 
     @ManyToOne
     private Topic topic;
 
-    @OneToMany(mappedBy="game", cascade= CascadeType.ALL)
+    @OneToMany(mappedBy="game", cascade=CascadeType.ALL)
     List<Player> players;
 
-    public List<Player> getPlayers() {
-        return players;
+    /**
+     * Returns the game with the given id.
+     *
+     * @param id
+     * @return
+     */
+    public static Game getGameById(Long id) {
+        return Game.find.byId(id);
     }
 
-    public void setPlayers(List<Player> players) {
-        this.players = players;
+    public Long getId() {
+        return id;
     }
 
     public Topic getTopic() {
@@ -72,12 +85,20 @@ public class Game extends Model {
         this.gameStatus = gameStatus;
     }
 
-    public int getActive_player() {
+    public Player getActivePlayer() {
         return activePlayer;
     }
 
-    public void setActive_player(int active_player) {
-        this.activePlayer = active_player;
+    public void setActivePlayer(Player activePlayer) {
+        this.activePlayer = activePlayer;
+    }
+
+    public Question getActiveQuestion() {
+        return activeQuestion;
+    }
+
+    public void setActiveQuestion(Question activeQuestion) {
+        this.activeQuestion = activeQuestion;
     }
 
     public Timestamp getWhenCreated() {
@@ -86,5 +107,74 @@ public class Game extends Model {
 
     public Timestamp getWhenUpdated() {
         return whenUpdated;
+    }
+
+    public boolean hasPlayingPlayer() {
+
+        List<Player> player = Player.find
+                .where()
+                .eq("game_id", this.getId())
+                .eq("player_status", "P").findList();
+
+        return player.size() > 0 ? true : false;
+    }
+
+    /**
+     * Change the id of the acitve player to the next player with status PLAYING
+     * and assign a new random question.
+     */
+    public void nextTurn() {
+        List<Player> players = Player.find.where()
+                .eq("game_id", this.getId())
+                .eq("player_status", Player.PlayerStatus.PLAYING)
+                .orderBy().asc("id").findList();
+        if (players.size() != 0) {
+            int activeIndex = 0;
+            int nextIndex = 0;
+            for (Player player: players) {
+                if (player.getId() == this.activePlayer.getId()) {
+                    activeIndex = players.indexOf(player);
+                }
+            }
+
+            if (activeIndex == players.size()-1) {
+                nextIndex = 0;
+            } else {
+                nextIndex = activeIndex + 1;
+            }
+
+            this.setActiveQuestion(Question.getRandomQuestion(this.getTopic()));
+            this.setActivePlayer(players.get(nextIndex));
+            this.update();
+        }
+    }
+
+    /*
+     * METHODS TO MANAGE PLAYER OF A GAME
+     */
+
+    /**
+     * Returns a list with all players.
+     *
+     * @return
+     */
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Return the player for a given user to this game.
+     *
+     * @param user
+     * @return
+     */
+    public Player getPlayerForUser(User user) {
+        List<Player> players = this.getPlayers();
+        for (Player player: players) {
+            if (player.getUser().equals(user)) {
+                return player;
+            }
+        }
+        return null;
     }
 }

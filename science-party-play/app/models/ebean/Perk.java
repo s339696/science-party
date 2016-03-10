@@ -15,35 +15,29 @@ public class Perk extends Model {
     public static Finder<Long,Perk> find = new Finder<>(Perk.class);
 
     // Columns
-
     @Id
     @GeneratedValue
     private Long id;
 
-    @Column(name="perk_name")
-    private String perkName;
+    @Column(name="name")
+    private String name;
 
-    @Size(max=32)
-    @Column(name="qr_code")
-    private String qrCode;
+    @OneToMany(mappedBy="perk", cascade= CascadeType.ALL)
+    private List<PerkPerTopic> perksPerTopic;
 
-    @JoinTable(name="user_has_perks")
-    @ManyToMany(cascade=CascadeType.ALL)
-    List<User> users;
-
-    public String getPerkName() {
-        return perkName;
+    public Long getId() {
+        return id;
     }
 
-    public void setPerkName(String perkName) {
-        this.perkName = perkName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getQrCode() {
-        return qrCode;
+    public String getName() {
+        return name;
     }
 
-    public void setQrCode(String qrCode) {
-        this.qrCode = qrCode;
+    public void setName(String name) {
+        this.name = name;
     }
 }

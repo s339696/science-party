@@ -5,6 +5,7 @@ import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.EnumValue;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name="players")
@@ -13,8 +14,11 @@ public class Player extends Model {
     // Enum
     public enum PlayerStatus {
         @EnumValue("I") INVITED,
+        @EnumValue("A") ACCEPTED,
+        @EnumValue("D") DECLINE,
         @EnumValue("P") PLAYING,
         @EnumValue("L") LEFT,
+        @EnumValue("F") FINISHED,
     }
 
 
@@ -37,6 +41,27 @@ public class Player extends Model {
 
     @ManyToOne
     private Game game;
+
+    @OneToMany(mappedBy="player", cascade= CascadeType.ALL)
+    private List<PerkPerPlayer> perksPerPlayer;
+
+    /**
+     * Return the player object that matches the given game and user.
+     *
+     * @param game
+     * @param user
+     * @return
+     */
+    public static Player getPlayerOfGameAndUser(Game game, User user) {
+        return Player.find.where()
+                .eq("user_id", user.getId())
+                .eq("game_id", game.getId())
+                .findUnique();
+    }
+
+    public Long getId() {
+        return id;
+    }
 
     public int getFieldPosition() {
         return fieldPosition;
@@ -69,4 +94,5 @@ public class Player extends Model {
     public void setGame(Game game) {
         this.game = game;
     }
+
 }
