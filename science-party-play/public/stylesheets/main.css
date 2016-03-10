@@ -57,7 +57,7 @@ div.list {
 }
 
 div.Profilbild {
-	display: inline-block;
+	
 	height: 250px;
 	width: 250px;
 	float:left;
@@ -88,6 +88,12 @@ div.userPerks {
 	border-color: #333;
 	border-radius: 4px;
 	background-color: white;
+}
+
+div#displayPerks {
+	margin: 8px;
+	background-color: white;
+	overflow: scroll;
 }
 
 h1, h2, h3 {
@@ -143,7 +149,7 @@ a.squareButton {
 	cursor: pointer;
 }
 
-a.delete {
+a.deleteButton {
 	width: 100%;
 	display: inline-block;
 	text-align: center;
@@ -170,6 +176,8 @@ a.addPerkButton {
 	border-radius: 4px;
 	cursor: pointer;
 }
+
+a
 
 input[type=text], input[type=password], input[type=date], input[type=email] {
 	width: 100%;
