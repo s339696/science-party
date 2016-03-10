@@ -1,17 +1,12 @@
+package controller;
+
 import javafx.application.Application;
-import javafx.beans.InvalidationListener;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.User;
-
-import java.util.*;
 
 /**
  * Created by Richard on 22.02.2016.
@@ -19,15 +14,18 @@ import java.util.*;
 public class Main extends Application {
 
 
-
+    @FXML TextField tf;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("view/gui_main.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../view/gui_user.fxml"));
         primaryStage.setTitle("Sciene Party Author Tool");
 
+        tf = new TextField("hallo");
 
 
+        System.out.println(tf.getText());
+        
         primaryStage.setScene(new Scene(root, 949, 632));
         primaryStage.show();
 
@@ -35,12 +33,7 @@ public class Main extends Application {
 
 
     public static void main(String[] args) {
-
-
-
-
-
-      launch(args);
+        launch(args);
     }
 
 
