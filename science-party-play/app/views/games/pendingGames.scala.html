@@ -23,6 +23,8 @@
                         @if(game.getPlayerForUser(user).getPlayerStatus() == Player.PlayerStatus.INVITED) {
                             <a class="tabele" href="/games/accept/@game.getId">Annehmen</a>
                             <a class="tabele" href="/games/decline/@game.getId">Ignorieren</a>
+                        } else {
+                            ...warte auf Mitspieler.
                         }
                     </li>
                 }

@@ -1,5 +1,7 @@
 package controllers;
 
+import controllers.*;
+import controllers.routes;
 import exception.games.GameException;
 import exception.games.StartGameException;
 import exception.games.StopGameException;
@@ -56,12 +58,6 @@ public class Games extends Controller {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
-        }
-
-        // For debug
-        List<Game> games = user.getPendingGames();
-        for (Game game:games) {
-            game.getPlayerForUser(user).getPlayerStatus();
         }
 
         return ok(views.html.games.pendingGames.render(user));
@@ -189,7 +185,7 @@ public class Games extends Controller {
         Boolean accept = (action == 1) ? true : false;
 
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         if (game == null) {
@@ -199,12 +195,12 @@ public class Games extends Controller {
         try {
             GameManager.respondGameInvite(game, user, accept);
         } catch (StartGameException e) {
-            return ok(e.getMessage());
+            return redirect(controllers.routes.Games.renderPendingGames());
         } catch (Exception e) {
             return badRequest(e.getMessage());
         }
 
-        return ok("Die Einladung wurde angenommen und das Spiel gestartet.");
+        return redirect(controllers.routes.Games.renderGame(game.getId()));
     }
 
     /**

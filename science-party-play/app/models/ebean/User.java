@@ -487,6 +487,7 @@ public class User extends Model {
     /*
      * METHODS TO MANAGE MESSAGES OF A USER
      */
+    @JsonIgnore
     public List<Chat> getChats() {
         return Chat.find
                 .fetch("messages")
