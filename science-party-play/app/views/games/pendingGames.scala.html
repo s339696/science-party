@@ -1,6 +1,6 @@
 @import models.ebean.Player
 
-@(user: models.ebean.User)
+@(user: models.ebean.User, feedback: String)
 
 @mainIntern("Spieleinladungen") {
     <br>
@@ -32,4 +32,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        @if(feedback != "") {
+            window.onload = function() {
+                window.alert("@feedback")
+            };
+        }
+    </script>
 }

@@ -1,8 +1,12 @@
-@(games: List[models.ebean.Game])
+@(games: List[models.ebean.Game], feedback: String)
 
 @mainIntern("Spiel laden") {
     <div>
         <div class="tabele">
+            <br>
+            <br>
+            <br>
+            <br>
             <h1>
                 Spiel laden
             </h1>
@@ -19,4 +23,11 @@
 
         </div>
     </div>
+        <script>
+        @if(feedback != "") {
+            window.onload = function() {
+                window.alert("@feedback")
+            };
+        }
+    </script>
 }

@@ -30,11 +30,13 @@ public class Game extends Model {
     @GeneratedValue
     private Long id;
 
-    @OneToOne
+    private String name;
+
+    @ManyToOne
     @Column(name="active_player")
     private Player activePlayer;
 
-    @OneToOne
+    @ManyToOne
     @Column(name="active_question")
     private Question activeQuestion;
 
@@ -67,6 +69,18 @@ public class Game extends Model {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Topic getTopic() {
@@ -176,5 +190,15 @@ public class Game extends Model {
             }
         }
         return null;
+    }
+
+    /**
+     * Returns a list with all playing players.
+     *
+     * @return
+     */
+    public List<Player> getPlayingPlayer() {
+        return Player.find.where()
+                .ieq("playerStatus", "P").findList();
     }
 }

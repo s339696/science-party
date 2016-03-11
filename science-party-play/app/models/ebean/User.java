@@ -281,10 +281,10 @@ public class User extends Model {
     public List<Game> getPendingGames() {
         return Game.find
                 .where()
-                .ieq("game_status", "P")
+                .ieq("gameStatus", "P")
                 .eq("players.user", this)
-                .ne("player_status", "L")
-                .ne("player_status", "D")
+                .or(Expr.ieq("players.playerStatus", "I"),
+                        Expr.ieq("players.playerStatus", "A"))
                 .findList();
     }
 
@@ -299,8 +299,8 @@ public class User extends Model {
                 .fetch("players")
                 .where()
                 .ilike("game_status", "A")
-                .eq("user_id", this.getId())
-                .ne("player_status", "L")
+                .eq("players.user", this)
+                .ieq("players.playerStatus", "P")
                 .findList();
 
         return runningGames;
@@ -495,7 +495,7 @@ public class User extends Model {
                 .orderBy().asc("messages.whenCreated")
                 .findList();
     }
-    
+
     /*
      * OVERRITTEN METHODS
      */
