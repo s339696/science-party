@@ -48,8 +48,6 @@ public class Chat extends Model {
             newMsg.setChat(chat);
             newMsg.save();
 
-
-
             Ebean.commitTransaction();
         } catch (Exception e){
             throw new CreateMessageException("Die Nachricht konnte nicht erzeugt werden.");

@@ -6,6 +6,7 @@ import com.avaje.ebean.annotation.CreatedTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
  * This object represents a message from a user in a chat.
@@ -34,6 +35,13 @@ public class Message extends Model {
     @CreatedTimestamp
     @Column(name = "date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
+
+    public static List<Message> getMessagesOfChat(Chat chat) {
+        return Message.find.where()
+                .ieq("chat.id", chat.getId().toString())
+                .orderBy().asc("whenCreated")
+                .findList();
+    }
 
     public Long getId() {
         return id;
