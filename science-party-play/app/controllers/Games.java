@@ -134,18 +134,21 @@ public class Games extends Controller {
         if (topic == null) {
             return badRequest("Das ausgewählte Thema ist ungültig.");
         }
+        System.out.println("ljljköj");
 
         // Get involved Users and add them to Playerlist
         List<User> playerList = new ArrayList<User>();
         playerList.add(player1);
 
         int[] playerIds = cgForm.getPlayerIds();
-        for (int i = 0; i < playerIds.length; i++) {
-            User player = User.find.byId((long) playerIds[i]);
-            if (player == null) {
-                return badRequest("Spieler " + (i + 2) + " konnte dem Spiel nicht hinzugefügt werden.");
-            } else {
-                playerList.add(player);
+        if (playerIds != null) {
+            for (int i = 0; i < playerIds.length; i++) {
+                User player = User.find.byId((long) playerIds[i]);
+                if (player == null) {
+                    return badRequest("Spieler " + (i + 2) + " konnte dem Spiel nicht hinzugefügt werden.");
+                } else {
+                    playerList.add(player);
+                }
             }
         }
 

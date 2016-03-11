@@ -1,130 +1,140 @@
 @(topics: List[models.ebean.Topic], users: List[models.ebean.User])
 
-@mainIntern("Spiel erstellen") {
-    <br>
-    <br>
-    <br>
-    <br>
+    @mainIntern("Spiel erstellen") {
+        <br>
+        <br>
+        <br>
+        <br>
 
-    <div>
-        <div class="formular">
-            <h1>
-                Spiel erstellen
-            </h1>
+        <div>
+            <div class="formular">
+                <h1>
+                    Spiel erstellen
+                </h1>
+            </div>
+            <div class="formular">
+                <form id="createGameForm">
+                    <select id="topicId" name="Thema">
+                        <option value="">Wähle ein Thema</option>
+                        @for(topic <- topics) {
+                            <option value="@topic.getId">@topic.getName</option>
+                        }
+                    </select>
+                    <br>
+                    <select id="multiplayer" name="anzahlMitspieler">
+                        <option value="">Wähle Anzahl Mitspieler</option>
+                        <option value="0">Keine</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                    <br>
+                    <select id="playerOne" name="Mitspieler" style="display:none">
+                        <option value="">Wähle einen Mitspieler</option>
+                        @for(user <- users) {
+                            <option value="@user.getId">@user.getFirstname @user.getLastname</option>
+                        }
+                    </select>
+                    <br>
+                    <select id="playerTwo" name="Mitspieler" style="display:none">
+                        <option value="">Wähle einen Mitspieler</option>
+                        @for(user <- users) {
+                            <option value="@user.getId">@user.getFirstname @user.getLastname</option>
+                        }
+                    </select>
+                    <br>
+                    <select id="playerThree" name="Mitspieler" style="display:none">
+                        <option value="">Wähle einen Mitspieler</option>
+                        @for(user <- users) {
+                            <option value="@user.getId">@user.getFirstname @user.getLastname</option>
+                        }
+                    </select>
+                    <br>
+                    <input name="Senden" type="submit">
+                </form>
+            </div>
         </div>
-        <div class="formular">
-            <form id="createGameForm">
-                <select id="topicId" name="Thema">
-                    <option value="">Wähle ein Thema</option>
-                    @for(topic <- topics) {
-                        <option value="@topic.getId">@topic.getName</option>
-                    }
-                </select>
-                <br>
-                <select id="multiplayer" name="anzahlMitspieler">
-                    <option value="">Wähle Anzahl Mitspieler</option>
-                    <option value="">Keine</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <br>
-                <select id="playerOne" name="Mitspieler" style="display:none">
-                    <option value="">Wähle einen Mitspieler</option>
-                    @for(user <- users) {
-                    <option value="@user.getId">@user.getFirstname @user.getLastname</option>
-                    }
-                </select>
-                <br>
-                <select id="playerTwo" name="Mitspieler" style="display:none">
-                    <option value="">Wähle einen Mitspieler</option>
-                    @for(user <- users) {
-                    <option value="@user.getId">@user.getFirstname @user.getLastname</option>
-                    }
-                </select>
-                <br>
-                <select id="playerThree" name="Mitspieler" style="display:none">
-                    <option value="">Wähle einen Mitspieler</option>
-                    @for(user <- users) {
-                    <option value="@user.getId">@user.getFirstname @user.getLastname</option>
-                    }
-                </select>
-                <br>
-                <input name="Senden" type="submit">
-            </form>
-        </div>
-    </div>
 
-    <script>
+        <script>
+                var playerAnzahl = "";
+                var playerIds = "";
+                var topicId = "";
 
-        $('#multiplayer').change(function() {
-            var playerAnzahl = this.options[this.selectedIndex].value;
-            $("#playerOne, #playerTwo, #playerThree").hide();
-            if(playerAnzahl == 1){
-                $("#playerOne").show();
-            };
-            if(playerAnzahl == 2){
-                $("#playerOne").show();
-                $("#playerTwo").show();
-            };
-            if(playerAnzahl == 3){
-                $("#playerOne").show();
-                $("#playerTwo").show();
-                $("#playerThree").show();
-            };
-            return playerAnzahl;
-        });
+                $('#multiplayer').change(function() {
+                    playerAnzahl = this.options[this.selectedIndex].value;
+                    $("#playerOne, #playerTwo, #playerThree").hide();
+                    if(playerAnzahl == 1){
+                        $("#playerOne").show();
+                    };
+                    if(playerAnzahl == 2){
+                        $("#playerOne").show();
+                        $("#playerTwo").show();
+                    };
+                    if(playerAnzahl == 3){
+                        $("#playerOne").show();
+                        $("#playerTwo").show();
+                        $("#playerThree").show();
+                    };
+                    return playerAnzahl;
+                });
 
-        $("#createGameForm").on('submit', function (e) {
-                e.preventDefault(); {
+                $("#createGameForm").on('submit', function (e) {
+                    e.preventDefault(); {
 
-                var getPlayerAnzahl = document.getElementById("multiplayer");
-                var playerAnzahl = getPlayerAnzahl.options[getPlayerAnzahl.selectedIndex].value;
+                        var getTopicId = document.getElementById("topicId");
+                        topicId = getTopicId.options[getTopicId.selectedIndex].value;
 
-                var getTopicId = document.getElementById("topicId");
-                var topicId = getTopicId.options[getTopicId.selectedIndex].value;
+                        var getPlayerOne = document.getElementById("playerOne");
+                        var playerOne = getPlayerOne.options[getPlayerOne.selectedIndex].value;
 
-                var getPlayerOne = document.getElementById("playerOne");
-                var playerOne = getPlayerOne.options[getPlayerOne.selectedIndex].value;
+                        var getPlayerTwo = document.getElementById("playerTwo");
+                        var playerTwo = getPlayerTwo.options[getPlayerTwo.selectedIndex].value;
 
-                var getPlayerTwo = document.getElementById("playerTwo");
-                var playerTwo = getPlayerTwo.options[getPlayerTwo.selectedIndex].value;
+                        var getPlayerThree = document.getElementById("playerThree");
+                        var playerThree = getPlayerThree.options[getPlayerThree.selectedIndex].value;
 
-                var getPlayerThree = document.getElementById("playerThree");
-                var playerThree = getPlayerThree.options[getPlayerThree.selectedIndex].value;
-
-                if(playerAnzahl == 1){
-                    var playerIds = [playerOne];
-                };
-
-                if(playerAnzahl == 2){
-                    var playerIds = [playerOne, playerTwo];
-                };
-
-                if(playerAnzahl == 2){
-                    var playerIds = [playerOne, playerTwo, playerThree];
-                };
-
-                $.ajax({
-                    url: "/games/create",
-                    method: "POST",
-                    contentType: "application/json",
-                    dataType: "text",
-                    contentType:"application/json",
-                    data: JSON.stringify({
-                        topicId: topicId,
-                        playerIds: playerIds,
-                    }),
-                    success: function(data,status,xhr) {
-                        alert(xhr.responseText);
-                        window.open("/games/pending","_self")
-                    },
-                    error: function(xhr,status,error) {
-                        alert(xhr.responseText);
+                        switch(playerAnzahl) {
+                            case "0":
+                                playerIds = [];
+                                sendData()
+                                break;
+                            case "1":
+                                playerIds = [playerOne];
+                                sendData()
+                                break;
+                            case "2":
+                                playerIds = [playerOne, playerTwo];
+                                sendData()
+                                break;
+                            case "3":
+                                playerIds = [playerOne, playerTwo, playerThree];
+                                sendData()
+                                break;
+                            default:
+                                window.alert("Ungültige Anzahl an Spielern.")
+                        }
                     }
                 });
-            }
-        });
 
-    </script>
-}
+                function sendData() {
+                    $.ajax({
+                        url: "/games/create",
+                        method: "POST",
+                        contentType: "application/json",
+                        dataType: "text",
+                        contentType:"application/json",
+                        data: JSON.stringify({
+                            topicId: topicId,
+                            playerIds: playerIds,
+                        }),
+                        success: function(data,status,xhr) {
+                            alert(xhr.responseText);
+                            window.open("/games/pending","_self")
+                        },
+                        error: function(xhr,status,error) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                }
+        </script>
+    }
