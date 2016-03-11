@@ -85,6 +85,7 @@ public class User extends Model {
 
     /**
      * Creates a new User into the Database with given parameters.
+     *
      * @param firstname
      * @param lastname
      * @param birthday
@@ -108,7 +109,7 @@ public class User extends Model {
         // Insert into Database
         try {
             user.insert();
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new UserException("Es konnte leider kein neuer User erstellt werden.");
         }
 
@@ -124,7 +125,7 @@ public class User extends Model {
      */
     private static String checkEmail(String email) throws UserException {
         //Check if email address already exist in DB.
-        if (User.find.where().like("email",email).findUnique() != null) {
+        if (User.find.where().like("email", email).findUnique() != null) {
             throw new UserException("Es ist bereits ein User mit dieser Mailadresse vorhanden.");
         }
         //TODO: Check for format
@@ -133,6 +134,7 @@ public class User extends Model {
 
     /**
      * Check format of a given birthday string and converts to Timestamp.
+     *
      * @param birthday
      * @return
      * @throws UserException
@@ -149,7 +151,7 @@ public class User extends Model {
         day = Integer.parseInt(splitedBirth[0]);
         month = Integer.parseInt(splitedBirth[1]);
         year = Integer.parseInt(splitedBirth[2]);
-        Timestamp ts =  Timestamp.valueOf(LocalDateTime.of(year,month,day,0,0));
+        Timestamp ts = Timestamp.valueOf(LocalDateTime.of(year, month, day, 0, 0));
         return ts;
     }
 
@@ -308,6 +310,13 @@ public class User extends Model {
      * METHODS TO MANAGE FRIENDS OF A USER
      */
 
+    /**
+     * Send a friend request from the current user to a other user.
+     *
+     * @param to
+     * @return
+     * @throws FriendRequestException
+     */
     public Friend sendFriendRequestTo(User to) throws FriendRequestException {
         // Proof if there is already a friendship or request
         Friend friend = getFriendshipOrRequestWith(to);
@@ -324,6 +333,13 @@ public class User extends Model {
         return friend;
     }
 
+    /**
+     * Is used to respone a friend request.
+     *
+     * @param from
+     * @param accept
+     * @throws FriendRequestException
+     */
     public void responeFriendRequestFrom(User from, boolean accept) throws FriendRequestException {
         Friend friendRequest = Friend.find.where()
                 .ieq("request", "1")
@@ -345,6 +361,11 @@ public class User extends Model {
         }
     }
 
+    /**
+     * Returns all friend requests of a user.
+     *
+     * @return
+     */
     @JsonIgnore
     public List<User> getFriendRequests() {
         List<Friend> requestFriends = Friend.find.where()
@@ -417,7 +438,7 @@ public class User extends Model {
      * METHODS TO MANAGE PERKS OF A USER
      */
     @JsonIgnore
-    public List<PerkPerUser>  getPerks() {
+    public List<PerkPerUser> getPerks() {
         List<PerkPerUser> perks = PerkPerUser.find
                 .fetch("perkPerTopic")
                 .fetch("perkPerTopic.perk")
@@ -431,7 +452,7 @@ public class User extends Model {
     }
 
     @JsonIgnore
-    public List<PerkPerUser>  getPerksPerUserAndTopic(Topic topic) {
+    public List<PerkPerUser> getPerksPerUserAndTopic(Topic topic) {
         List<PerkPerUser> perks = PerkPerUser.find
                 .fetch("perkPerTopic")
                 .fetch("perkPerTopic.perk")
@@ -463,6 +484,18 @@ public class User extends Model {
         }
     }
 
+    /*
+     * METHODS TO MANAGE MESSAGES OF A USER
+     */
+    public List<Chat> getChats() {
+        return Chat.find
+                .fetch("messages")
+                .where()
+                .ieq("users.id", this.getId().toString())
+                .orderBy().asc("messages.whenCreated")
+                .findList();
+    }
+    
     /*
      * OVERRITTEN METHODS
      */

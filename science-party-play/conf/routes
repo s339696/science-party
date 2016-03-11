@@ -44,6 +44,15 @@ POST    /friends/delete/:id             controllers.Friends.deleteFriend(id: Lon
 POST    /friends/accept/:id             controllers.Friends.responseFriendRequest(id: Long, action: Integer = 1)
 POST    /friends/decline/:id            controllers.Friends.responseFriendRequest(id: Long, action: Integer = 0)
 
+#Messages
+GET     /messages                       controllers.Messages.renderMessages()
+GET     /messages/new                   controllers.Messages.renderNewMessage()
+POST    /messages/new                   controllers.Messages.handleNewMessage()
+GET     /messages/leave/:chatId         controllers.Messages.handleLeaveChat(chatId: Long)
+GET     /messages/show/:chatId          controllers.Messages.renderShowChat(chatId: Long)
+POST    /messages/send/:chatId          controllers.Messages.handleSendMessage(chatId: Long)
+
+
 # Ranking
 GET     /ranking                        controllers.Ranking.renderRanking()
 
