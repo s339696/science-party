@@ -1,5 +1,7 @@
 package controllers;
 
+import controllers.*;
+import controllers.routes;
 import exception.friends.FriendRequestException;
 import manager.LoginManager;
 import models.ebean.Friend;
@@ -14,7 +16,7 @@ import java.util.List;
  */
 public class Friends extends Controller {
 
-    public Result renderFriends() {
+    public Result renderFriends(String feedback) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
@@ -24,69 +26,69 @@ public class Friends extends Controller {
         List<User> requestUsers = user.getFriendRequests();
         List<User> friendUsers = user.getFriends();
 
-        return ok(views.html.friends.friends.render(users,requestUsers,friendUsers));
+        return ok(views.html.friends.friends.render(users,requestUsers,friendUsers,feedback));
     }
 
     public Result addFriend(Long id) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         } else if (user.getId() == id) {
-            return badRequest("Du kannst dich nicht selber als Freund hinzufügen.");
+            return renderFriends("Du kannst dich nicht selber als Freund hinzufügen.");
         }
 
         User newFriend = User.find.byId(id);
         if (newFriend == null) {
-            return badRequest("Es gibt keinen User mit der Id #" + id);
+            return renderFriends("Es gibt keinen User mit der Id #" + id + ".");
         }
 
         try {
             user.sendFriendRequestTo(newFriend);
         } catch (FriendRequestException e) {
-            return badRequest(e.getMessage());
+            return renderFriends(e.getMessage());
         }
 
-        return ok("Die Anfrage wurde verschickt.");
+        return renderFriends("Die Anfrage wurde verschickt.");
 
     }
 
     public Result deleteFriend(Long id) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         User friend = User.find.byId(id);
         if (friend == null) {
-            return badRequest("Es gibt keinen User mit der Id #" + friend.getId() + ".");
+            return renderFriends("Es gibt keinen User mit der Id #" + id + ".");
         }
 
         Friend friendship = user.getFriendshipWith(friend);
         if (friendship == null) {
-            return badRequest("Die beiden User sind keine Freunde.");
+            return renderFriends("Die beiden User sind keine Freunde.");
         }
-
+        System.out.println("Friendship vorhanden.");
         friendship.delete();
 
-        return ok("Eure Freundschaft wurde beendet.");
+        return renderFriends("Eure Freundschaft wurde beendet.");
     }
 
     public Result responseFriendRequest(Long id, Integer action) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         User friend = User.find.byId(id);
         if (friend == null) {
-            return badRequest("Es gibt keinen User mit der Id #" + id.toString() + ".");
+            return renderFriends("Es gibt keinen User mit der Id #" + id.toString() + ".");
         }
 
         try {
             user.responeFriendRequestFrom(friend, (action == 1 ? true : false));
         } catch (FriendRequestException e) {
-            return ok(e.getMessage());
+            return renderFriends(e.getMessage());
         }
-        return ok();
+        return renderFriends("");
     }
 }

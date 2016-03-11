@@ -414,7 +414,7 @@ public class User extends Model {
     @JsonIgnore
     public Friend getFriendshipWith(User user) {
         Friend friend = getFriendshipOrRequestWith(user);
-        if (friend.isRequest() == true) {
+        if (friend == null || friend.isRequest() == true) {
             return null;
         } else {
             return friend;
@@ -430,7 +430,6 @@ public class User extends Model {
         Friend friend = Friend.find.where()
                 .or(friendship1, friendship2)
                 .findUnique();
-
         return friend;
     }
 

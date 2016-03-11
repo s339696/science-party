@@ -1,5 +1,5 @@
 @import models.ebean.User
-@(users: List[User], friendRequests: List[User], friends: List[User])
+@(users: List[User], friendRequests: List[User], friends: List[User], feedback: String)
 
 
 @mainIntern("Freunde") {
@@ -22,8 +22,8 @@
             }
             </select>
                 <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
-            <a class="squareButton" id="addFriend" href="javascript:addFriend(0);">Freund hinzufügen</a>
-            <a class="squareButton" id="viewProfile" href="/profile">Profil</a>
+            <a class="squareButton" id="addFriend" href="#">Freund hinzufügen</a>
+            <a class="squareButton" id="viewProfile" href="#">Profil</a>
         </form>
         <br>
         <br>
@@ -35,93 +35,39 @@
                 @for( friendRequest <- friendRequests) {
                 <li class="tabele">
                     <a class="tabele" href="/profile/@friendRequest.getId">@friendRequest.toString</a>
-                    <a class="tabeleDelete" onclick="declineFriend(@friendRequest.getId)">Ignorieren</a>
-                    <a class="tabeleAdd" onclick="acceptFriend(@friendRequest.getId)">Annehmen</a>
+                    <a class="tabeleDelete" href="/friends/decline/@friendRequest.getId">Ignorieren</a>
+                    <a class="tabeleAdd" href="/friends/accept/@friendRequest.getId">Annehmen</a>
                 </li>
                 }
             </ul>
         </div>
         <br>
-        <div id="aa" class="list">
+        <h2>Freunde</h2>
+        <div class="list">
             <ul class="tabele">
                 @for( friend <- friends) {
                     <li class="tabele">
                         <a class="tabele" href="/profile/@friend.getId">@friend.toString</a>
                         <a class="tabele" href="/message/send/@friend.getId">Nachricht senden</a>
-                        <a class="tabeleDelete" onclick="deleteFriend(@friend.getId)" href="#">Freund entfernen</a>
+                        <a class="tabeleDelete" href="/friends/delete/@friend.getId">Freund entfernen</a>
                     </li>
                 }
-                <li class="tabele">
             </ul>
         </div>
         <br>
     </div>
 
     <script>
-
-            function deleteFriend(id) {
-                $.ajax({
-                    url: "/friends/delete/" + id,
-                    method: "POST",
-                    dataType: "text",
-                    success: function(data,status,xhr) {
-                        location.reload();
-                    },
-                    error: function(xhr,status,error) {
-                        alert(xhr.responseText);
-                    }
-                });
-            }
-
-            function addFriend(id) {
-                if (id != 0) {
-                    $.ajax({
-                        url: "/friends/add/" + id,
-                        method: "POST",
-                        dataType: "text",
-                        success: function(data,status,xhr) {
-                            alert(xhr.responseText);
-                            location.reload();
-                        },
-                        error: function(xhr,status,error) {
-                            alert(xhr.responseText);
-                        }
-                    });
-                }
-            }
-
-            function acceptFriend(id) {
-                $.ajax({
-                    url: "/friends/accept/" + id,
-                    method: "POST",
-                    dataType: "text",
-                    success: function(data,status,xhr) {
-                        location.reload();
-                    },
-                    error: function(xhr,status,error) {
-                        alert(xhr.responseText);
-                    }
-                });
-            }
-
-            function declineFriend(id) {
-                $.ajax({
-                    url: "/friends/decline/" + id,
-                    method: "POST",
-                    dataType: "text",
-                    success: function(data,status,xhr) {
-                        location.reload();
-                    },
-                    error: function(xhr,status,error) {
-                        alert(xhr.responseText);
-                    }
-                });
+            @if(feedback != "") {
+                window.onload = function() {
+                    window.alert("@feedback")
+                };
             }
 
             function userSelected(id) {
-                $("#addFriend").attr("href", "javascript:addFriend(" + id + ");");
-                $("#sendMessage").attr("href", "messages/send/" + id);
-                $("#viewProfile").attr("href", "profile/" + id);
+                $("#addFriend").attr("href", "/friends/add/" + id);
+                $("#sendMessage").attr("href", "/messages/send/" + id);
+                $("#viewProfile").attr("href", "/profile/" + id);
             }
     </script>
 }
