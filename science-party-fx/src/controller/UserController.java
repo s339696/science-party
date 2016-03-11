@@ -2,14 +2,12 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import model.database.DatabaseConnect;
 import model.User;
 import model.manager.UserManager;
 
@@ -64,11 +62,11 @@ public class UserController implements Initializable{
     }
 
 
-   // User user = new User(0, null, null, null, null, false, 0,false,null);
+
     ObservableList<String> presentationList = FXCollections.observableArrayList();
     @FXML
     private void showList() throws IOException {
-        UserManager.getUserMap();
+        UserManager.MakeUserMap();
         System.out.println(UserManager.userMap.get(1).getFirstname());
 
 
@@ -86,7 +84,7 @@ public class UserController implements Initializable{
 
    }
 
-
+    User presentedUser = new User(0, null, null, null, null, false, 0,false,null);
 
     @FXML
     private void handleUserInSelect(){
@@ -96,13 +94,13 @@ public class UserController implements Initializable{
         int id = Integer.parseInt(s[0]);
 
 
-        //user = users.get(id);
+        presentedUser = UserManager.userMap.get(id);
 
-        //idLabel.textProperty().set(String.valueOf(user.getId()));
-        //firstNameLabel.textProperty().set(user.getFirstname());
-        //lastNameLabel.textProperty().set(user.getLastname());
-        //emailLabel.textProperty().set(user.getEmail());
-       // birthdateLabel.textProperty().set(user.getBirthdayAsString());
+        idLabel.textProperty().set(String.valueOf(presentedUser.getId()));
+        firstNameLabel.textProperty().set(presentedUser.getFirstname());
+        lastNameLabel.textProperty().set(presentedUser.getLastname());
+        emailLabel.textProperty().set(presentedUser.getEmail());
+        birthdateLabel.textProperty().set(presentedUser.getBirthday());
 
     }
 

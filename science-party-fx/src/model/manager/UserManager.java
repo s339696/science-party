@@ -1,24 +1,17 @@
 package model.manager;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import jdk.nashorn.internal.parser.JSONParser;
 import model.database.DatabaseConnect;
 import model.User;
 
 
-import javax.json.Json;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
+import java.net.ProtocolException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -84,7 +77,7 @@ public class UserManager {
         return jsonString;
     }
 
-    public static void getUserMap() throws IOException {
+    public static void MakeUserMap() throws IOException {
         String allUserJson = UserManager.getAllUserJson();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -96,6 +89,20 @@ public class UserManager {
 
     }
 
+    public static void deleteUser(int id) throws IOException {
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = "http://localhost:9000/ac/delete/user/" + id;
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+
+        
+
+    }
+
 
 
 
@@ -103,9 +110,10 @@ public class UserManager {
         DatabaseConnect.setRecentUser("bastian95@live.de","araluen");
 
 
-        UserManager.getUserMap();
+        UserManager.MakeUserMap();
 
         System.out.println(userMap.get(1).getFirstname());
+        UserManager.deleteUser(15);
 
 
 
