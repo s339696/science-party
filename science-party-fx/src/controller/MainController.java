@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import model.database.DatabaseConnect;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.IOException;
@@ -66,61 +67,18 @@ public class MainController implements Initializable {
 
     public void checkLogin() throws IOException {
 
-/*      zu Testzwecken mal auskommentiert
-
         String email = LoginEmail.getText();
-        String password = LoginPassword.getText(); //Password wird auf dem Server auf MD5 gespeicher -> muss also erst umgewandelt werden
-        String MD5Passoword = getMD5fromString(password);
-        String server = LoginServer.getText();
+        String password = LoginPassword.getText();
 
-        boolean authentificated = false;
+        DatabaseConnect.setRecentUser(email, password);
 
-        UserManager userManager = new UserManager();
-
-        Database.setRecentUser(email, MD5Passoword);
-        System.out.println(Database.recentUser);
-
-        String s =Database.sendPost("user/list");
-        System.out.println(s);
-
-
-        if(s.equals("Bad Request")){
-            System.out.println("Login fehlgeschlagen");
-        }else {
-            System.out.println("Scheiße!!");
-
-
-
-            //System.out.println(mainTabPane.getTabs().toString());
+        if(DatabaseConnect.connectedToDatabase()){
             LoadMainWindow();
-            //mainTabPane.clipProperty().
-
-
+        } else {
+            System.out.println("Anmeldung fehlgeschlagen");
         }
-
-*/
-        LoadMainWindow();
 
     }
-
-
-
-
-/*
-        List<User> userList = userManager.getAllUsers();
-        System.out.println(userList.toString());
-        for(User user : userList){
-            if(user.getEmail().equals(email) && user.getPassword().equals(MD5Passoword)){
-                authentificated=user.isAuthor();
-                System.out.println("alter geil es läuft");
-            }
-        }
-        */
-
-
-
-
-
 
 
 

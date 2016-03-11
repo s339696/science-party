@@ -6,8 +6,8 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableListValue;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -29,9 +29,6 @@ public class User {
     @JsonProperty("lastname")
     String lastname;
 
-    @JsonProperty("birthday")
-    Date birthday;
-
     @JsonProperty("email")
     String email;
 
@@ -47,29 +44,8 @@ public class User {
     @JsonProperty("locked")
     boolean locked;
 
-    @JsonProperty("whenCreated")
-    Date whenCreated;
-
-    @JsonProperty("whenUpdated")
-    Date whenUpdated;
-
-    @JsonProperty("lastOnline")
-    Date lastOnline;
-
-    @JsonProperty("players")
-    List players;
-
-    @JsonProperty("birthdayAsString")
-    String birthdayAsString;
-
-    @JsonProperty("friendRequests")
-    List friendRequests;
-
-    @JsonProperty("pendingGames")
-    List pendingGames;
-
-    @JsonProperty("friends")
-    List friends;
+    @JsonProperty("birthday")
+    String birthday;
 
     public int getId() {
         return id;
@@ -93,14 +69,6 @@ public class User {
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
     }
 
     public String getEmail() {
@@ -143,92 +111,29 @@ public class User {
         this.locked = locked;
     }
 
-    public Date getWhenCreated() {
-        return whenCreated;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setWhenCreated(Date whenCreated) {
-        this.whenCreated = whenCreated;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
-    public Date getWhenUpdated() {
-        return whenUpdated;
-    }
-
-    public void setWhenUpdated(Date whenUpdated) {
-        this.whenUpdated = whenUpdated;
-    }
-
-    public Date getLastOnline() {
-        return lastOnline;
-    }
-
-    public void setLastOnline(Date lastOnline) {
-        this.lastOnline = lastOnline;
-    }
-
-    public List getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List players) {
-        this.players = players;
-    }
-
-    public String getBirthdayAsString() {
-        return birthdayAsString;
-    }
-
-    public void setBirthdayAsString(String birthdayAsString) {
-        this.birthdayAsString = birthdayAsString;
-    }
-
-    public List getFriendRequests() {
-        return friendRequests;
-    }
-
-    public void setFriendRequests(List friendRequests) {
-        this.friendRequests = friendRequests;
-    }
-
-    public List getPendingGames() {
-        return pendingGames;
-    }
-
-    public void setPendingGames(List pendingGames) {
-        this.pendingGames = pendingGames;
-    }
-
-    public List getFriends() {
-        return friends;
-    }
-
-    public void setFriends(List friends) {
-        this.friends = friends;
-    }
-
-    public User(int id, String firstname, String lastname, Date birthday, String email, String password, boolean author, int points, boolean locked, Date whenCreated, Date whenUpdated, Date lastOnline, List players, String birthdayAsString, List friendRequests, List pendingGames, List friends) {
+    public User(int id, String firstname, String lastname, String email, String password, boolean author, int points, boolean locked, String birthday) {
 
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
-        this.birthday = birthday;
         this.email = email;
         this.password = password;
         this.author = author;
         this.points = points;
         this.locked = locked;
-        this.whenCreated = whenCreated;
-        this.whenUpdated = whenUpdated;
-        this.lastOnline = lastOnline;
-        this.players = players;
-        this.birthdayAsString = birthdayAsString;
-        this.friendRequests = friendRequests;
-        this.pendingGames = pendingGames;
-        this.friends = friends;
+        this.birthday = birthday;
     }
 
     public static void main(String[] args){
+
 
     }
 }

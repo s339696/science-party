@@ -2,13 +2,14 @@ package controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import model.Database;
+import model.database.DatabaseConnect;
 import model.User;
 import model.manager.UserManager;
 
@@ -63,33 +64,28 @@ public class UserController implements Initializable{
     }
 
 
-    User user = new User(0, null, null, null,null, null, false, 0, false, null, null, null, null, null, null, null, null);
-    ObservableList<User> users = FXCollections.observableArrayList();
+   // User user = new User(0, null, null, null, null, false, 0,false,null);
+    ObservableList<String> presentationList = FXCollections.observableArrayList();
     @FXML
     private void showList() throws IOException {
-       ObservableList<String> data = FXCollections.observableArrayList("eins", "zwei", "drei");
-
-        //Schleife die alle User einträgt
-        //users.add(0,tim);
-        UserManager um = new UserManager();
-        users = (ObservableList<User>) um.getAllUsers();
+        UserManager.getUserMap();
+        System.out.println(UserManager.userMap.get(1).getFirstname());
 
 
-        Database.sendPost("user/list");
-        for(User u: users){
+
+        for(User u : UserManager.userMap.values()){
             int i=0;
-            data.add(i,u.getId() + ": " +u.getFirstname() + " " + u.getLastname());
+            presentationList.add(i,u.getId() + ": " +u.getFirstname() + " " + u.getLastname());
             i++;
         }
 
-       lv.setItems(data);
+        Collections.sort(presentationList);
 
-       System.out.println("Konsole klappt aber");
+       lv.setItems(presentationList);
 
 
    }
 
-   // private
 
 
     @FXML
@@ -100,13 +96,13 @@ public class UserController implements Initializable{
         int id = Integer.parseInt(s[0]);
 
 
-        user = users.get(id);
+        //user = users.get(id);
 
-        idLabel.textProperty().set(String.valueOf(user.getId()));
-        firstNameLabel.textProperty().set(user.getFirstname());
-        lastNameLabel.textProperty().set(user.getLastname());
-        emailLabel.textProperty().set(user.getEmail());
-        birthdateLabel.textProperty().set(user.getBirthdayAsString());
+        //idLabel.textProperty().set(String.valueOf(user.getId()));
+        //firstNameLabel.textProperty().set(user.getFirstname());
+        //lastNameLabel.textProperty().set(user.getLastname());
+        //emailLabel.textProperty().set(user.getEmail());
+       // birthdateLabel.textProperty().set(user.getBirthdayAsString());
 
     }
 
