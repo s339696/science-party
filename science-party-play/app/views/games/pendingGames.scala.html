@@ -21,8 +21,8 @@
                     <li class="tabele">
                     ID: @game.getId Thema: @game.getTopic
                         @if(game.getPlayerForUser(user).getPlayerStatus() == Player.PlayerStatus.INVITED) {
-                            <a class="squareButton" href="/games/accept/@game.getId">Annehmen</a>
-                            <a class="squareButton" href="/games/decline/@game.getId">Ignorieren</a>
+                            <a class="tabele" href="/games/accept/@game.getId">Annehmen</a>
+                            <a class="tabele" href="/games/decline/@game.getId">Ignorieren</a>
                         }
                     </li>
                 }

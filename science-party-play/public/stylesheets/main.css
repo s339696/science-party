@@ -41,12 +41,62 @@ div.topLoginSignin {
 
 div.tabele {
 	width: 69%;
+	background-color: #D0D0D0;
+	border-radius: 4px;
+}
+
+div.tabeleHead {
+	width: 69%;
 }
 
 div.list {
+	margin: 8px;
 	border-style: solid;
 	border-color: #333;
 	border-width: 2px
+}
+
+div.Profilbild {
+	display: inline-block;
+	height: 250px;
+	width: 250px;
+	float:left;
+	margin: 8px;
+	border-color: #333;
+	border-radius: 4px;
+}
+
+div.userInfo {
+	display: inline-block;
+	height: 250px;
+	width: 73%;
+	margin: 8px;
+	border-color: #333;
+	border-radius: 4px;
+	background-color: white;
+}
+
+div.userStatistics {
+	margin: 8px;
+	border-color: #333;
+	border-radius: 4px;
+	background-color: white;
+}
+
+div.userPerks {
+	margin: 8px;
+	border-color: #333;
+	border-radius: 4px;
+	background-color: white;
+}
+
+h1, h2, h3 {
+	margin: 8px;
+}
+
+p {
+	margin: 24px;
+	displa: inline-block;
 }
 
 form {
@@ -55,9 +105,9 @@ form {
 
 select.search {
 	float: left;
-	width: 48%;
+	width: 53%;
 	padding: 20px 0;
-	margin: 8px 0;
+	margin: 8px;
 	display: inline-block;
 	border: 1px solid #CCC;
 	border-radius: 4px;
@@ -80,14 +130,14 @@ a.bigButton {
 
 a.squareButton {
 	float: right;
-	width: 15%;
+	width: 12%;
 	display: inline-block;
 	text-align: center;
 	text-decoration: none;
 	background-color: #4CAF50;
 	color: white;
 	padding: 25px 0;
-	margin: 8px 0;
+	margin: 6px;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
@@ -108,13 +158,14 @@ a.delete {
 }
 
 a.addPerkButton {
+	float: right;
 	display: inline-block;
 	text-align: center;
 	text-decoration: none;
 	background-color: #4CAF50;
 	color: white;
 	padding: 35px 20px;
-	margin: 8px 5px 8px 0;
+	margin: 8px;
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;

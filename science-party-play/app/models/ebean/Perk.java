@@ -19,29 +19,25 @@ public class Perk extends Model {
     @GeneratedValue
     private Long id;
 
-    @Column(name="perk_name")
-    private String perkName;
-
-    @Size(max=32)
-    @Column(name="qr_code")
-    private String qrCode;
+    @Column(name="name")
+    private String name;
 
     @OneToMany(mappedBy="perk", cascade= CascadeType.ALL)
-    private List<PerkPerUserAndTopic> perksPerUserAndTopic;
+    private List<PerkPerTopic> perksPerTopic;
 
-    public String getPerkName() {
-        return perkName;
+    public Long getId() {
+        return id;
     }
 
-    public void setPerkName(String perkName) {
-        this.perkName = perkName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getQrCode() {
-        return qrCode;
+    public String getName() {
+        return name;
     }
 
-    public void setQrCode(String qrCode) {
-        this.qrCode = qrCode;
+    public void setName(String name) {
+        this.name = name;
     }
 }

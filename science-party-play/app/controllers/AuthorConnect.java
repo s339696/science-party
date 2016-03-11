@@ -2,17 +2,14 @@ package controllers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import exception.ac.AuthenticationException;
 import manager.LoginManager;
+import manager.PerkManager;
 import models.ebean.Answer;
 import models.ebean.Question;
 import models.ebean.Topic;
 import models.ebean.User;
 
-import models.form.LoginForm;
-import play.data.Form;
-import play.libs.Json;
 import play.mvc.*;
 
 import java.util.List;
@@ -52,6 +49,7 @@ public class AuthorConnect extends Controller {
 
     /**
      * Returns all Users as JSON.
+     *
      * @return
      */
     public Result serveUserList() {
@@ -124,6 +122,12 @@ public class AuthorConnect extends Controller {
         return ok("Der User wurde hinzugefügt.");
     }
 
+    /**
+     * Deletes a user from the databse.
+     *
+     * @param id
+     * @return
+     */
     public Result handleUserDelete(Long id) {
         User user;
         try {
@@ -155,6 +159,11 @@ public class AuthorConnect extends Controller {
         return ok(node);
     }
 
+    /**
+     * Serves a list of all topics to the client.
+     *
+     * @return
+     */
     public Result serveTopicList() {
         User user;
         try {
@@ -171,6 +180,11 @@ public class AuthorConnect extends Controller {
         return ok(node);
     }
 
+    /**
+     * Changes the content of a topic.
+     *
+     * @return
+     */
     public Result handleTopicUpdate() {
         User user;
         try {
@@ -179,9 +193,26 @@ public class AuthorConnect extends Controller {
             return badRequest(e.getMessage());
         }
 
-        return ok();
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            Topic updateTopic = mapper.convertValue(json, Topic.class);
+            updateTopic.update();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        PerkManager.updatePerksPerTopic();
+
+        return ok("Das Thema wurde geändert.");
     }
 
+    /**
+     * Insert a new topic into the Database.
+     *
+     * @return
+     */
     public Result handleTopicInsert() {
         User user;
         try {
@@ -190,9 +221,28 @@ public class AuthorConnect extends Controller {
             return badRequest(e.getMessage());
         }
 
-        return ok();
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            Topic insertTopic = mapper.convertValue(json, Topic.class);
+            insertTopic.setId(null);
+            insertTopic.insert();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        PerkManager.updatePerksPerTopic();
+
+        return ok("Das Thema wurde hinzugefügt.");
     }
 
+    /**
+     * Deletes the topic with the given id from the database.
+     *
+     * @param id
+     * @return
+     */
     public Result handleTopicDelete(Long id) {
         User user;
         try {
@@ -202,11 +252,19 @@ public class AuthorConnect extends Controller {
             return badRequest(e.getMessage());
         }
 
+        PerkManager.updatePerksPerTopic();
+
         return ok("Der Topic wurde gelöscht.");
     }
 
     /*
      * QUESTION
+     */
+
+    /**
+     * Returns the question with the given id.
+     * @param id
+     * @return
      */
     public Result serveQuestion(Long id) {
         User user;
@@ -224,6 +282,11 @@ public class AuthorConnect extends Controller {
         return ok(node);
     }
 
+    /**
+     * Returns a list of questions to a specific topic.
+     * @param topicId
+     * @return
+     */
     public Result serveQuestionList(Long topicId) {
         User user;
         try {
@@ -240,6 +303,11 @@ public class AuthorConnect extends Controller {
         return ok(node);
     }
 
+    /**
+     * Updates a question in the database with the given json data.
+     *
+     * @return
+     */
     public Result handleQuestionUpdate() {
         User user;
         try {
@@ -248,9 +316,23 @@ public class AuthorConnect extends Controller {
             return badRequest(e.getMessage());
         }
 
-        return ok();
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            Question updateQuestion = mapper.convertValue(json, Question.class);
+            updateQuestion.update();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Die Frage wurde hinzugefügt.");
     }
 
+    /**
+     * Adds a new question to the database.
+     * @return
+     */
     public Result handleQuestionInsert() {
         User user;
         try {
@@ -259,9 +341,26 @@ public class AuthorConnect extends Controller {
             return badRequest(e.getMessage());
         }
 
-        return ok();
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            Question insertQuestion = mapper.convertValue(json, Question.class);
+            insertQuestion.setId(null);
+            insertQuestion.insert();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Die Frage wurde geändert.");
     }
 
+    /**
+     * Deletes the question with the given id from the database.
+     *
+     * @param id
+     * @return
+     */
     public Result handleQuestionDelete(Long id) {
         User user;
         try {
@@ -276,6 +375,13 @@ public class AuthorConnect extends Controller {
 
     /*
      * ANSWER
+     */
+
+    /**
+     * Returns the answer with the given id.
+     *
+     * @param id
+     * @return
      */
     public Result serveAnswer(Long id) {
         User user;
@@ -293,6 +399,12 @@ public class AuthorConnect extends Controller {
         return ok(node);
     }
 
+    /**
+     * Retuns a List of answers related to question.
+     *
+     * @param questionId
+     * @return
+     */
     public Result serveAnswerList(Long questionId) {
         User user;
         try {
@@ -309,6 +421,11 @@ public class AuthorConnect extends Controller {
         return ok(node);
     }
 
+    /**
+     * Handles an aupdate of an answer.
+     *
+     * @return
+     */
     public Result handleAnswerUpdate() {
         User user;
         try {
@@ -317,9 +434,24 @@ public class AuthorConnect extends Controller {
             return badRequest(e.getMessage());
         }
 
-        return ok();
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            Answer updateAnswer = mapper.convertValue(json, Answer.class);
+            updateAnswer.update();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Die Antwort wurde bearbeitet.");
     }
 
+    /**
+     * Adds a new answer into the db.
+     *
+     * @return
+     */
     public Result handleAnswerInsert() {
         User user;
         try {
@@ -328,9 +460,26 @@ public class AuthorConnect extends Controller {
             return badRequest(e.getMessage());
         }
 
-        return ok();
+        // Generate userobject from json payload
+        try {
+            JsonNode json = request().body().asJson();
+            ObjectMapper mapper = new ObjectMapper();
+            Answer insertAnswer = mapper.convertValue(json, Answer.class);
+            insertAnswer.setId(null);
+            insertAnswer.insert();
+        } catch (Exception e) {
+            return badRequest(e.getMessage());
+        }
+
+        return ok("Die Antwort wurde hinzugefügt.");
     }
 
+    /**
+     * Deletes a answer from the database.
+     *
+     * @param id
+     * @return
+     */
     public Result handleAnswerDelete(Long id) {
         User user;
         try {
@@ -342,6 +491,10 @@ public class AuthorConnect extends Controller {
 
         return ok("Die Antwort wurde gelöscht.");
     }
+
+    /*
+     * PRIVATE METHODS TO HELP
+     */
 
     /**
      * Checks if a user is logged in and authorized to change data.

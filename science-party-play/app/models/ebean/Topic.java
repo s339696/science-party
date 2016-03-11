@@ -18,6 +18,7 @@ public class Topic extends Model {
     @GeneratedValue
     private Long id;
 
+    @Column(unique = true)
     String name;
 
     @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
@@ -27,10 +28,14 @@ public class Topic extends Model {
     private List<Question> questions;
 
     @OneToMany(mappedBy="topic", cascade= CascadeType.ALL)
-    private List<PerkPerUserAndTopic> perksPerUserAndTopic;
+    private List<PerkPerTopic> perksPerTopic;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -59,6 +64,16 @@ public class Topic extends Model {
     @JsonIgnore
     public void setQuestions(List<Question> questions) {
         this.questions = questions;
+    }
+
+    @JsonIgnore
+    public List<PerkPerTopic> getPerksPerTopic() {
+        return perksPerTopic;
+    }
+
+    @JsonIgnore
+    public void setPerksPerTopic(List<PerkPerTopic> perksPerTopic) {
+        this.perksPerTopic = perksPerTopic;
     }
 
     @Override

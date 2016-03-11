@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField layoutX="403.0" layoutY="218.0" prefHeight="31.0" prefWidth="204.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="403.0" layoutY="286.0" prefHeight="31.0" prefWidth="204.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="403.0" layoutY="356.0" prefHeight="31.0" prefWidth="204.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <Text layoutX="326.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-Mail:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="326.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Passwort:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="326.0" layoutY="377.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Server:">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Text>
+      <Text layoutX="398.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login zum Autorentool">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Button fx:id="login" layoutX="607.0" layoutY="430.0" mnemonicParsing="false" text="Login">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
