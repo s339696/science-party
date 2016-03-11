@@ -1,12 +1,25 @@
-@()
+@import models.ebean.User
+@(users: List[User])
 
-@mainIntern("Nachricht") {
-<br>
-<br>
-<br>
-<br>
+@mainIntern("Neue Nachricht") {
+    <br>
+    <br>
+    <br>
+    <br>
 
-<div class="tabele">
-</div>
+    <div class="tabele">
+        <div class="container">
+            <form>
+                <select class="message">
+                    @for( user <- users) {
+                    <option value="@user.getId">@user.toString</option>
+                    }
+                </select>
+                <br>
+                <textarea rows="10" cols="70"></textarea>
+                <input class="newMessage" name="Senden" type="submit">
+            </form>
+        </div>
+    </div>
 
 }
