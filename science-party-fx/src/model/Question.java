@@ -1,5 +1,7 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javafx.scene.control.Label;
 
 /**
@@ -7,58 +9,58 @@ import javafx.scene.control.Label;
  */
 public class Question {
 
+    public Question(){
+
+    }
+
+    @JsonProperty("id")
+    int id;
+
+    @JsonProperty("text")
     String text;
+
+    @JsonProperty("difficulty")
     int difficulty;
+
+    @JsonProperty("topicId")
+    int topicId;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getText() {
+        return text;
+    }
 
     public void setText(String text) {
         this.text = text;
     }
 
     public int getDifficulty() {
-
         return difficulty;
     }
 
-    public Question(String text){
-        this.text=text;
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
     }
 
-
-    public String getText() {
-        return this.text;
+    public int getTopicId() {
+        return topicId;
     }
 
-
-    public Question newData(String s) {
-        return new Question(s);
+    public void setTopicId(int topicId) {
+        this.topicId = topicId;
     }
 
-
-    public void deleteData(Object o) {
-
-    }
-
-
-    public void editData() {
-
-    }
-
-
-    public void saveData(Label l, String text) {
-
-    }
-
-    public Question setDifficulty(int difficulty) {
-        this.difficulty=difficulty;
-        return Question.this;
-    }
-
-    public static void main(String[] args){
-        Question q = new Question("test").setDifficulty(4);
-
-        System.out.println(q.getDifficulty());
-        System.out.println(q.getText());
-
-
+    public Question(int id, String text, int difficulty, int topicId) {
+        this.id = id;
+        this.text = text;
+        this.difficulty = difficulty;
+        this.topicId = topicId;
     }
 }

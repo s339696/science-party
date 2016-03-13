@@ -1,5 +1,6 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javafx.scene.control.Label;
 
 /**
@@ -7,62 +8,58 @@ import javafx.scene.control.Label;
  */
 public class Answer {
 
+    public Answer(){
 
+    }
+
+    @JsonProperty("id")
+    int id;
+
+    @JsonProperty("text")
     String text;
-    Boolean correct;
 
+    @JsonProperty("correct")
+    boolean correct;
 
-    public Answer(String text){
-        this.text=text;
-        this.correct=false;
+    @JsonProperty("questionId")
+    int questeionId;
+
+    public int getId() {
+        return id;
     }
 
-    public Answer setCorrect() {
-        this.correct = true;
-        return Answer.this;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Boolean getCorrect() {
+    public String getText() {
+        return text;
+    }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public boolean isCorrect() {
         return correct;
     }
 
-
-
-    public String getText() {
-        return this.text;
+    public void setCorrect(boolean correct) {
+        this.correct = correct;
     }
 
-
-
-
-    public Answer newData(String s) {
-        return new Answer(s);
+    public int getQuesteionId() {
+        return questeionId;
     }
 
-
-    public void deleteData(Object o) {
-        // hier Daten aus der DB löschen
+    public void setQuesteionId(int questeionId) {
+        this.questeionId = questeionId;
     }
 
-
-    public void editData() {
-
+    public Answer(int id, String text, boolean correct, int questeionId) {
+        this.id = id;
+        this.text = text;
+        this.correct = correct;
+        this.questeionId = questeionId;
     }
-
-
-    public void saveData(Label l, String text) {
-        l.textProperty().set(text);
-    }
-
-
-    public static void main(String[] args){
-
-        Answer a = new Answer("test");
-        System.out.println(a.getCorrect());
-
-        Answer a2 = new Answer("test2").setCorrect();
-        System.out.println(a2.getCorrect());
-    }
-
 }
