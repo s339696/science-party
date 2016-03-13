@@ -47,7 +47,7 @@ public class Messages extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        return ok(views.html.messages.newMessage.render());
+        return ok(views.html.messages.newMessage.render(User.find.all()));
     }
 
     /**
