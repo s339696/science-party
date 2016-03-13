@@ -50,7 +50,7 @@ public class Messages extends Controller {
         List<User> users = User.find.all();
         users.remove(user);
 
-        return ok(views.html.messages.newMessage.render());
+        return ok(views.html.messages.newMessage.render(users));
     }
 
     /**
