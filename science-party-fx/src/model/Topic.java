@@ -1,46 +1,43 @@
 package model;
 
-import javafx.scene.control.Label;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+
 
 /**
  * Created by Richard on 22.02.2016.
  */
-public class Topic implements Editor {
+public class Topic {
+    @JsonProperty("id")
+    int id;
 
-    String text;
+    @JsonProperty("name")
+    String name;
 
-
-
-    Topic topic = new Topic(text);
-
-
-    public Topic(String text){
-        this.text=text;
-    }
-
-
-    @Override
-    public String getText() {
-        return this.text;
-    }
-
-    @Override
-    public Topic newData(String s) {
-        return new Topic(s);
-    }
-
-    @Override
-    public void deleteData(Object o) {// hier Daten aus der DB löschen
+    public Topic(){
 
     }
 
-    @Override
-    public void editData() {
-        // Label bearbeitbar machen
+    public int getId() {
+        return id;
     }
 
-    @Override
-    public void saveData(Label l, String text) {
-        l.textProperty().set(text);
+    public void setId(int id) {
+        this.id = id;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Topic(int id, String name) {
+
+        this.id = id;
+        this.name = name;
+    }
+
 }

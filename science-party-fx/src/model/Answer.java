@@ -5,7 +5,7 @@ import javafx.scene.control.Label;
 /**
  * Created by Richard on 22.02.2016.
  */
-public class Answer implements Editor {
+public class Answer {
 
 
     String text;
@@ -28,29 +28,29 @@ public class Answer implements Editor {
     }
 
 
-    @Override
+
     public String getText() {
         return this.text;
     }
 
 
 
-    @Override
+
     public Answer newData(String s) {
         return new Answer(s);
     }
 
-    @Override
+
     public void deleteData(Object o) {
         // hier Daten aus der DB löschen
     }
 
-    @Override
+
     public void editData() {
 
     }
 
-    @Override
+
     public void saveData(Label l, String text) {
         l.textProperty().set(text);
     }

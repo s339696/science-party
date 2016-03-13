@@ -84,12 +84,12 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <CheckBox layoutX="59.0" layoutY="499.0" mnemonicParsing="false" text="Nutzer blockieren">
+            <CheckBox fx:id="checkBox" layoutX="59.0" layoutY="499.0" mnemonicParsing="false" onAction="#handleCheckBox" text="Nutzer blockieren">
                <font>
                   <Font size="15.0" />
                </font>
             </CheckBox>
-            <Button layoutX="424.0" layoutY="494.0" mnemonicParsing="false" text="Nutzer löschen">
+            <Button fx:id="deleteButton" layoutX="424.0" layoutY="494.0" mnemonicParsing="false" onAction="#handleDeleteButton" text="Nutzer löschen">
                <font>
                   <Font size="15.0" />
                </font>
