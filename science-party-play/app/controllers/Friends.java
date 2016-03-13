@@ -23,6 +23,8 @@ public class Friends extends Controller {
         }
 
         List<User> users = User.find.all();
+        users.remove(user);
+        
         List<User> requestUsers = user.getFriendRequests();
         List<User> friendUsers = user.getFriends();
 
