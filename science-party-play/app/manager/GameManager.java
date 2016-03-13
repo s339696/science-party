@@ -156,14 +156,15 @@ public class GameManager {
         }
 
         // Random start: Generate starting player id as long a starting player has status PLAYING
+        System.out.println("Wähle zufällig Startspieler...");
+        List <Player> activePlayers = game.getPlayingPlayer();
         Random random = new Random();
-        int startNumb;
-        do {
-            startNumb = random.nextInt(players.size());
-        } while (Player.find.byId((long) startNumb).getPlayerStatus() != Player.PlayerStatus.PLAYING);
+        int startNumb = random.nextInt(activePlayers.size());
 
         // Set starting player, starting question and start game
-        game.setActivePlayer(players.get(startNumb));
+        System.out.println("Aktiven Spieler setzen...");
+        game.setActivePlayer(activePlayers.get(startNumb));
+        System.out.println("Aktive Frage setzen...");
         game.setActiveQuestion(Question.getRandomQuestion(game.getTopic()));
         game.setGameStatus(Game.GameStatus.ACTIVE);
         game.update();

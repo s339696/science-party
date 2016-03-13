@@ -26,23 +26,32 @@ GET     /logout                         controllers.Profil.handleLogout()
 
 #Gameplay
 GET     /games                          controllers.Games.renderGames()
-GET     /games/pending                  controllers.Games.renderPendingGames()
-GET     /games/load                     controllers.Games.renderRunningGames()
+GET     /games/pending                  controllers.Games.renderPendingGames(feedback: String = "")
+GET     /games/load                     controllers.Games.renderRunningGames(feedback: String = "")
 GET     /games/play/:id                 controllers.Games.renderGame(id: Long)
 GET     /games/create                   controllers.Games.renderCreateGame()
-POST    /games/create                   controllers.Games.createGame()
-POST    /games/delete/:id               controllers.Games.deleteGame(id: Long)
-POST    /games/accept/:id               controllers.Games.respondGameInv(id: Long, action: Integer = 1)
-POST    /games/decline/:id              controllers.Games.respondGameInv(id: Long, action: Integer = 0)
-POST    /games/leave/:id                controllers.Games.leaveGame(id: Long)
+POST    /games/create                   controllers.Games.handleCreateGame()
+GET     /games/delete/:id               controllers.Games.deleteGame(id: Long)
+GET     /games/accept/:id               controllers.Games.respondGameInv(id: Long, action: Integer = 1)
+GET     /games/decline/:id              controllers.Games.respondGameInv(id: Long, action: Integer = 0)
+GET     /games/leave/:id                controllers.Games.leaveGame(id: Long)
 POST    /games/answer/:id               controllers.Games.handleAnswer(id: Long)
 
 #Friends
-GET     /friends                        controllers.Friends.renderFriends()
-POST    /friends/add/:id                controllers.Friends.addFriend(id: Long)
-POST    /friends/delete/:id             controllers.Friends.deleteFriend(id: Long)
-POST    /friends/accept/:id             controllers.Friends.responseFriendRequest(id: Long, action: Integer = 1)
-POST    /friends/decline/:id            controllers.Friends.responseFriendRequest(id: Long, action: Integer = 0)
+GET     /friends                        controllers.Friends.renderFriends(feedback: String = "")
+GET     /friends/add/:id                controllers.Friends.addFriend(id: Long)
+GET     /friends/delete/:id             controllers.Friends.deleteFriend(id: Long)
+GET     /friends/accept/:id             controllers.Friends.responseFriendRequest(id: Long, action: Integer = 1)
+GET     /friends/decline/:id            controllers.Friends.responseFriendRequest(id: Long, action: Integer = 0)
+
+#Messages
+GET     /messages                       controllers.Messages.renderMessages()
+GET     /messages/new                   controllers.Messages.renderNewMessage()
+POST    /messages/new                   controllers.Messages.handleNewMessage()
+GET     /messages/leave/:chatId         controllers.Messages.handleLeaveChat(chatId: Long)
+GET     /messages/show/:chatId          controllers.Messages.renderShowChat(chatId: Long)
+POST    /messages/send/:chatId          controllers.Messages.handleSendMessage(chatId: Long)
+
 
 # Ranking
 GET     /ranking                        controllers.Ranking.renderRanking()

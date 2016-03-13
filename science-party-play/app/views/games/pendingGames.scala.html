@@ -1,6 +1,6 @@
 @import models.ebean.Player
 
-@(user: models.ebean.User)
+@(user: models.ebean.User, feedback: String)
 
 @mainIntern("Spieleinladungen") {
     <br>
@@ -23,6 +23,8 @@
                         @if(game.getPlayerForUser(user).getPlayerStatus() == Player.PlayerStatus.INVITED) {
                             <a class="tabele" href="/games/accept/@game.getId">Annehmen</a>
                             <a class="tabele" href="/games/decline/@game.getId">Ignorieren</a>
+                        } else {
+                            ...warte auf Mitspieler.
                         }
                     </li>
                 }
@@ -30,4 +32,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        @if(feedback != "") {
+            window.onload = function() {
+                window.alert("@feedback")
+            };
+        }
+    </script>
 }

@@ -1,5 +1,7 @@
 package controllers;
 
+import controllers.*;
+import controllers.routes;
 import exception.games.GameException;
 import exception.games.StartGameException;
 import exception.games.StopGameException;
@@ -44,7 +46,7 @@ public class Games extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        return ok(views.html.games.createGame.render(Topic.find.all(),User.find.all()));
+        return ok(views.html.games.createGame.render(Topic.find.all(), User.find.all()));
     }
 
     /**
@@ -52,19 +54,13 @@ public class Games extends Controller {
      *
      * @return
      */
-    public Result renderPendingGames() {
+    public Result renderPendingGames(String feedback) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        // For debug
-        List<Game> games = user.getPendingGames();
-        for (Game game:games) {
-            game.getPlayerForUser(user).getPlayerStatus();
-        }
-
-        return ok(views.html.games.pendingGames.render(user));
+        return ok(views.html.games.pendingGames.render(user, feedback));
     }
 
     /**
@@ -72,7 +68,7 @@ public class Games extends Controller {
      *
      * @return
      */
-    public Result renderRunningGames() {
+    public Result renderRunningGames(String feedback) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
@@ -80,11 +76,7 @@ public class Games extends Controller {
 
         List<Game> runningGames = user.getRunningGames();
 
-        for (Game game : runningGames) {
-            Logger.info(game.getId().toString());
-        }
-
-        return ok(views.html.games.loadGame.render(runningGames));
+        return ok(views.html.games.loadGame.render(runningGames, feedback));
     }
 
     /**
@@ -98,14 +90,18 @@ public class Games extends Controller {
         User user = LoginManager.getLoggedInUser();
 
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         if (game == null) {
-            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
+            return renderRunningGames("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
         }
 
         Player player = Player.getPlayerOfGameAndUser(game, user);
+        System.out.println(player.getPlayerStatus());
+        if (player == null || player.getPlayerStatus() != Player.PlayerStatus.PLAYING) {
+            return renderRunningGames("Du bist kein aktiver Mitspieler dieses Spiels.");
+        }
 
         return ok(views.html.games.playGame.render(player, game));
     }
@@ -120,7 +116,7 @@ public class Games extends Controller {
      *
      * @return
      */
-    public Result createGame() {
+    public Result handleCreateGame() {
         User player1 = LoginManager.getLoggedInUser();
         if (player1 == null) {
             return badRequest("Es ist kein User eingeloggt.");
@@ -138,18 +134,21 @@ public class Games extends Controller {
         if (topic == null) {
             return badRequest("Das ausgewählte Thema ist ungültig.");
         }
+        System.out.println("ljljköj");
 
         // Get involved Users and add them to Playerlist
         List<User> playerList = new ArrayList<User>();
         playerList.add(player1);
 
         int[] playerIds = cgForm.getPlayerIds();
-        for (int i = 0; i < playerIds.length; i++) {
-            User player = User.find.byId((long) playerIds[i]);
-            if (player == null) {
-                return badRequest("Spieler " + (i + 2) + " konnte dem Spiel nicht hinzugefügt werden.");
-            } else {
-                playerList.add(player);
+        if (playerIds != null) {
+            for (int i = 0; i < playerIds.length; i++) {
+                User player = User.find.byId((long) playerIds[i]);
+                if (player == null) {
+                    return badRequest("Spieler " + (i + 2) + " konnte dem Spiel nicht hinzugefügt werden.");
+                } else {
+                    playerList.add(player);
+                }
             }
         }
 
@@ -189,22 +188,22 @@ public class Games extends Controller {
         Boolean accept = (action == 1) ? true : false;
 
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         if (game == null) {
-            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
+            return renderPendingGames("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
         }
 
         try {
             GameManager.respondGameInvite(game, user, accept);
         } catch (StartGameException e) {
-            return ok(e.getMessage());
+            return renderPendingGames(e.getMessage());
         } catch (Exception e) {
-            return badRequest(e.getMessage());
+            return renderPendingGames("Fehler: " + e.getMessage());
         }
 
-        return ok("Die Einladung wurde angenommen und das Spiel gestartet.");
+        return redirect(controllers.routes.Games.renderGame(game.getId()));
     }
 
     /**
@@ -263,7 +262,7 @@ public class Games extends Controller {
         }
 
         AnswerForm answerForm = requestData.get();
-        Answer answer = Answer.find.byId((long)answerForm.getAnswerId());
+        Answer answer = Answer.find.byId((long) answerForm.getAnswerId());
 
         // Give the answer to the game god and let him do
 
