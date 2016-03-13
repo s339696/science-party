@@ -134,6 +134,11 @@ select.message {
 	box-sizing: border-box;
 }
 
+textarea {
+   	resize: vertical;
+	width: 99%
+}
+
 a.bigButton {
 	width: 100%;
 	display: inline-block;
@@ -223,6 +228,15 @@ a.newMessage {
 	border: none;
 	border-radius: 4px;
 	cursor: pointer;
+}
+
+a.tabeleFloatRight {
+	float: right;
+	display: inline-block;
+	color: white;
+	text-align: center;
+	padding: 20px 10px;
+	text-decoration: none;
 }
 
 input[type=text], input[type=password], input[type=date], input[type=email] {
@@ -352,4 +366,8 @@ a.deleteButton:hover {
 
 a.newMessage:hover {
 	background-color: #45a049;
+}
+
+a.tabeleFloatRight:hover {
+	background-color: #111;
 }

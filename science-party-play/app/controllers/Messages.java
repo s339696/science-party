@@ -46,8 +46,9 @@ public class Messages extends Controller {
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
+        List<User> users = User.find.all();
 
-        return ok(views.html.messages.newMessage.render());
+        return ok(views.html.messages.newMessage.render(users));
     }
 
     /**
