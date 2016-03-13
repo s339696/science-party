@@ -29,6 +29,7 @@ create table friends (
 
 create table games (
   id                        bigint auto_increment not null,
+  name                      varchar(255),
   active_player_id          bigint,
   active_question_id        bigint,
   game_status               varchar(1),
@@ -36,8 +37,6 @@ create table games (
   date_created              datetime not null,
   date_updated              datetime not null,
   constraint ck_games_game_status check (game_status in ('A','P','F')),
-  constraint uq_games_active_player_id unique (active_player_id),
-  constraint uq_games_active_question_id unique (active_question_id),
   constraint pk_games primary key (id))
 ;
 
