@@ -84,6 +84,9 @@ GET    /ac/get/answer/:id               controllers.AuthorConnect.serveAnswer(id
 POST   /ac/update/answer                controllers.AuthorConnect.handleAnswerUpdate()
 PUT    /ac/insert/answer                controllers.AuthorConnect.handleAnswerInsert()
 DELETE /ac/delete/answer/:id            controllers.AuthorConnect.handleAnswerDelete(id: Long)
+#AC-Perk
+GET    /ac/get/perk/list                controllers.AuthorConnect.servePerkList()
+GET    /ac/get/perk/list/:topicId       controllers.AuthorConnect.servePerkListByTopic(topicId: Long)
 
 # Map static resources from the /publ folder to the /assets URL path
 GET     /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)
