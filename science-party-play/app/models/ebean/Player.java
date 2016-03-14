@@ -95,6 +95,14 @@ public class Player extends Model {
         this.game = game;
     }
 
+    public List<PerkPerPlayer> getPerksPerPlayer() {
+        return perksPerPlayer;
+    }
+
+    public void setPerksPerPlayer(List<PerkPerPlayer> perksPerPlayer) {
+        this.perksPerPlayer = perksPerPlayer;
+    }
+
     @Override
     public String toString() {
         return getUser().getFirstname() + " " +  getUser().getLastname();

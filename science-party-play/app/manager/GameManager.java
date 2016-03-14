@@ -23,7 +23,7 @@ public class GameManager {
      * @param users
      * @return
      */
-    public static Game createGame(Topic topic, List<User> users) throws GameException {
+    public static Game createGame(Topic topic, String name, List<User> users) throws GameException {
         if (topic == null) {
             throw new CreateGameException("Das ausgewählte Thema ist ungültig.");
         }
@@ -32,14 +32,14 @@ public class GameManager {
         Game game = new Game();
         game.setGameStatus(Game.GameStatus.PENDING);
         game.setTopic(topic);
-
+        game.setName(name);
         game.insert();
 
         // Create Players for the Games, each user represent a player
         if (users.size() < 1 || users.size() > 4) {
             throw new CreateGameException("Die Anzahl der Spieler ist ungültig.");
         }
-        List<Player> players = new ArrayList<Player>();
+                List<Player> players = new ArrayList<Player>();
         for (User user : users) {
             // Create player for this game
             Player player = new Player();
@@ -249,5 +249,18 @@ public class GameManager {
         game.nextTurn();
 
         return result;
+    }
+
+    /**
+     * Uses a perk for a given game.
+     *
+     * @param game
+     * @param perk
+     * @return
+     */
+    public static boolean usePerk(Game game, PerkPerPlayer perk) throws Exception {
+        System.out.println("Perk \"" + perk.getPerkPerUser().getPerkPerTopic().getPerk().getName() + "\" wurde genutzt.");
+
+        return true;
     }
 }

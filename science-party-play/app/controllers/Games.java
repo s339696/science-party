@@ -88,7 +88,7 @@ public class Games extends Controller {
      * @param id
      * @return
      */
-    public Result renderGame(Long id) {
+    public Result renderGame(Long id, String feedback) {
         Game game = Game.getGameById(id);
         User user = LoginManager.getLoggedInUser();
 
@@ -109,7 +109,7 @@ public class Games extends Controller {
             return renderRunningGames("Du bist kein aktiver Mitspieler dieses Spiels.");
         }
 
-        return ok(views.html.games.playGame.render(player, game));
+        return ok(views.html.games.playGame.render(player, game, feedback));
     }
 
     /**
@@ -161,7 +161,7 @@ public class Games extends Controller {
         //Create Game
         Game game = null;
         try {
-            game = GameManager.createGame(topic, playerList);
+            game = GameManager.createGame(topic, topic.getName() + " von " + player1.getFirstname(), playerList);
         } catch (StartGameException e) {
             return ok("Das Spiel mit der Id #" + e.getGame().getId() + " wurde erfolgreich erzeugt, " +
                     "konnte aber noch nicht gestartet werden.");
@@ -209,7 +209,7 @@ public class Games extends Controller {
             return renderPendingGames("Fehler: " + e.getMessage());
         }
 
-        return redirect(controllers.routes.Games.renderGame(game.getId()));
+        return redirect(controllers.routes.Games.renderGame(game.getId(),""));
     }
 
     /**
@@ -251,11 +251,11 @@ public class Games extends Controller {
     public Result handleAnswer(Long id) {
         // Check game and user
         Game game = Game.getGameById(id);
-        //User user = LoginManager.getLoggedInUser();
+        User user = LoginManager.getLoggedInUser();
 
-/*        if (user == null) {
+        if (user == null) {
             return badRequest("Es ist kein User eingeloggt.");
-        }*/
+        }
 
         if (game == null) {
             return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
@@ -285,4 +285,28 @@ public class Games extends Controller {
         }
     }
 
+    public Result usePerk(Long gameId, Long perkId) {
+        // Check game, perk and user
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
+
+        Game game = Game.getGameById(gameId);
+        if (game == null) {
+            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + gameId + ".");
+        }
+
+        PerkPerPlayer perk = PerkPerPlayer.find.byId(perkId);
+        if (perk == null) {
+            return badRequest("Es gibt keine Fähigkeit mit dieser Id.");
+        }
+
+        try {
+            GameManager.usePerk(game, perk);
+        } catch (Exception e) {
+            redirect(controllers.routes.Games.renderGame(gameId, e.getMessage()));
+        }
+        return redirect(controllers.routes.Games.renderGame(gameId, "It works!"));
+    }
 }

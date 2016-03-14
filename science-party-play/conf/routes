@@ -28,7 +28,7 @@ GET     /logout                         controllers.Profil.handleLogout()
 GET     /games                          controllers.Games.renderGames()
 GET     /games/pending                  controllers.Games.renderPendingGames(feedback: String = "")
 GET     /games/load                     controllers.Games.renderRunningGames(feedback: String = "")
-GET     /games/play/:id                 controllers.Games.renderGame(id: Long)
+GET     /games/play/:id                 controllers.Games.renderGame(id: Long, feedback: String ?= "")
 GET     /games/create                   controllers.Games.renderCreateGame()
 POST    /games/create                   controllers.Games.handleCreateGame()
 GET     /games/delete/:id               controllers.Games.deleteGame(id: Long)
@@ -36,6 +36,7 @@ GET     /games/accept/:id               controllers.Games.respondGameInv(id: Lon
 GET     /games/decline/:id              controllers.Games.respondGameInv(id: Long, action: Integer = 0)
 GET     /games/leave/:id                controllers.Games.leaveGame(id: Long)
 POST    /games/answer/:id               controllers.Games.handleAnswer(id: Long)
+GET     /games/play/:id/perk/:pid       controllers.Games.usePerk(id: Long, pid: Long)
 
 #Friends
 GET     /friends                        controllers.Friends.renderFriends(feedback: String = "")
