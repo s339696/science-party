@@ -1,0 +1,17 @@
+@mainIntern("Fähigkeit scannen") {
+
+    <script type="text/javascript" src="@routes.Assets.versioned("javascripts/qcode-decoder.min.js")"></script>
+    <div style="text-align:center ;">
+        <video autoplay></video>
+    </div>
+    <script>
+            // get video element
+            var video = document.querySelector('video');
+            // register callback function if a QR code is detected
+            QCodeDecoder().decodeFromCamera(video, function(err, result){
+                if(err) throw err;
+                window.location.assign("/profile/scan/" + result);
+
+            });
+    </script>
+}

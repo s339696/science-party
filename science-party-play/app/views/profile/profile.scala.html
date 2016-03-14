@@ -1,4 +1,4 @@
-@(user: models.ebean.User, ownProfile: Boolean)
+@(user: models.ebean.User, ownProfile: Boolean, feedback: String)
 
 
 @mainIntern("Profil von " + user.getFirstname) {
@@ -30,11 +30,14 @@
         </div>
         <div class="userPerks">
             <h3>Fähigkeiten</h3>
+            <ul>
             @for(perk <- user.getPerks) {
-                <p>Fähigkeit "@perk.getPerkPerTopic.getPerk.getName" für @perk.getPerkPerTopic.getTopic.getName</p>
+                <li>Fähigkeit "@perk.getPerkPerTopic.getPerk.getName" für @perk.getPerkPerTopic.getTopic.getName</li>
             }
+            </ul>
+
             @if(ownProfile) {
-                <a class="addPerkButton">+Fähigkeit</a>
+                <a href="/profile/scan" class="addPerkButton">+Fähigkeit</a>
             }
         </div>
 
@@ -44,4 +47,11 @@
             </a>
         </div>
     </div>
+    <script>
+                @if(feedback != "") {
+            window.onload = function() {
+                window.alert("@feedback")
+            };
+        }
+    </script>
 }
