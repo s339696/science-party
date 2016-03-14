@@ -6,88 +6,84 @@
     <br>
     <br>
     <div class="Spielinformationen">
-        <h1>Science Party</h1>
-        <p>Thema: @game.getTopic.getName()</p>
-        <p>Spielbeginn: @game.getWhenCreated()</p>
-
+        <h2>Science Party</h2>
+        <p>
+            Name: @game.getName<br>
+            Thema: @game.getTopic.getName()<br>
+            Spielbeginn: @game.getWhenCreated()<br>
+            Aktiver Spieler: @game.getActivePlayer<br>
+        </p>
     </div>
 
-    <div class="Frage">
-        <p> Frage @game.getActiveQuestion.getId() : @game.getActiveQuestion.getText() </p>
-
-        <form id="answerForm">
-
-
-            <ul>
-                frage @game.getActiveQuestion.getId() : @game.getActiveQuestion.getText()
-
-                <fieldset>
-                    <input type="radio" id="a1" name="answer"
-                    value="@game.getActiveQuestion.getAnswers.get(1).getId">
-                      <label for="a1">  1: @game.getActiveQuestion.getAnswers.get(1).getText()  </label>
-
-
-                    <input type="radio" id="a2" name="answer"
-                    value="@game.getActiveQuestion.getAnswers.get(2).getId">
-                    <label for="a2">    2: @game.getActiveQuestion.getAnswers.get(2).getText() </label>
-
-
-                    <input type="radio" id="a3" name="answer"
-                    value="@game.getActiveQuestion.getAnswers.get(3).getId">
-                    <label for="a3">   3: @game.getActiveQuestion.getAnswers.get(3).getText() </label>
-                </fieldset>
-            </ul>
-            <button type="submit">Antworten</button>
-        </form>
+    <div class="Mitspieler">
+        <h3>Mitspieler</h3>
+        @for(player <- game.getPlayingPlayer) {
+            <p>
+                Id: @player.getId <br>
+                Name: @player <br>
+                Position: @player.getFieldPosition
+            </p>
+        }
     </div>
 
-    <div class="Spielfeld">
+    @if(game.getActivePlayer.getId == player.getId) {
+        <div class="Frage">
+            <p> Frage @game.getActiveQuestion.getId(): @game.getActiveQuestion.getText() </p>
 
+            <form id="answerForm">
+                <ul>
+                    <fieldset>
+                        <legend>Antworten</legend>
+                        @for((answer, index) <- game.getActiveQuestion.getAnswers.zipWithIndex) {
+                            <input type="radio" id="a@index" name="answer" value="@answer.getId">
+                            <label for="a1">@(index + 1): @answer.getText()</label> <br>
+                            }
+                    </fieldset>
+                </ul>
+                <button type="submit">Antworten</button>
+            </form>
+        </div>
+    }
 
-    </div>
-
-
-<script>
-        $("#answerForm").on('submit', function (e) {
-            e.preventDefault();
-            var answerId;
-
-            if(document.answer[0].checked == true) {
-                answerId=document.answer[0].value();
+    <script>
+            // Set autorefresh
+            @if(game.getActivePlayer.getId != player.getId) {
+                window.onload=autoRefresh(5000);
             }
-            else
-            if(document.answer[1].checked == true) {
-                answerId=document.answer[1].value();
-            }
-            else
-            if(document.answer[2].checked == true) {
-                answerId=document.answer[2].value();
 
-            }
+            // On submit, trasmit answer to server
+            $("#answerForm").on('submit', function (e) {
+                e.preventDefault();
 
+                var answerId=$('input[name=answer]:checked').val();
 
+                if(answerId === "undefined") {
+                    window.alert("Bitte wähle eine Antwort aus.");
+                } else {
+                    $.ajax({
+                        url: '/games/answer/@game.getId()',
+                        method: 'POST',
+                        contentType: "application/json",
+                        dataType: "text",
+                        data: JSON.stringify({
+                            answerId: answerId,
 
-            $.ajax({
-                url: '/games/answer/@game.getId()',
-                method: 'POST',
-                contentType: "application/json",
-                dataType: "text",
-                data: JSON.stringify({
-                 answerId: answerId,
-
-                }),
-                success: function(data,status,xhr) {
-                    alert(xhr.responseText);
-                    location.reload();
-                },
-                error: function(xhr,status,error) {
-                    alert(xhr.responseText);
+                        }),
+                        success: function(data,status,xhr) {
+                            alert(xhr.responseText);
+                            location.reload();
+                        },
+                        error: function(xhr,status,error) {
+                            alert(xhr.responseText);
+                        }
+                    });
                 }
             });
 
-        });
-
-
-</script>
+            // Auto refresh
+            function autoRefresh(t) {
+                setTimeout("location.reload(true);", t);
+            }
+    </script>
 
 }

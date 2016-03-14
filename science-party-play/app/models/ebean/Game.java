@@ -199,6 +199,7 @@ public class Game extends Model {
      */
     public List<Player> getPlayingPlayer() {
         return Player.find.where()
-                .ieq("playerStatus", "P").findList();
+                .ieq("playerStatus", "P")
+                .ieq("game_id", this.getId().toString()).findList();
     }
 }

@@ -90,8 +90,15 @@ public class Messages extends Controller {
                     Ebean.endTransaction();
                 }
 
+                String name = "";
+                for (User chatUser: members) {
+                    name += chatUser.getFirstname();
+                    name += ", ";
+                }
+                name += user.getFirstname();
+
                 // Create chat
-                Chat.createChat(user, members, form.getMessage());
+                Chat.createChat(user, members, name,form.getMessage());
                 return ok("Die Nachricht wurde erfolgreich verschickt.");
 
             } catch (Exception e) {
@@ -143,7 +150,7 @@ public class Messages extends Controller {
 
         List<Message> messages =  Message.getMessagesOfChat(chat);
 
-        return ok(views.html.messages.viewMessage.render(messages));
+        return ok(views.html.messages.viewMessage.render(messages, user));
     }
 
     /**

@@ -48,8 +48,8 @@
                 @for( friend <- friends) {
                     <li class="tabele">
                         <a class="tabele" href="/profile/@friend.getId">@friend.toString</a>
-                        <a class="tabele" href="/message/send/@friend.getId">Nachricht senden</a>
                         <a class="tabeleDelete" href="/friends/delete/@friend.getId">Freund entfernen</a>
+                        <a class="tabeleFloatRight" href="/message/send/@friend.getId">Nachricht senden</a>
                     </li>
                 }
             </ul>

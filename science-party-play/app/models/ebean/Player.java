@@ -95,4 +95,8 @@ public class Player extends Model {
         this.game = game;
     }
 
+    @Override
+    public String toString() {
+        return getUser().getFirstname() + " " +  getUser().getLastname();
+    }
 }
