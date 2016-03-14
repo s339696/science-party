@@ -102,6 +102,9 @@ public class Games extends Controller {
 
         Player player = Player.getPlayerOfGameAndUser(game, user);
         System.out.println(player.getPlayerStatus());
+        if (player.getPlayerStatus() == Player.PlayerStatus.FINISHED) {
+            return renderRunningGames("Die Spiel wurde beendet. Du hast in diesem Spiel insgesamt " + player.getFieldPosition() + " Punkte erreicht.");
+        }
         if (player == null || player.getPlayerStatus() != Player.PlayerStatus.PLAYING) {
             return renderRunningGames("Du bist kein aktiver Mitspieler dieses Spiels.");
         }
