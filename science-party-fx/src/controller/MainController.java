@@ -41,8 +41,10 @@ public class MainController implements Initializable {
     @FXML
     private SplitPane UserSplitPane;
 
+    @FXML
     private SplitPane QuizSplitPane;
 
+    @FXML
     private SplitPane QrSplitPane;
 
     @FXML
@@ -113,7 +115,7 @@ public class MainController implements Initializable {
 
         System.out.println(UserTab.getContent());
 
-        standard.Main.loginStage.setScene(new Scene(mainTabPane));
+        standard.Main.mainStage.setScene(new Scene(mainTabPane));
     }
 
 

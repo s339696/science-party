@@ -1,6 +1,5 @@
 package standard;
 
-import controller.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,13 +12,14 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
-public static Stage loginStage;
-
-
+    /**
+     * Declaration of the mainStage so that it is possible to change the stage from anywhere else
+     */
+    public static Stage mainStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        loginStage=primaryStage;
+        mainStage =primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("../view/gui_login.fxml"));
         primaryStage.setTitle("Sciene Party Author Tool");
 
@@ -30,9 +30,6 @@ public static Stage loginStage;
 
 
     public static void main(String[] args) {
-
-
-
       launch(args);
     }
 
