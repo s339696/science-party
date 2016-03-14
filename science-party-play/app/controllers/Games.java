@@ -46,7 +46,10 @@ public class Games extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        return ok(views.html.games.createGame.render(Topic.find.all(), User.find.all()));
+        List<User> users = User.find.all();
+        users.remove(user);
+
+        return ok(views.html.games.createGame.render(Topic.find.all(), users));
     }
 
     /**
