@@ -33,13 +33,13 @@ public class Chat extends Model {
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
     private List<Message> messages;
 
-    public static void createChat(User from, List<User> members, String firstMsg) throws CreateMessageException {
+    public static void createChat(User from, List<User> members, String name, String firstMsg) throws CreateMessageException {
         Ebean.beginTransaction();
         try {
             Chat chat = new Chat();
             members.add(0,from);
             chat.setUsers(members);
-            chat.setName("Gespräch");
+            chat.setName(name);
             chat.save();
 
             Message newMsg = new Message();
