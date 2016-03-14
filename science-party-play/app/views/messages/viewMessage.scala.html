@@ -1,4 +1,4 @@
-@(messages: List[models.ebean.Message])
+@(messages: List[models.ebean.Message], user: models.ebean.User)
 
 @mainIntern("Nachrichten") {
     <br>
@@ -8,8 +8,19 @@
             Nachrichten
         </h1>
     </div>
+    @for(message <- messages) {
+        @if(message.getUser.getId == user.getId) {
+            Von mir:<br>
+            @message.getWhenCreated <br>
+            @message.getText<br>
+        } else {
+            Von jemand anderem:<br>
+            @message.getWhenCreated <br>
+            @message.getText<br>
+        }
+    }
     <br>
-    <div class="tabele">
+@*    <div class="tabele">
         <div class="list">
             <ul class="tabele">
                 <li class="tabele">
@@ -17,7 +28,7 @@
                     <a class="tabele" href="/messages/delete/:id">Chat löschen</a>
                 </li>
             </ul>
-        </div>
+        </div>*@
         <div class="list">
             <form>
                 <select>
