@@ -6,20 +6,18 @@
     <br>
     <br>
     <br>
+    <div class="tabeleHead">
+        <h1>
+            Spieleinladungen
+        </h1>
+    </div>
     <br>
-
-    <div>
-        <div class="formular">
-            <h1>
-                Spieleinladungen
-            </h1>
-        </div>
-        <div class="tabele">
-            <div class="list">
-                <ul class="tabele">
+    <div class="tabele">
+        <div class="list">
+            <ul class="tabele">
                 @for(game <- user.getPendingGames) {
                     <li class="tabele">
-                    ID: @game.getId Thema: @game.getTopic
+                        <a class="tabele" href="#gameInfo">ID: @game.getId Thema: @game.getTopic</a>
                         @if(game.getPlayerForUser(user).getPlayerStatus() == Player.PlayerStatus.INVITED) {
                             <a class="tabele" href="/games/accept/@game.getId">Annehmen</a>
                             <a class="tabele" href="/games/decline/@game.getId">Ignorieren</a>
@@ -28,9 +26,9 @@
                         }
                     </li>
                 }
-                </ul>
+            </ul>
             </div>
-        </div>
+
     </div>
 
     <script>
