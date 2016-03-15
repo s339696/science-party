@@ -40,11 +40,13 @@ public class Search extends Controller {
      * @return
      */
     public List<User> searchUser(String sstring) {
-        //String query = "WHERE MATCH (firstname,lastname,email) AGAINST ('" + sstring + "' IN BOOLEAN MODE)";
+        String query = "WHERE MATCH (firstname,lastname,email) AGAINST ('" + sstring + "' IN BOOLEAN MODE)";
         List<User> resultUsers = User.find
-                .where().contains("firstname", sstring)
-                //.setQuery(query)
+                //.where().contains("firstname", sstring)
+                .setQuery(query)
                 .findList();
+
+        System.out.println(resultUsers.size());
 
         return resultUsers;
     }
