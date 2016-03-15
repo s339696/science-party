@@ -1,0 +1,13 @@
+@import models.ebean.User
+@(resultUsers: List[User])
+
+<div class="list">
+    <ul class="tabele">
+        @for(user <- resultUsers) {
+            <li class="tabele">
+                <a class="tabele" href="/profile/@user.getId">@user</a>
+                <a class="tabeleFloatRight" href="/friends/add/@user.getId">Freund hinzufügen</a>
+            </li>
+        }
+    </ul>
+</div>
