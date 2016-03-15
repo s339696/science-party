@@ -4,9 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import model.Answer;
 import model.Question;
 import model.Topic;
@@ -45,6 +43,18 @@ public class QuizController implements Initializable {
 
     @FXML
     TextField answerD;
+
+    @FXML
+    RadioButton radioA;
+
+    @FXML
+    RadioButton radioB;
+
+    @FXML
+    RadioButton radioC;
+
+    @FXML
+    RadioButton radioD;
 
 
     @Override
@@ -90,6 +100,15 @@ public class QuizController implements Initializable {
     @FXML
     public void handleQuestionsInSelect() throws IOException {
         ObservableList<String> list = FXCollections.observableArrayList();
+        ObservableList<Boolean> radioList = FXCollections.observableArrayList();
+
+        ToggleGroup group = new ToggleGroup();
+        radioA.setToggleGroup(group);
+        radioB.setToggleGroup(group);
+        radioC.setToggleGroup(group);
+        radioD.setToggleGroup(group);
+
+
 
         String selectedItem = questionsListView.getSelectionModel().getSelectedItem();
         String[] selectedId = selectedItem.split(":");
@@ -104,30 +123,38 @@ public class QuizController implements Initializable {
         for(Answer answer : AnswerManager.answerMap.values()){
 
             list.add(answer.getText());
-
+            radioList.add(answer.isCorrect());
         }
-
-        Collections.sort(list);
-
-        System.out.println(AnswerManager.answerMap.values().size());
-        System.out.println(list.size());
 
         answerA.textProperty().set("");
         answerB.textProperty().set("");
         answerC.textProperty().set("");
         answerD.textProperty().set("");
 
+        radioA.setDisable(true);
+        radioB.setDisable(true);
+        radioC.setDisable(true);
+        radioD.setDisable(true);
+
         int size = list.size();
 
        switch(size){
            case 4:
                answerD.textProperty().set(list.get(3));
+               radioD.setDisable(false);
+               radioD.setSelected(radioList.get(3));
            case 3:
                answerC.textProperty().set(list.get(2));
+               radioC.setDisable(false);
+               radioC.setSelected(radioList.get(2));
            case 2:
                answerB.textProperty().set(list.get(1));
+               radioB.setDisable(false);
+               radioB.setSelected(radioList.get(1));
            case 1:
                answerA.textProperty().set(list.get(0));
+               radioA.setDisable(false);
+               radioA.setSelected(radioList.get(0));
                break;
        }
 

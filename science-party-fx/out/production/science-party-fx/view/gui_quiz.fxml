@@ -19,7 +19,7 @@
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
             <ListView fx:id="topicsListView" editable="true" fixedCellSize="30.0" layoutX="58.0" layoutY="69.0" onMouseClicked="#handleTopicsInSelect" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Button layoutX="-2.0" layoutY="564.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="201.0" text="+Neues Thema" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="addTopicButton" layoutX="-2.0" layoutY="564.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="201.0" text="+Neues Thema" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font size="15.0" />
                </font>
@@ -28,7 +28,7 @@
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="601.0" prefWidth="197.0">
          <children>
             <ListView fx:id="questionsListView" layoutX="8.0" layoutY="68.0" onMouseClicked="#handleQuestionsInSelect" prefHeight="564.0" prefWidth="216.0" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Button layoutX="-6.0" layoutY="564.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="225.0" text="+Neue Frage" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="addQuestionButton" layoutX="-6.0" layoutY="564.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="225.0" text="+Neue Frage" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font size="15.0" />
                </font>
@@ -83,10 +83,10 @@
                </font>
             </Text>
             <Button layoutX="41.0" layoutY="492.0" mnemonicParsing="false" text="Frage Löschen" AnchorPane.leftAnchor="41.0" />
-            <RadioButton layoutX="385.0" layoutY="291.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
-            <RadioButton layoutX="385.0" layoutY="331.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
-            <RadioButton layoutX="385.0" layoutY="372.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
-            <RadioButton layoutX="385.0" layoutY="414.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
+            <RadioButton fx:id="radioA" layoutX="385.0" layoutY="291.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
+            <RadioButton fx:id="radioB" layoutX="385.0" layoutY="331.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
+            <RadioButton fx:id="radioC" layoutX="385.0" layoutY="372.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
+            <RadioButton fx:id="radioD" layoutX="385.0" layoutY="414.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
             <Button layoutX="385.0" layoutY="492.0" mnemonicParsing="false" text="Frage Speichern" AnchorPane.leftAnchor="385.0" />
          </children>
       </AnchorPane>
