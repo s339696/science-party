@@ -223,19 +223,19 @@ public class Games extends Controller {
         User user = LoginManager.getLoggedInUser();
 
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         if (game == null) {
-            return badRequest("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
+            return renderRunningGames("Es gibt kein Spiel mit der angegebenen Id #" + id + ".");
         }
 
         try {
             GameManager.leaveGame(game, user);
         } catch (GameException e) {
-            return badRequest(e.getMessage());
+            return renderRunningGames(e.getMessage());
         }
-        return ok("Das Spiel wurde verlassen.");
+        return renderRunningGames("Das Spiel wurde verlassen.");
     }
 
     /**
