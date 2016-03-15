@@ -307,6 +307,6 @@ public class Games extends Controller {
         } catch (Exception e) {
             redirect(controllers.routes.Games.renderGame(gameId, e.getMessage()));
         }
-        return redirect(controllers.routes.Games.renderGame(gameId, "It works!"));
+        return redirect(controllers.routes.Games.renderGame(gameId, "Die Fähigkeit wurde eingesetzt."));
     }
 }
