@@ -71,6 +71,7 @@ public class UserController implements Initializable{
             @Override
             public void onChanged(Change<? extends Integer, ? extends User> change) {
                 try {
+                    System.out.println("Map wurde geändert");
                     showList();
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -99,11 +100,6 @@ public class UserController implements Initializable{
             }
             presentationList.clear();
         }
-
-
-
-        System.out.println(UserManager.userMap.get(1).getFirstname());
-
 
         for(User u : UserManager.userMap.values()){
             int i=0;

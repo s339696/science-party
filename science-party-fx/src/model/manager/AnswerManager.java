@@ -2,6 +2,8 @@ package model.manager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import model.Answer;
 import model.Question;
 import model.database.DatabaseConnect;
@@ -48,13 +50,15 @@ public class AnswerManager {
     }
 
     public static void refreshAnswerMapPerTopic(int qid) throws IOException {
+        ObservableMap<Integer, Answer> map = FXCollections.observableHashMap();
         String allAnswersJson = AnswerManager.getAllAnswersJson(qid);
         ObjectMapper mapper = new ObjectMapper();
         List<Answer> answerList = mapper.readValue(allAnswersJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Answer.class));
 
         for(Answer answer : answerList){
-            answerMap.put(answer.getId(), answer);
+            map.put(answer.getId(), answer);
         }
+        answerMap=map;
 
     }
 
