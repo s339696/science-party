@@ -19,7 +19,7 @@
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
          <children>
             <ListView fx:id="topicsListView" editable="true" fixedCellSize="30.0" layoutX="58.0" layoutY="69.0" onMouseClicked="#handleTopicsInSelect" AnchorPane.bottomAnchor="37.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Button fx:id="addTopicButton" layoutX="-2.0" layoutY="564.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="201.0" text="+Neues Thema" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <Button fx:id="addTopicButton" layoutX="-2.0" layoutY="564.0" mnemonicParsing="false" onAction="#createNewTopic" prefHeight="42.0" prefWidth="201.0" text="+Neues Thema" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <font>
                   <Font size="15.0" />
                </font>
@@ -36,7 +36,7 @@
          </children></AnchorPane>
       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="601.0" prefWidth="540.0">
          <children>
-            <TextArea fx:id="questionBox" layoutX="32.0" layoutY="65.0" prefHeight="200.0" prefWidth="338.0" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="65.0" />
+            <TextArea fx:id="questionBox" layoutX="32.0" layoutY="65.0" prefHeight="200.0" prefWidth="328.0" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="65.0" />
             <TextField fx:id="answerA" layoutX="41.0" layoutY="284.0" prefHeight="31.0" prefWidth="320.0" AnchorPane.leftAnchor="41.0">
                <font>
                   <Font size="15.0" />
@@ -88,6 +88,8 @@
             <RadioButton fx:id="radioC" layoutX="385.0" layoutY="372.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
             <RadioButton fx:id="radioD" layoutX="385.0" layoutY="414.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
             <Button layoutX="385.0" layoutY="492.0" mnemonicParsing="false" text="Frage Speichern" AnchorPane.leftAnchor="385.0" />
+            <TextField fx:id="difficultyField" layoutX="379.0" layoutY="89.0" prefHeight="25.0" prefWidth="30.0" />
+            <Label layoutX="379.0" layoutY="65.0" text="Schwierigkeit" />
          </children>
       </AnchorPane>
   </items>

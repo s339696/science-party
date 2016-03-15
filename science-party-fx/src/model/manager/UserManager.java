@@ -55,15 +55,16 @@ public class UserManager {
 
 
     public static void refreshUserMap() throws IOException {
+        ObservableMap<Integer, User> map = FXCollections.observableHashMap();
         String allUserJson = UserManager.getAllUserJson();
 
         ObjectMapper mapper = new ObjectMapper();
         List<User> userList = mapper.readValue(allUserJson, TypeFactory.defaultInstance().constructCollectionType(List.class, User.class));
 
         for(User user: userList){
-            userMap.put(user.getId(), user);
+            map.put(user.getId(), user);
         }
-
+        userMap=map;
     }
 
 

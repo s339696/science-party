@@ -90,24 +90,20 @@ public class UserController implements Initializable{
 
 
 
-    static ObservableList<String> presentationList = FXCollections.observableArrayList();
+    ObservableList<Integer> userIdList = FXCollections.observableArrayList();
+
     @FXML
     private void showList() throws IOException {
-
-        if(presentationList.size()>0){
-            for(String s : presentationList){
-                presentationList.remove(s);
-            }
-            presentationList.clear();
-        }
-
+        ObservableList<String> presentationList = FXCollections.observableArrayList();
         for(User u : UserManager.userMap.values()){
             int i=0;
-            presentationList.add(i,u.getId() + ": " +u.getFirstname() + " " + u.getLastname());
+            presentationList.add(u.getFirstname() + " " + u.getLastname());
+            userIdList.add(u.getId());
             i++;
         }
 
-        Collections.sort(presentationList);
+        Collections.reverse(presentationList);
+        Collections.reverse(userIdList);
 
         lv.setItems(presentationList);
 
@@ -118,10 +114,8 @@ public class UserController implements Initializable{
 
     @FXML
     private void handleUserInSelect(){
-        ObservableList<String> selectedItems = lv.getSelectionModel().getSelectedItems();
-        String idString = selectedItems.get(0);
-        String[] s = idString.split(":");
-        int id = Integer.parseInt(s[0]);
+       int index = lv.getSelectionModel().getSelectedIndex();
+        int id = userIdList.get(index);
 
 
         presentedUser = UserManager.userMap.get(id);

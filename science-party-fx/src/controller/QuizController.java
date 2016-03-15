@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldListCell;
 import model.Answer;
 import model.Question;
 import model.Topic;
@@ -15,7 +16,6 @@ import model.manager.TopicManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -31,6 +31,9 @@ public class QuizController implements Initializable {
 
     @FXML
     TextArea questionBox;
+
+    @FXML
+    TextField difficultyField;
 
     @FXML
     TextField answerA;
@@ -56,34 +59,45 @@ public class QuizController implements Initializable {
     @FXML
     RadioButton radioD;
 
+    @FXML
+    Button addTopicButton;
+
+    @FXML
+    Button addQuestionButton;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        showTopics();
+    }
+
+
+    ObservableList<String> topicsListViewData = FXCollections.observableArrayList();
+    ObservableList<Integer> topicsIdList = FXCollections.observableArrayList();
+    public void showTopics(){
         try {
             TopicManager.refreshTopicMap();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        showTopics();
-    }
-
-    public void showTopics(){
-        ObservableList<String> list = FXCollections.observableArrayList();
         for(Topic topic : TopicManager.topicMap.values()){
             int i = 0;
-            list.add(i, topic.getId() + ": " + topic.getName());
+            topicsListViewData.add(i, topic.getName());
+            topicsIdList.add(i, topic.getId());
             i++;
         }
-        Collections.sort(list);
-        topicsListView.setItems(list);
+
+        Collections.reverse(topicsListViewData);
+        Collections.reverse(topicsIdList);
+        topicsListView.setItems(topicsListViewData);
     }
 
     @FXML
     public void handleTopicsInSelect() throws IOException {
-       String selectedItem = topicsListView.getSelectionModel().getSelectedItem();
-        String[] selectedId = selectedItem.split(":");
-        int id = Integer.parseInt(selectedId[0]);
+       int index = topicsListView.getSelectionModel().getSelectedIndex();
+        int id = topicsIdList.get(index);
+        System.out.println(id);
+
 
         QuestionManager.refreshQuestionMapPerTopic(id);
 
@@ -95,6 +109,7 @@ public class QuizController implements Initializable {
         }
         Collections.sort(list);
         questionsListView.setItems(list);
+
     }
 
     @FXML
@@ -136,6 +151,8 @@ public class QuizController implements Initializable {
         radioC.setDisable(true);
         radioD.setDisable(true);
 
+        difficultyField.textProperty().set(String.valueOf(QuestionManager.questionMap.get(id).getDifficulty()));
+
         int size = list.size();
 
        switch(size){
@@ -160,6 +177,31 @@ public class QuizController implements Initializable {
 
 
     }
+
+    @FXML
+    public void createNewTopic() throws IOException {
+        /*topicsListView.setCellFactory(TextFieldListCell.forListView());
+        topicsListView.setEditable(true);
+        topicsListView.getItems().add(0,"hier Text eingeben");
+        topicsIdList.add(0,null);
+        String text = topicsListView.getItems().get(0);
+
+        System.out.println(text);
+
+
+        Topic topic = new Topic();
+        topic.setName("neues Thema");
+        System.out.println(topic.getName());
+
+
+        showTopics();
+*/
+    }
+
+    public void saveQuestion(){
+        
+    }
+
 
 
 }

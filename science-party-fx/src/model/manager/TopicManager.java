@@ -2,12 +2,15 @@ package model.manager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import model.Topic;
 import model.database.DatabaseConnect;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -48,22 +51,51 @@ public class TopicManager {
     }
 
     public static void refreshTopicMap() throws IOException {
+        ObservableMap<Integer, Topic> map = FXCollections.observableHashMap();
         String allTopicsJson = TopicManager.getAllTopicsJson();
         ObjectMapper mapper = new ObjectMapper();
         List<Topic> topicList = mapper.readValue(allTopicsJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Topic.class));
 
         for(Topic topic : topicList){
-            topicMap.put(topic.getId(), topic);
+            map.put(topic.getId(), topic);
         }
+        topicMap=map;
 
     }
+
+    public static void insertTopic(Topic topic) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(topic);
+
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = "http://localhost:9000/ac/insert/topic";
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+
+        connection.setRequestMethod("PUT");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
+        outWriter.write(jsonString);
+        outWriter.flush();
+
+        connection.getResponseMessage();
+    }
+
+
 
     public static void main(String[] args) throws IOException {
         DatabaseConnect.setRecentUser("bastian95@live.de", "araluen");
 
-        System.out.println(TopicManager.getAllTopicsJson());
-        TopicManager.refreshTopicMap();
-        System.out.println(topicMap.get(1).getName());
+       Topic t = new Topic();
+        t.setName("test-Topic");
+
+        insertTopic(t);
     }
 
 }
