@@ -105,6 +105,10 @@ public class AnswerManager {
 
     public static void main(String[] args) throws IOException {
         DatabaseConnect.setRecentUser("bastian95@live.de", "araluen");
+        DatabaseConnect.setServerAddress("http://localhost:9000");
+
+        refreshAnswerListPerQuestion(1);
+        System.out.println(answerList.toString());
 
 
     }

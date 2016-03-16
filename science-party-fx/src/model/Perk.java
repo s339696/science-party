@@ -8,12 +8,12 @@ import java.io.BufferedReader;
 /**
  * Created by Richard on 22.02.2016.
  */
-public class QR {
+public class Perk {
 
     String name;
     String url;
 
-    public QR(String name){
+    public Perk(String name){
         this.name = name;
         this.url= "hier Pfad einfügen" + name;
     }
@@ -23,7 +23,7 @@ public class QR {
         int y = 200;
         BufferedImage qrImage = new BufferedImage(x, y, BufferedImage.TYPE_INT_RGB);
 
-        // hier QR Generator im Internet suchen
+        // hier Perk Generator im Internet suchen
 
         return qrImage;
 

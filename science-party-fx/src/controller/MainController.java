@@ -105,7 +105,7 @@ public class MainController implements Initializable {
         UserTab.setContent(UserSplitPane);
         QuizTab = new Tab("Quiz-Editor");
         QuizTab.setContent(QuizSplitPane);
-        QrTab = new Tab("QR-Editor");
+        QrTab = new Tab("Perk-Editor");
         QrTab.setContent(QrSplitPane);
 
 
