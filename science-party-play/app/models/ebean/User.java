@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Index(name = "livesearch_index", columnNames = {"firstname","lastname","email"})
 @Table(name = "users")
 public class User extends Model {
 

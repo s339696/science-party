@@ -126,7 +126,6 @@ create table users (
   constraint pk_users primary key (id)
 );
 
-create index livesearch_index on users (firstname,lastname,email);
 alter table answers add constraint fk_answers_question_id foreign key (question_id) references questions (id) on delete restrict on update restrict;
 create index ix_answers_question_id on answers (question_id);
 
@@ -272,4 +271,3 @@ drop table if exists topics;
 
 drop table if exists users;
 
-drop index livesearch_index on users;
