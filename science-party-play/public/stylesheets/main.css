@@ -100,6 +100,7 @@ div.container {
 	border: none;
 }
 
+
 h1, h2, h3 {
 	margin: 8px;
 }
@@ -109,8 +110,36 @@ p {
 	displa: inline-block;
 }
 
+p.sentMessage {
+	min-width: 100px;
+	max-width: 400px;
+	background-color: #bbff99;
+	padding: 25px;
+	margin-left: auto;
+	margin-right: 8px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+p.receivedMessage {
+	max-width: 400px;
+	background-color: #f2f2f2;
+	padding: 25px;
+	margin: 8px;
+}
+
 form {
 	margin: auto;
+}
+
+select {
+	width: 100%;
+	padding: 12px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #CCC;
+	border-radius: 4px;
+	box-sizing: border-box;
 }
 
 select.search {
@@ -302,6 +331,13 @@ li.tabele {
 	border-style: solid;
 	border-color: #333;
 	border-width: 2px
+}
+
+li.messageBox {
+	border-style: solid;
+	border-color: #333;
+	border-width: 2px
+
 }
 
 li.Navigator a.Navigator {

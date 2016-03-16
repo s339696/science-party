@@ -4,7 +4,6 @@
     <br>
     <br>
     <br>
-    <br>
     <div class="tabeleHead">
         <h1>
             Nachrichten
@@ -15,12 +14,20 @@
         <a class="newMessage" href="/messages/new">+Neue Nachricht</a>
         <div class="list">
             <ul class="tabele">
+                @for( chat <- chats) {
                 <li class="tabele">
-                    <a class="tabele" href="/messages/:id">Chat 1</a>
-                    <a class="tabele" href="/messages/delete/:id">Chat löschen</a>
+                    <a class="tabele" href="/messages/show/@chat.getId">@chat.getName</a>
+
+                    <a class="tabeleDelete" href="/messages/leave/@chat.getId">Chat löschen</a>
                 </li>
+                }
             </ul>
         </div>
     </div>
+    <script>
+
+
+
+    </script>
 
 }
