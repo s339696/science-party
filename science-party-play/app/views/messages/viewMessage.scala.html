@@ -14,7 +14,7 @@
         <br>
         <h2>@chat.getName()</h2>
         <br>
-        <div class="list">
+        <div class="messageField">
             @for(message <- messages) {
                     @if(message.getUser.getId == user.getId) {
                             <p class="sentMessage">
