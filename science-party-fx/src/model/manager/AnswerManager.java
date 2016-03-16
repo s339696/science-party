@@ -3,14 +3,15 @@ package model.manager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import model.Answer;
-import model.Question;
 import model.database.DatabaseConnect;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
@@ -21,7 +22,7 @@ import java.util.Map;
  * Created by Richard on 13.03.2016.
  */
 public class AnswerManager {
-    public static Map<Integer, Answer> answerMap = new HashMap<>();
+    public static ObservableList<Answer> answerList = FXCollections.observableArrayList();
 
     public static String getAllAnswersJson(int qid) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
@@ -49,26 +50,46 @@ public class AnswerManager {
         return jsonString;
     }
 
-    public static void refreshAnswerMapPerTopic(int qid) throws IOException {
-        ObservableMap<Integer, Answer> map = FXCollections.observableHashMap();
+    public static void refreshAnswerListPerQuestion(int qid) throws IOException {
+        ObservableList<Answer> list = FXCollections.observableArrayList();
         String allAnswersJson = AnswerManager.getAllAnswersJson(qid);
         ObjectMapper mapper = new ObjectMapper();
         List<Answer> answerList = mapper.readValue(allAnswersJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Answer.class));
 
         for(Answer answer : answerList){
-            map.put(answer.getId(), answer);
+            list.add(answer);
         }
-        answerMap=map;
+        AnswerManager.answerList = list;
 
+    }
+
+    public static void updateAnswer(Answer answer) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(answer);
+
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = "http://localhost:9000/ac/update/answer";
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+
+        connection.setRequestMethod("POST");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
+        outWriter.write(jsonString);
+        outWriter.flush();
+
+        connection.getResponseMessage();
     }
 
     public static void main(String[] args) throws IOException {
         DatabaseConnect.setRecentUser("bastian95@live.de", "araluen");
 
-        System.out.println(AnswerManager.getAllAnswersJson(1));
-        refreshAnswerMapPerTopic(1);
 
-
-        System.out.println(answerMap.get(1).getText());
     }
 }

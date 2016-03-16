@@ -1,11 +1,5 @@
 package controller;
 
-import javafx.beans.*;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.MapBinding;
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -26,7 +20,7 @@ public class UserController implements Initializable{
     private TextField search;
 
     @FXML
-    private ListView<String> lv;
+    private ListView<User> lv;
 
     @FXML
     private Label idLabel;
@@ -61,23 +55,13 @@ public class UserController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb){
         try {
-            UserManager.refreshUserMap();
+            UserManager.refreshUserList();
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("klappt");
 
-        UserManager.userMap.addListener(new MapChangeListener<Integer, User>() {
-            @Override
-            public void onChanged(Change<? extends Integer, ? extends User> change) {
-                try {
-                    System.out.println("Map wurde geändert");
-                    showList();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+
 
 
         try {
@@ -90,22 +74,12 @@ public class UserController implements Initializable{
 
 
 
-    ObservableList<Integer> userIdList = FXCollections.observableArrayList();
+
 
     @FXML
     private void showList() throws IOException {
-        ObservableList<String> presentationList = FXCollections.observableArrayList();
-        for(User u : UserManager.userMap.values()){
-            int i=0;
-            presentationList.add(u.getFirstname() + " " + u.getLastname());
-            userIdList.add(u.getId());
-            i++;
-        }
 
-        Collections.reverse(presentationList);
-        Collections.reverse(userIdList);
-
-        lv.setItems(presentationList);
+        lv.setItems(UserManager.userList);
 
 
    }
@@ -114,11 +88,7 @@ public class UserController implements Initializable{
 
     @FXML
     private void handleUserInSelect(){
-       int index = lv.getSelectionModel().getSelectedIndex();
-        int id = userIdList.get(index);
-
-
-        presentedUser = UserManager.userMap.get(id);
+        presentedUser = lv.getSelectionModel().getSelectedItem();
 
         idLabel.textProperty().set(String.valueOf(presentedUser.getId()));
         firstNameLabel.textProperty().set(presentedUser.getFirstname());
@@ -132,9 +102,12 @@ public class UserController implements Initializable{
     @FXML
     private void handleCheckBox() throws IOException {
         int id = presentedUser.getId();
+
         if(checkBox.isSelected()){
+            System.out.println(id);
             UserManager.lockUser(id, true);
         }else{
+            System.out.println(id);
             UserManager.lockUser(id, false);
         }
     }

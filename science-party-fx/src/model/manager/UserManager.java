@@ -3,7 +3,7 @@ package model.manager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
+import javafx.collections.ObservableList;
 import model.database.DatabaseConnect;
 import model.User;
 
@@ -14,9 +14,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -24,7 +22,7 @@ import java.util.Map;
  */
 public class UserManager {
 
-    public static ObservableMap<Integer, User> userMap = FXCollections.observableHashMap();
+    public static ObservableList<User> userList = FXCollections.observableArrayList();
 
 
     public static String getAllUserJson() throws IOException {
@@ -54,17 +52,17 @@ public class UserManager {
     }
 
 
-    public static void refreshUserMap() throws IOException {
-        ObservableMap<Integer, User> map = FXCollections.observableHashMap();
+    public static void refreshUserList() throws IOException {
+        ObservableList<User> list = FXCollections.observableArrayList();
         String allUserJson = UserManager.getAllUserJson();
 
         ObjectMapper mapper = new ObjectMapper();
         List<User> userList = mapper.readValue(allUserJson, TypeFactory.defaultInstance().constructCollectionType(List.class, User.class));
 
         for(User user: userList){
-            map.put(user.getId(), user);
+            list.add(user);
         }
-        userMap=map;
+        UserManager.userList =list;
     }
 
 
@@ -83,8 +81,15 @@ public class UserManager {
         connection.setRequestProperty("Cookie", loginCookie);
         connection.setRequestProperty("Content-Type", "application/json");
 
+        //hier muss der user mit der ID geholt werden!!!!
+        User updateUser = new User();
+        for (User u : userList) {
+            if(u.getId()==id){
+                updateUser=u;
+            }
+        }
 
-        User updateUser = userMap.get(id);
+
         updateUser.setLocked(lock);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -108,7 +113,7 @@ public class UserManager {
         connection.setRequestProperty("Cookie", loginCookie);
         System.out.println(connection.getResponseMessage());
 
-        refreshUserMap();
+        refreshUserList();
     }
 
 
@@ -116,7 +121,7 @@ public class UserManager {
         DatabaseConnect.setRecentUser("bastian95@live.de","araluen");
 
 
-        UserManager.refreshUserMap();
+        UserManager.refreshUserList();
 
         UserManager.deleteUser(15);
 

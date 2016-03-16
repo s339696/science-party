@@ -3,6 +3,7 @@ package model.manager;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import model.Topic;
 import model.database.DatabaseConnect;
@@ -22,7 +23,7 @@ import java.util.Map;
  */
 public class TopicManager {
 
-    public static Map<Integer, Topic> topicMap = new HashMap<>();
+    public static ObservableList<Topic> topicList = FXCollections.observableArrayList();
 
     public static String getAllTopicsJson() throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
@@ -50,16 +51,16 @@ public class TopicManager {
         return jsonString;
     }
 
-    public static void refreshTopicMap() throws IOException {
-        ObservableMap<Integer, Topic> map = FXCollections.observableHashMap();
+    public static void refreshTopicList() throws IOException {
+        ObservableList<Topic> list = FXCollections.observableArrayList();
         String allTopicsJson = TopicManager.getAllTopicsJson();
         ObjectMapper mapper = new ObjectMapper();
         List<Topic> topicList = mapper.readValue(allTopicsJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Topic.class));
 
         for(Topic topic : topicList){
-            map.put(topic.getId(), topic);
+            list.add(topic);
         }
-        topicMap=map;
+        TopicManager.topicList =list;
 
     }
 

@@ -1,11 +1,12 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldListCell;
 import model.Answer;
 import model.Question;
 import model.Topic;
@@ -14,8 +15,8 @@ import model.manager.QuestionManager;
 import model.manager.TopicManager;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.Collections;
 import java.util.ResourceBundle;
 
 /**
@@ -24,10 +25,10 @@ import java.util.ResourceBundle;
 public class QuizController implements Initializable {
 
     @FXML
-    ListView<String> topicsListView;
+    ListView<Topic> topicsListView;
 
     @FXML
-    ListView<String> questionsListView;
+    ListView<Question> questionsListView;
 
     @FXML
     TextArea questionBox;
@@ -72,50 +73,48 @@ public class QuizController implements Initializable {
     }
 
 
-    ObservableList<String> topicsListViewData = FXCollections.observableArrayList();
-    ObservableList<Integer> topicsIdList = FXCollections.observableArrayList();
+
+
     public void showTopics(){
+        questionBox.setDisable(true);
+        answerA.setDisable(true);
+        answerB.setDisable(true);
+        answerC.setDisable(true);
+        answerD.setDisable(true);
+        difficultyField.setDisable(true);
+        radioA.setDisable(true);
+        radioB.setDisable(true);
+        radioC.setDisable(true);
+        radioD.setDisable(true);
+
+
+
         try {
-            TopicManager.refreshTopicMap();
+            TopicManager.refreshTopicList();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for(Topic topic : TopicManager.topicMap.values()){
-            int i = 0;
-            topicsListViewData.add(i, topic.getName());
-            topicsIdList.add(i, topic.getId());
-            i++;
-        }
 
-        Collections.reverse(topicsListViewData);
-        Collections.reverse(topicsIdList);
-        topicsListView.setItems(topicsListViewData);
+        topicsListView.setItems(TopicManager.topicList);
     }
+
 
     @FXML
     public void handleTopicsInSelect() throws IOException {
-       int index = topicsListView.getSelectionModel().getSelectedIndex();
-        int id = topicsIdList.get(index);
-        System.out.println(id);
+      int id = topicsListView.getSelectionModel().getSelectedItem().getId();
 
+        QuestionManager.refreshQuestionListPerTopic(id);
 
-        QuestionManager.refreshQuestionMapPerTopic(id);
-
-        ObservableList<String> list = FXCollections.observableArrayList();
-        for(Question question : QuestionManager.questionMap.values()){
-            int i = 0;
-            list.add(i, question.getId() + ": " + question.getText());
-            i++;
-        }
-        Collections.sort(list);
-        questionsListView.setItems(list);
+        questionsListView.setItems(QuestionManager.questionList);
 
     }
 
+    Integer[] idArray = new Integer[4];
+
     @FXML
     public void handleQuestionsInSelect() throws IOException {
-        ObservableList<String> list = FXCollections.observableArrayList();
-        ObservableList<Boolean> radioList = FXCollections.observableArrayList();
+        questionBox.setDisable(false);
+        difficultyField.setDisable(false);
 
         ToggleGroup group = new ToggleGroup();
         radioA.setToggleGroup(group);
@@ -123,55 +122,59 @@ public class QuizController implements Initializable {
         radioC.setToggleGroup(group);
         radioD.setToggleGroup(group);
 
-
-
-        String selectedItem = questionsListView.getSelectionModel().getSelectedItem();
-        String[] selectedId = selectedItem.split(":");
-        int id = Integer.parseInt(selectedId[0]);
-
-        questionBox.setText(QuestionManager.questionMap.get(id).getText());
-
-        AnswerManager.refreshAnswerMapPerTopic(id);
-
-
-
-        for(Answer answer : AnswerManager.answerMap.values()){
-
-            list.add(answer.getText());
-            radioList.add(answer.isCorrect());
+        int qid = questionsListView.getSelectionModel().getSelectedItem().getId();
+        
+        for(Question question : QuestionManager.questionList){
+            if(question.getId() == qid){
+                questionBox.setText(question.getText());
+                difficultyField.textProperty().set(String.valueOf(question.getDifficulty()));
+            }
         }
+
+        AnswerManager.refreshAnswerListPerQuestion(qid);
 
         answerA.textProperty().set("");
         answerB.textProperty().set("");
         answerC.textProperty().set("");
         answerD.textProperty().set("");
 
+        answerA.setDisable(true);
+        answerB.setDisable(true);
+        answerC.setDisable(true);
+        answerD.setDisable(true);
+
         radioA.setDisable(true);
         radioB.setDisable(true);
         radioC.setDisable(true);
         radioD.setDisable(true);
 
-        difficultyField.textProperty().set(String.valueOf(QuestionManager.questionMap.get(id).getDifficulty()));
-
-        int size = list.size();
+        int size = AnswerManager.answerList.size();
 
        switch(size){
            case 4:
-               answerD.textProperty().set(list.get(3));
+               answerD.setDisable(false);
                radioD.setDisable(false);
-               radioD.setSelected(radioList.get(3));
+               answerD.textProperty().set(AnswerManager.answerList.get(3).getText());
+               radioD.setSelected(AnswerManager.answerList.get(3).isCorrect());
+               idArray[3] = AnswerManager.answerList.get(3).getId();
            case 3:
-               answerC.textProperty().set(list.get(2));
+               answerC.setDisable(false);
                radioC.setDisable(false);
-               radioC.setSelected(radioList.get(2));
+               answerC.textProperty().set(AnswerManager.answerList.get(2).getText());
+               radioC.setSelected(AnswerManager.answerList.get(2).isCorrect());
+               idArray[2] = AnswerManager.answerList.get(2).getId();
            case 2:
-               answerB.textProperty().set(list.get(1));
+               answerB.setDisable(false);
                radioB.setDisable(false);
-               radioB.setSelected(radioList.get(1));
+               answerB.textProperty().set(AnswerManager.answerList.get(1).getText());
+               radioB.setSelected(AnswerManager.answerList.get(1).isCorrect());
+               idArray[1] = AnswerManager.answerList.get(1).getId();
            case 1:
-               answerA.textProperty().set(list.get(0));
+               answerA.setDisable(false);
                radioA.setDisable(false);
-               radioA.setSelected(radioList.get(0));
+               answerA.textProperty().set(AnswerManager.answerList.get(0).getText());
+               radioA.setSelected(AnswerManager.answerList.get(0).isCorrect());
+               idArray[0] = AnswerManager.answerList.get(0).getId();
                break;
        }
 
@@ -198,8 +201,54 @@ public class QuizController implements Initializable {
 */
     }
 
-    public void saveQuestion(){
-        
+    @FXML
+    public void saveQuestion() throws IOException {
+       /*
+        Question question = new Question();
+        question.setId(questionsIdList.get(questionsListView.getSelectionModel().getSelectedIndex()));
+        question.setTopicId(topicsIdList.get(topicsListView.getSelectionModel().getSelectedIndex()));
+        question.setDifficulty(Integer.parseInt(difficultyField.textProperty().get()));
+        question.setText(questionBox.textProperty().get());
+
+        ObjectMapper mapper = new ObjectMapper();
+        String s = mapper.writeValueAsString(question);
+        System.out.println(s);
+
+        int index = questionsListView.getSelectionModel().getSelectedIndex();
+        int id = questionsIdList.get(index);
+
+
+        Answer answer1 = new Answer();
+        answer1.setQuesteionId(id);
+        answer1.setText(answerA.textProperty().get());
+        answer1.setCorrect(radioA.isSelected());
+
+        Answer answer2 = new Answer();
+        answer2.setQuesteionId(id);
+        answer2.setText(answerB.textProperty().get());
+        answer2.setCorrect(radioB.isSelected());
+
+        Answer answer3 = new Answer();
+        answer3.setQuesteionId(id);
+        answer3.setText(answerC.textProperty().get());
+        answer3.setCorrect(radioC.isSelected());
+
+        Answer answer4 = new Answer();
+        answer4.setQuesteionId(id);
+        answer4.setText(answerD.textProperty().get());
+        answer4.setCorrect(radioD.isSelected());
+
+        //hier noch Datenbank zeugs
+
+        AnswerManager.updateAnswer(answer1);
+        AnswerManager.updateAnswer(answer2);
+        AnswerManager.updateAnswer(answer3);
+        AnswerManager.updateAnswer(answer4);
+
+        QuestionManager.updateQuestion(question);
+
+*/
+
     }
 
 

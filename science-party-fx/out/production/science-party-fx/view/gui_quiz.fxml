@@ -87,7 +87,7 @@
             <RadioButton fx:id="radioB" layoutX="385.0" layoutY="331.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
             <RadioButton fx:id="radioC" layoutX="385.0" layoutY="372.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
             <RadioButton fx:id="radioD" layoutX="385.0" layoutY="414.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
-            <Button layoutX="385.0" layoutY="492.0" mnemonicParsing="false" text="Frage Speichern" AnchorPane.leftAnchor="385.0" />
+            <Button fx:id="saveQuestionButton" layoutX="385.0" layoutY="492.0" mnemonicParsing="false" onAction="#saveQuestion" text="Frage Speichern" AnchorPane.leftAnchor="385.0" />
             <TextField fx:id="difficultyField" layoutX="379.0" layoutY="89.0" prefHeight="25.0" prefWidth="30.0" />
             <Label layoutX="379.0" layoutY="65.0" text="Schwierigkeit" />
          </children>
