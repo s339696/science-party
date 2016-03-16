@@ -26,7 +26,7 @@ public class Friends extends Controller {
         List<User> requestUsers = user.getFriendRequests();
         List<User> friendUsers = user.getFriends();
 
-        return ok(views.html.friends.friends.render(users,requestUsers,friendUsers,feedback));
+        return ok(views.html.friends.friends.render(user,users,requestUsers,friendUsers,feedback));
     }
 
     public Result addFriend(Long id) {

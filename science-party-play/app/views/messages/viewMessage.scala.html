@@ -1,43 +1,65 @@
-@(messages: List[models.ebean.Message], user: models.ebean.User)
+@import models.ebean.User
+@(user: User, messages: List[models.ebean.Message], chat: models.ebean.Chat)
 
-@mainIntern("Nachrichten") {
+@mainIntern("Nachrichten", user) {
     <br>
     <br>
-    <div>
+    <br>
+    <div class="tabeleHead">
         <h1>
             Nachrichten
         </h1>
     </div>
-    @for(message <- messages) {
-        @if(message.getUser.getId == user.getId) {
-            Von mir:<br>
-            @message.getWhenCreated <br>
-            @message.getText<br>
-        } else {
-            Von jemand anderem:<br>
-            @message.getWhenCreated <br>
-            @message.getText<br>
-        }
-    }
-    <br>
-@*    <div class="tabele">
+    <div class="tabele">
+        <br>
+        <h2>@chat.getName()</h2>
+        <br>
         <div class="list">
-            <ul class="tabele">
-                <li class="tabele">
-                    <a class="tabele" href="/messages/:id">Chat 1</a>
-                    <a class="tabele" href="/messages/delete/:id">Chat löschen</a>
-                </li>
+            @for(message <- messages) {
+                    @if(message.getUser.getId == user.getId) {
+                            <p class="sentMessage">
+                                @message.getWhenCreated <br><br>
+                                <b>@message.getText</b><br>
+                            </p>
+                        <br>
+                    } else {
+                            <p class="receivedMessage">
+                                @message.getWhenCreated <br><br>
+                                <b>@message.getText</b><br>
+                            </p>
+                        <br>
+                    }
+            }
             </ul>
-        </div>*@
-        <div class="list">
-            <form>
-                <select>
-
-                </select>
-                <textarea rows="10" cols="70"></textarea>
+        </div>
+        <div class="container">
+            <form id="sendMessage">
+                <textarea id="message" rows="10" cols="70"></textarea>
                 <input name="Senden" type="submit">
             </form>
         </div>
     </div>
+    <script>
+            $("#sendMessage").on('submit', function (e) {
+                e.preventDefault();
+                var message = $("#message").val();
+                $.ajax({
+                    url: "/messages/send/@messages.get(0).getChat.getId",
+                    method: "POST",
+                    contentType: "application/json",
+                    dataType: "text",
+                    data: JSON.stringify({
+                        message: message,
+                    }),
+                    success: function(data,status,xhr) {
+                        //alert(xhr.responseText);
+                        location.reload();
+                    },
+                    error: function(xhr,status,error) {
+                        alert(xhr.responseText);
+                    }
+                });
 
+            });
+    </script>
 }

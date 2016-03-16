@@ -5,6 +5,7 @@ import exception.messages.CreateMessageException;
 import manager.LoginManager;
 import models.ebean.Chat;
 import models.ebean.Message;
+import models.ebean.Notification;
 import models.ebean.User;
 import models.form.MessageForm;
 import models.form.UserAccountForm;
@@ -23,6 +24,7 @@ public class Messages extends Controller {
 
     /**
      * Renders all messages of a chat.
+     *
      * @return
      */
     public Result renderMessages() {
@@ -33,7 +35,7 @@ public class Messages extends Controller {
 
         List<Chat> chats = user.getChats();
 
-        return ok(views.html.messages.messages.render(chats));
+        return ok(views.html.messages.messages.render(user, chats));
     }
 
     /**
@@ -50,7 +52,7 @@ public class Messages extends Controller {
         List<User> users = User.find.all();
         users.remove(user);
 
-        return ok(views.html.messages.newMessage.render(users));
+        return ok(views.html.messages.newMessage.render(user, users));
     }
 
     /**
@@ -91,14 +93,14 @@ public class Messages extends Controller {
                 }
 
                 String name = "";
-                for (User chatUser: members) {
+                for (User chatUser : members) {
                     name += chatUser.getFirstname();
                     name += ", ";
                 }
                 name += user.getFirstname();
 
                 // Create chat
-                Chat.createChat(user, members, name,form.getMessage());
+                Chat.createChat(user, members, name, form.getMessage());
                 return ok("Die Nachricht wurde erfolgreich verschickt.");
 
             } catch (Exception e) {
@@ -148,9 +150,23 @@ public class Messages extends Controller {
             return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
         }
 
-        List<Message> messages =  Message.getMessagesOfChat(chat);
+        List<Message> messages = Message.getMessagesOfChat(chat);
 
-        return ok(views.html.messages.viewMessage.render(messages, user));
+        Ebean.beginTransaction();
+        try {
+            for (Message message : messages) {
+                if (!message.getUser().equals(user) && !message.isSeen()) {
+                    message.setSeen(true);
+                    System.out.println("set to seen");
+                    message.save();
+                }
+            }
+            Ebean.commitTransaction();
+        } finally {
+            Ebean.endTransaction();
+        }
+
+        return ok(views.html.messages.viewMessage.render(user, messages, chat));
     }
 
     /**
@@ -183,9 +199,26 @@ public class Messages extends Controller {
         message.setChat(chat);
         message.setUser(user);
         message.setText(form.getMessage());
+        message.setSeen(false);
         message.insert();
 
         return ok("Die Nachricht wurde verschickt.");
+    }
+
+    /**
+     * Returns the amount of unseen messages.
+     *
+     * @return
+     */
+    public Result handleNewMessageCount() {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return badRequest("");
+        }
+
+        int count = user.getUnseenMessageCount();
+
+        return ok(String.valueOf(count));
     }
 
 }

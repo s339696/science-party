@@ -38,6 +38,19 @@ public class Friend extends Model {
     @Column(name = "date_friends", columnDefinition = "datetime")
     private Timestamp whenFriends;
 
+    public static Friend createFriendRequest(User from, User to) {
+        Friend friend = new Friend();
+        friend.setRequest(true);
+        friend.setUserSendReq(from);
+        friend.setUserGetReq(to);
+        friend.insert();
+
+        // Send notification
+        Notification.createNotification(to, "Du hast eine Freundschaftsanfrage von " + from +" erhalten.","");
+
+        return friend;
+    }
+
     public User getUserSendReq() {
         return userSendReq;
     }

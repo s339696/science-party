@@ -46,6 +46,7 @@ public class Chat extends Model {
             newMsg.setUser(from);
             newMsg.setText(firstMsg);
             newMsg.setChat(chat);
+            newMsg.setSeen(false);
             newMsg.save();
 
             Ebean.commitTransaction();

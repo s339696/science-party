@@ -1,31 +1,33 @@
-@(player: models.ebean.Player, game: models.ebean.Game, feedback: String)
+@import models.ebean._
+@(user: User, player: Player, game: Game, feedback: String)
 
-    @mainIntern("Science Party") {
-        <br>
-        <br>
-        <br>
-        <br>
-        <div class="Spielinformationen">
-            <h2>Science Party</h2>
+@mainIntern("Science Party", user) {
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="Spielinformationen">
+        <h2>Science Party</h2>
+        <p>
+            Name: @game.getName<br>
+            Thema: @game.getTopic.getName()<br>
+            Spielbeginn: @game.getWhenCreated()<br>
+            Aktiver Spieler: @game.getActivePlayer<br>
+        </p>
+    </div>
+
+    <div class="Mitspieler">
+        <h3>Mitspieler</h3>
+        @for(player <- game.getPlayingPlayer) {
             <p>
-                Name: @game.getName<br>
-                Thema: @game.getTopic.getName()<br>
-                Spielbeginn: @game.getWhenCreated()<br>
-                Aktiver Spieler: @game.getActivePlayer<br>
-            </p>
-        </div>
-
-        <div class="Mitspieler">
-            <h3>Mitspieler</h3>
-            @for(player <- game.getPlayingPlayer) {
-                <p>
                 Id: @player.getId <br>
-                    Name: @player <br>
-                    Position: @player.getFieldPosition
+                Name: @player <br>
+                Position: @player.getFieldPosition
             </p>
-            }
-        </div>
+        }
+    </div>
 
+    @if(game.getActivePlayer.getId == player.getId) {
         <div class="Faehigkeiten">
             <h3>Fähigkeiten für dieses Spiel</h3>
             <ul>
@@ -39,72 +41,78 @@
             </ul>
         </div>
 
-        @if(game.getActivePlayer.getId == player.getId) {
-            <div class="Frage">
-                <p> Frage @game.getActiveQuestion.getId(): @game.getActiveQuestion.getText() </p>
 
-                <form id="answerForm">
-                    <ul>
-                        <fieldset>
-                            <legend>Antworten</legend>
-                            @for((answer, index) <- game.getActiveQuestion.getAnswers.zipWithIndex) {
-                                <input type="radio" id="a@index" name="answer" value="@answer.getId">
-                                <label for="a1">@(index + 1): @answer.getText()</label> <br>
-                                }
-                        </fieldset>
-                    </ul>
-                    <button type="submit">Antworten</button>
-                </form>
-            </div>
-        }
+        <div class="Frage">
+            <p> Frage @game.getActiveQuestion.getId(): @game.getActiveQuestion.getText() </p>
 
-        <script>
-                // Set autorefresh
-                @if(game.getActivePlayer.getId != player.getId) {
-                window.onload=autoRefresh(5000);
-                }
-
-                // On submit, trasmit answer to server
-                $("#answerForm").on('submit', function (e) {
-                    e.preventDefault();
-
-                    var answerId=$('input[name=answer]:checked').val();
-
-                    if(answerId === "undefined") {
-                        window.alert("Bitte wähle eine Antwort aus.");
-                    } else {
-                        $.ajax({
-                            url: '/games/answer/@game.getId()',
-                            method: 'POST',
-                            contentType: "application/json",
-                            dataType: "text",
-                            data: JSON.stringify({
-                                answerId: answerId,
-
-                            }),
-                            success: function(data,status,xhr) {
-                                alert(xhr.responseText);
-                                location.reload();
-                            },
-                            error: function(xhr,status,error) {
-                                alert(xhr.responseText);
+            <form id="answerForm">
+                <ul>
+                    <fieldset>
+                        <legend>Antworten</legend>
+                        @for((answer, index) <- game.getActiveQuestion.getAnswers.zipWithIndex) {
+                            <input type="radio" id="a@index" name="answer" value="@answer.getId">
+                            <label for="a1">@(index + 1): @answer.getText()</label> <br>
                             }
-                        });
-                    }
-                });
-
-                // Auto refresh
-                function autoRefresh(t) {
-                    setTimeout("location.reload(true);", t);
-                }
-
-                // Feedback if something happend
-                @if(feedback != "") {
-                window.onload = function() {
-                    window.alert("@feedback");
-                    window.history.pushState("","","/games/play/@game.getId");
-                };
-                }
-        </script>
-
+                    </fieldset>
+                </ul>
+                <button type="submit">Antworten</button>
+            </form>
+        </div>
     }
+
+    <div class="formular">
+        <a class="deleteButton" href="/games/leave/@game.getId">
+            Spiel verlassen!
+        </a>
+    </div>
+
+    <script>
+    // Set autorefresh
+    @if(game.getActivePlayer.getId != player.getId) {
+    window.onload=autoRefresh(5000);
+    }
+
+    // On submit, trasmit answer to server
+    $("#answerForm").on('submit', function (e) {
+        e.preventDefault();
+
+        var answerId=$('input[name=answer]:checked').val();
+
+        if(answerId === "undefined") {
+            window.alert("Bitte wähle eine Antwort aus.");
+        } else {
+            $.ajax({
+                url: '/games/answer/@game.getId()',
+                method: 'POST',
+                contentType: "application/json",
+                dataType: "text",
+                data: JSON.stringify({
+                    answerId: answerId,
+
+                }),
+                success: function(data,status,xhr) {
+                    alert(xhr.responseText);
+                    location.reload();
+                },
+                error: function(xhr,status,error) {
+                    alert(xhr.responseText);
+                }
+            });
+        }
+    });
+
+    // Auto refresh
+    function autoRefresh(t) {
+        setTimeout("location.reload(true);", t);
+    }
+
+    // Feedback if something happend
+    @if(feedback != "") {
+    window.onload = function() {
+        window.alert("@feedback");
+        window.history.pushState("","","/games/play/@game.getId");
+    };
+    }
+    </script>
+
+}

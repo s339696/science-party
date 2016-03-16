@@ -21,6 +21,13 @@ div.Navigator{
 div.formular {
 	width: 340px;
 	padding: 40px;
+	background-color: #D0D0D0;
+	border-radius: 4px;
+	
+}
+
+div.formularHead {
+	width: 420px;
 }
 
 div.startLoginButton {
@@ -47,6 +54,16 @@ div.tabele {
 
 div.tabeleHead {
 	width: 69%;
+}
+
+div.rank {
+	width: 33%;
+	background-color: #D0D0D0;
+	border-radius: 4px;
+}
+
+div.rankHead {
+	width: 33%;
 }
 
 div.list {
@@ -109,8 +126,37 @@ p {
 	displa: inline-block;
 }
 
+p.sentMessage {
+	max-width: 400px;
+	background-color: #bbff99;
+	border-radius: 4px;
+	padding: 25px;
+	margin-left: auto;
+	margin-right: 8px;
+	margin-top: 8px;
+	margin-bottom: 8px;
+}
+
+p.receivedMessage {
+	max-width: 400px;
+	background-color: #f2f2f2;
+	border-radius: 4px;
+	padding: 25px;
+	margin: 8px;
+}
+
 form {
 	margin: auto;
+}
+
+select {
+	width: 100%;
+	padding: 12px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #CCC;
+	border-radius: 4px;
+	box-sizing: border-box;
 }
 
 select.search {
@@ -239,6 +285,14 @@ a.tabeleFloatRight {
 	text-decoration: none;
 }
 
+a.ranking {
+	display: inline-block;
+	color: black;
+	cursor: pointer;
+	text-decoration: none;
+	padding: 20px 10px;
+}
+
 input[type=text], input[type=password], input[type=date], input[type=email] {
 	width: 100%;
 	padding: 12px;
@@ -302,6 +356,13 @@ li.tabele {
 	border-style: solid;
 	border-color: #333;
 	border-width: 2px
+}
+
+li.messageBox {
+	border-style: solid;
+	border-color: #333;
+	border-width: 2px
+
 }
 
 li.Navigator a.Navigator {
@@ -370,4 +431,22 @@ a.newMessage:hover {
 
 a.tabeleFloatRight:hover {
 	background-color: #111;
+}
+
+a.ranking:hover {
+	background-color: #111;
+	color: white;
+}
+
+table {
+	width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0px 25px;
 }

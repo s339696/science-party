@@ -2,6 +2,7 @@ package models.ebean;
 
 import com.avaje.ebean.*;
 import com.avaje.ebean.annotation.CreatedTimestamp;
+import com.avaje.ebean.annotation.Index;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
 import com.fasterxml.jackson.annotation.*;
 import controllers.Friends;
@@ -9,6 +10,7 @@ import exception.UserException;
 import exception.friends.FriendRequestException;
 import exception.perks.GetPerkException;
 import javassist.expr.ExprEditor;
+import net.sf.ehcache.search.expression.Not;
 import util.Helper;
 
 import javax.persistence.*;
@@ -82,6 +84,10 @@ public class User extends Model {
     @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Message> messages;
+
+    @JsonIgnoreProperties
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Notification> notifications;
 
     /**
      * Creates a new User into the Database with given parameters.
@@ -321,15 +327,12 @@ public class User extends Model {
         // Proof if there is already a friendship or request
         Friend friend = getFriendshipOrRequestWith(to);
 
-            if (friend != null) {
-                throw new FriendRequestException("Es gibt bereits eine Freundschaft oder eine Freundschaftsanfrage zwischen diesen beiden Usern.");
-            }
+        if (friend != null) {
+            throw new FriendRequestException("Es gibt bereits eine Freundschaft oder eine Freundschaftsanfrage zwischen diesen beiden Usern.");
+        }
 
-            friend = new Friend();
-            friend.setRequest(true);
-            friend.setUserSendReq(this);
-            friend.setUserGetReq(to);
-            friend.insert();
+        // Create friend request
+        friend = Friend.createFriendRequest(this, to);
 
         return friend;
     }
@@ -495,6 +498,24 @@ public class User extends Model {
                 .ieq("users.id", this.getId().toString())
                 .orderBy().asc("messages.whenCreated")
                 .findList();
+    }
+
+    @JsonIgnore
+    public int getUnseenMessageCount() {
+        return Chat.find
+                .where()
+                .ieq("users.id", this.getId().toString())
+                .ne("messages.user", this)
+                .eq("messages.seen", false)
+                .findRowCount();
+    }
+
+    /*
+     * METHODS TO MANAGE NOTIFICATIONS OF A USER
+     */
+    @JsonIgnore
+    public int getUnseenNotificationsCount() {
+        return Notification.getUnseenNotificationCount(this);
     }
 
     /*

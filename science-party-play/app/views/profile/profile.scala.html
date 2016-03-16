@@ -1,7 +1,8 @@
-@(user: models.ebean.User, ownProfile: Boolean, feedback: String)
+@import models.ebean.User
+@(user: User, ownProfile: Boolean, feedback: String)
 
 
-@mainIntern("Profil von " + user.getFirstname) {
+@mainIntern("Profil von " + user.getFirstname, user) {
 
     <br>
     <br>
