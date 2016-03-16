@@ -151,11 +151,7 @@ public class Messages extends Controller {
 
         List<Message> messages =  Message.getMessagesOfChat(chat);
 
-        for (Message message: messages) {
-            message.setSeen(true);
-        }
-
-        return ok(views.html.messages.viewMessage.render(user, messages));
+        return ok(views.html.messages.viewMessage.render(user, messages, chat));
     }
 
     /**

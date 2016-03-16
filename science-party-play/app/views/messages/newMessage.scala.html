@@ -9,17 +9,42 @@
 
     <div class="tabele">
         <div class="container">
-            <form>
-                <select class="message">
+            <form id="newMessage">
+                <select id="toIds" class="message">
                     @for( user <- users) {
                     <option value="@user.getId">@user.toString</option>
                     }
                 </select>
                 <br>
-                <textarea rows="10" cols="70"></textarea>
+                <textarea id="message" rows="10" cols="70"></textarea>
                 <input class="newMessage" name="Senden" type="submit">
             </form>
         </div>
     </div>
+    <script>
+        $("#newMessage").on('submit', function (e) {
+                    e.preventDefault();
+                    var toIds = $("#toIds").val();
+                    var message = $("#message").val();
+                    $.ajax({
+                        url: "/messages/new",
+                        method: "POST",
+                        contentType: "application/json",
+                        dataType: "text",
+                        data: JSON.stringify({
+                            toIds: toIds,
+                            message: message,
+                        }),
+                        success: function(data,status,xhr) {
+                            alert(xhr.responseText);
+                            window.open("/messages","_self");
+                        },
+                        error: function(xhr,status,error) {
+                            alert(xhr.responseText);
+                        }
+                    });
+
+                });
+    </script>
 
 }
