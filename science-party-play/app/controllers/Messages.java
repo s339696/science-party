@@ -155,8 +155,9 @@ public class Messages extends Controller {
         Ebean.beginTransaction();
         try {
             for (Message message : messages) {
-                if (!message.getUser().equals(this)) {
+                if (!message.getUser().equals(user) && !message.isSeen()) {
                     message.setSeen(true);
+                    System.out.println("set to seen");
                     message.save();
                 }
             }
@@ -164,7 +165,7 @@ public class Messages extends Controller {
         } finally {
             Ebean.endTransaction();
         }
-        
+
         return ok(views.html.messages.viewMessage.render(user, messages, chat));
     }
 
