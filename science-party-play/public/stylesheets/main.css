@@ -21,6 +21,13 @@ div.Navigator{
 div.formular {
 	width: 340px;
 	padding: 40px;
+	background-color: #D0D0D0;
+	border-radius: 4px;
+	
+}
+
+div.formularHead {
+	width: 420px;
 }
 
 div.startLoginButton {
@@ -47,6 +54,16 @@ div.tabele {
 
 div.tabeleHead {
 	width: 69%;
+}
+
+div.rank {
+	width: 33%;
+	background-color: #D0D0D0;
+	border-radius: 4px;
+}
+
+div.rankHead {
+	width: 33%;
 }
 
 div.list {
@@ -100,7 +117,6 @@ div.container {
 	border: none;
 }
 
-
 h1, h2, h3 {
 	margin: 8px;
 }
@@ -111,9 +127,9 @@ p {
 }
 
 p.sentMessage {
-	min-width: 100px;
 	max-width: 400px;
 	background-color: #bbff99;
+	border-radius: 4px;
 	padding: 25px;
 	margin-left: auto;
 	margin-right: 8px;
@@ -124,6 +140,7 @@ p.sentMessage {
 p.receivedMessage {
 	max-width: 400px;
 	background-color: #f2f2f2;
+	border-radius: 4px;
 	padding: 25px;
 	margin: 8px;
 }
@@ -268,6 +285,14 @@ a.tabeleFloatRight {
 	text-decoration: none;
 }
 
+a.ranking {
+	display: inline-block;
+	color: black;
+	cursor: pointer;
+	text-decoration: none;
+	padding: 20px 10px;
+}
+
 input[type=text], input[type=password], input[type=date], input[type=email] {
 	width: 100%;
 	padding: 12px;
@@ -406,4 +431,22 @@ a.newMessage:hover {
 
 a.tabeleFloatRight:hover {
 	background-color: #111;
+}
+
+a.ranking:hover {
+	background-color: #111;
+	color: white;
+}
+
+table {
+	width: 100%;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0px 25px;
 }

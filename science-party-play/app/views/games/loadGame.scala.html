@@ -1,29 +1,25 @@
 @(games: List[models.ebean.Game], feedback: String)
 
 @mainIntern("Spiel laden") {
-    <div>
-        <div class="tabele">
-            <br>
-            <br>
-            <br>
-            <br>
-            <h1>
-                Spiel laden
-            </h1>
-        </div>
-        <div class="tabele">
+    <br>
+    <br>
+    <br>
 
-            <ul class="tabele">
-                @for(game <- games) {
-                    <li class="tabele">Spiel @game.getId() mit Thema: @game.getTopic.getName()
-                        <a class="bigButton" href="/games/play/@game.getId()">Laden</a>
-                    </li>
-                }
-            </ul>
-
-        </div>
+    <div class="tabeleHead">
+        <h1>
+            Spiel laden
+        </h1>
     </div>
-        <script>
+    <div class="tabele">
+        <ul class="tabele">
+        @for(game <- games) {
+            <li class="tabele">Spiel @game.getId() mit Thema: @game.getTopic.getName()
+                <a class="bigButton" href="/games/play/@game.getId()">Laden</a>
+            </li>
+        }
+        </ul>
+    </div>
+    <script>
         @if(feedback != "") {
             window.onload = function() {
                 window.alert("@feedback")

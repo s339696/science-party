@@ -1,15 +1,18 @@
-@(messages: List[models.ebean.Message], user: models.ebean.User)
+@(messages: List[models.ebean.Message], user: models.ebean.User, chat: models.ebean.Chat)
 
 @mainIntern("Nachrichten") {
     <br>
     <br>
     <br>
-    <div>
+    <div class="tabeleHead">
         <h1>
             Nachrichten
         </h1>
     </div>
     <div class="tabele">
+        <br>
+        <h2>@chat.getName()</h2>
+        <br>
         <div class="list">
             @for(message <- messages) {
                     @if(message.getUser.getId == user.getId) {

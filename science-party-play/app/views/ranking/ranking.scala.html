@@ -4,18 +4,26 @@
     <br>
     <br>
     <br>
-    <br>
 
-    <div>
-        <div>
-            <h1>
-                Ranking
-            </h1>
-        </div>
-        <div class="rankingList">
-            @for((user,index) <- users.zipWithIndex) {
-                <p>@{index+1}. @user mit @user.getPoints Punkten</p>
-            }
-        </div>
+    <div class="rankHead">
+        <h1>
+            Ranking
+        </h1>
+    </div>
+    <div class="rank">
+        <table>
+            <tr>
+                <th><b>Rang</b></th>
+                <th><b>Name</b></th>
+                <th><b>Punkte</b></th>
+            </tr>
+        @for((user,index) <- users.zipWithIndex) {
+            <tr>
+                <td>@{index+1}.</td>
+                <td><a class="ranking" href="/profile/@user.getId"><b>@user</b></a></td>
+                <td><b>@user.getPoints Punkten</b></td>
+            </tr>
+        }
+        </table>
     </div>
 }

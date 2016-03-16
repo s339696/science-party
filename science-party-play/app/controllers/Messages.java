@@ -148,10 +148,9 @@ public class Messages extends Controller {
             return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
         }
 
-        List<Chat> chats = user.getChats();
         List<Message> messages =  Message.getMessagesOfChat(chat);
 
-        return ok(views.html.messages.viewMessage.render(messages, user));
+        return ok(views.html.messages.viewMessage.render(messages, user, chat));
     }
 
     /**
