@@ -1,8 +1,8 @@
 @import models.ebean.User
-@(users: List[User], friendRequests: List[User], friends: List[User], feedback: String)
+@(user: User, users: List[User], friendRequests: List[User], friends: List[User], feedback: String)
 
 
-    @mainIntern("Freunde") {
+    @mainIntern("Freunde", user) {
         <br>
         <br>
         <br>

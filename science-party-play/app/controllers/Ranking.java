@@ -20,6 +20,6 @@ public class Ranking extends Controller {
 
         // Get list with user orderd by points
         List<User> users = User.find.orderBy().desc("points").setMaxRows(15).findList();
-        return ok(views.html.ranking.ranking.render(users));
+        return ok(views.html.ranking.ranking.render(user, users));
     }
 }

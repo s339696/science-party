@@ -5,6 +5,7 @@ import exception.messages.CreateMessageException;
 import manager.LoginManager;
 import models.ebean.Chat;
 import models.ebean.Message;
+import models.ebean.Notification;
 import models.ebean.User;
 import models.form.MessageForm;
 import models.form.UserAccountForm;
@@ -33,7 +34,7 @@ public class Messages extends Controller {
 
         List<Chat> chats = user.getChats();
 
-        return ok(views.html.messages.messages.render(chats));
+        return ok(views.html.messages.messages.render(user, chats));
     }
 
     /**
@@ -50,7 +51,7 @@ public class Messages extends Controller {
         List<User> users = User.find.all();
         users.remove(user);
 
-        return ok(views.html.messages.newMessage.render(users));
+        return ok(views.html.messages.newMessage.render(user, users));
     }
 
     /**
@@ -150,7 +151,11 @@ public class Messages extends Controller {
 
         List<Message> messages =  Message.getMessagesOfChat(chat);
 
-        return ok(views.html.messages.viewMessage.render(messages, user));
+        for (Message message: messages) {
+            message.setSeen(true);
+        }
+
+        return ok(views.html.messages.viewMessage.render(user, messages));
     }
 
     /**
@@ -183,9 +188,26 @@ public class Messages extends Controller {
         message.setChat(chat);
         message.setUser(user);
         message.setText(form.getMessage());
+        message.setSeen(false);
         message.insert();
 
         return ok("Die Nachricht wurde verschickt.");
+    }
+
+    /**
+     * Returns the amount of unseen messages.
+     *
+     * @return
+     */
+    public Result handleNewMessageCount() {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return badRequest("");
+        }
+
+        int count = user.getUnseenMessageCount();
+
+        return ok(String.valueOf(count));
     }
 
 }

@@ -32,6 +32,8 @@ public class Message extends Model {
     @Size(max = 1000)
     private String text;
 
+    boolean seen;
+
     @CreatedTimestamp
     @Column(name = "date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
@@ -41,6 +43,13 @@ public class Message extends Model {
                 .ieq("chat.id", chat.getId().toString())
                 .orderBy().asc("whenCreated")
                 .findList();
+    }
+
+    public static int getUnseenMessageCount(User user) {
+        return Message.find.where()
+                .ieq("user_id", user.getId().toString())
+                .eq("seen", false)
+                .findList().size();
     }
 
     public Long getId() {
@@ -79,4 +88,11 @@ public class Message extends Model {
         return whenCreated;
     }
 
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public void setSeen(boolean seen) {
+        this.seen = seen;
+    }
 }

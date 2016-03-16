@@ -1,7 +1,7 @@
 @import models.ebean.User
-@(users: List[User])
+@(user: User, users: List[User])
 
-@mainIntern("Neue Nachricht") {
+@mainIntern("Neue Nachricht", user) {
     <br>
     <br>
     <br>
