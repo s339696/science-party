@@ -63,6 +63,7 @@ public class AnswerManager {
 
     }
 
+
     public static void updateAnswer(Answer answer) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(answer);
@@ -85,6 +86,10 @@ public class AnswerManager {
         outWriter.flush();
 
         connection.getResponseMessage();
+    }
+
+    public static void deleteAnswer(int id){
+
     }
 
     public static void main(String[] args) throws IOException {

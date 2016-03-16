@@ -86,6 +86,10 @@ public class QuestionManager {
         connection.getResponseMessage();
     }
 
+    public static void deleteQuestion(int qid){
+
+    }
+
     public static void main(String[] args) throws IOException {
         DatabaseConnect.setRecentUser("bastian95@live.de", "araluen");
 

@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldListCell;
 import model.Answer;
 import model.Question;
 import model.Topic;
@@ -17,6 +18,9 @@ import model.manager.TopicManager;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -123,7 +127,7 @@ public class QuizController implements Initializable {
         radioD.setToggleGroup(group);
 
         int qid = questionsListView.getSelectionModel().getSelectedItem().getId();
-        
+
         for(Question question : QuestionManager.questionList){
             if(question.getId() == qid){
                 questionBox.setText(question.getText());
@@ -183,30 +187,15 @@ public class QuizController implements Initializable {
 
     @FXML
     public void createNewTopic() throws IOException {
-        /*topicsListView.setCellFactory(TextFieldListCell.forListView());
-        topicsListView.setEditable(true);
-        topicsListView.getItems().add(0,"hier Text eingeben");
-        topicsIdList.add(0,null);
-        String text = topicsListView.getItems().get(0);
 
-        System.out.println(text);
-
-
-        Topic topic = new Topic();
-        topic.setName("neues Thema");
-        System.out.println(topic.getName());
-
-
-        showTopics();
-*/
     }
 
     @FXML
     public void saveQuestion() throws IOException {
-       /*
+
         Question question = new Question();
-        question.setId(questionsIdList.get(questionsListView.getSelectionModel().getSelectedIndex()));
-        question.setTopicId(topicsIdList.get(topicsListView.getSelectionModel().getSelectedIndex()));
+        question.setId(questionsListView.getSelectionModel().getSelectedItem().getId());
+        question.setTopicId(topicsListView.getSelectionModel().getSelectedItem().getId());
         question.setDifficulty(Integer.parseInt(difficultyField.textProperty().get()));
         question.setText(questionBox.textProperty().get());
 
@@ -214,40 +203,48 @@ public class QuizController implements Initializable {
         String s = mapper.writeValueAsString(question);
         System.out.println(s);
 
-        int index = questionsListView.getSelectionModel().getSelectedIndex();
-        int id = questionsIdList.get(index);
-
+        int qid = questionsListView.getSelectionModel().getSelectedItem().getId();
 
         Answer answer1 = new Answer();
-        answer1.setQuesteionId(id);
+        answer1.setQuesteionId(qid);
+        answer1.setId(idArray[0]);
         answer1.setText(answerA.textProperty().get());
         answer1.setCorrect(radioA.isSelected());
 
         Answer answer2 = new Answer();
-        answer2.setQuesteionId(id);
+        answer2.setQuesteionId(qid);
+        answer2.setId(idArray[1]);
         answer2.setText(answerB.textProperty().get());
         answer2.setCorrect(radioB.isSelected());
 
         Answer answer3 = new Answer();
-        answer3.setQuesteionId(id);
+        answer3.setQuesteionId(qid);
+        answer3.setId(idArray[2]);
         answer3.setText(answerC.textProperty().get());
         answer3.setCorrect(radioC.isSelected());
 
         Answer answer4 = new Answer();
-        answer4.setQuesteionId(id);
+        answer4.setId(idArray[3]);
+        answer4.setQuesteionId(qid);
         answer4.setText(answerD.textProperty().get());
         answer4.setCorrect(radioD.isSelected());
 
         //hier noch Datenbank zeugs
-
-        AnswerManager.updateAnswer(answer1);
-        AnswerManager.updateAnswer(answer2);
-        AnswerManager.updateAnswer(answer3);
-        AnswerManager.updateAnswer(answer4);
-
         QuestionManager.updateQuestion(question);
 
-*/
+        List<Answer> aList = new ArrayList<>();
+        aList.addAll(Arrays.asList(answer1, answer2, answer3, answer4));
+
+        for(Answer answer : aList){
+            if (answer.getText().equals("")){
+                //delete
+                
+            } else {
+                //update
+                AnswerManager.updateAnswer(answer);
+            }
+        }
+
 
     }
 
