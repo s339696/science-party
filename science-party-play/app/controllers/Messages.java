@@ -24,6 +24,7 @@ public class Messages extends Controller {
 
     /**
      * Renders all messages of a chat.
+     *
      * @return
      */
     public Result renderMessages() {
@@ -92,14 +93,14 @@ public class Messages extends Controller {
                 }
 
                 String name = "";
-                for (User chatUser: members) {
+                for (User chatUser : members) {
                     name += chatUser.getFirstname();
                     name += ", ";
                 }
                 name += user.getFirstname();
 
                 // Create chat
-                Chat.createChat(user, members, name,form.getMessage());
+                Chat.createChat(user, members, name, form.getMessage());
                 return ok("Die Nachricht wurde erfolgreich verschickt.");
 
             } catch (Exception e) {
@@ -149,8 +150,21 @@ public class Messages extends Controller {
             return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
         }
 
-        List<Message> messages =  Message.getMessagesOfChat(chat);
+        List<Message> messages = Message.getMessagesOfChat(chat);
 
+        Ebean.beginTransaction();
+        try {
+            for (Message message : messages) {
+                if (!message.getUser().equals(this)) {
+                    message.setSeen(true);
+                    message.save();
+                }
+            }
+            Ebean.commitTransaction();
+        } finally {
+            Ebean.endTransaction();
+        }
+        
         return ok(views.html.messages.viewMessage.render(user, messages, chat));
     }
 
