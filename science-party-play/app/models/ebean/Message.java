@@ -45,6 +45,13 @@ public class Message extends Model {
                 .findList();
     }
 
+    public static int getUnseenMessageCount(User user) {
+        return Message.find.where()
+                .ieq("user_id", user.getId().toString())
+                .eq("seen", false)
+                .findList().size();
+    }
+
     public Long getId() {
         return id;
     }

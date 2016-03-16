@@ -25,7 +25,7 @@ public class Notifications extends Controller {
             return badRequest("");
         }
 
-        int count = Notification.getUnseenNotificationCount(user);
+        int count = user.getUnseenNotificationsCount();
 
         return ok(String.valueOf(count));
     }

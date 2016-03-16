@@ -20,12 +20,20 @@
                 <li class="Navigator"><a class="Navigator" href="/#">News</a></li>
                 <ul class="topLoginSignin">
                     @if(user.getUnseenNotificationsCount != 0) {
-                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">Benachrichtigungen (@user.getUnseenNotificationsCount)</a></li>
+                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">
+                            Benachrichtigungen (@user.getUnseenNotificationsCount)</a></li>
                     } else {
-                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">Benachrichtigungen</a></li>
+                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">
+                            Benachrichtigungen</a></li>
                     }
-                    <li class="topLoginSignin"><a id="messages" class="topLoginSignin" href="/messages">Messages</a></li>
-                    <li class="topLoginSignin"><a id="logout" class="topLoginSignin" href="/logout">Logout</a></li>
+                    @if(user.getUnseenMessageCount != 0) {
+                        <li class="topLoginSignin"><a id="messages" class="topLoginSignin" href="/messages">
+                            Messages (@user.getUnseenMessageCount)</a></li>
+                    } else {
+                        <li class="topLoginSignin"><a id="messages" class="topLoginSignin" href="/messages">
+                            Messages</a></li>
+                    }
+                <li class="topLoginSignin"><a id="logout" class="topLoginSignin" href="/logout">Logout</a></li>
                 </ul>
             </ul>
         </div>
@@ -51,6 +59,22 @@
                                     $("#notifications").text("Benachrichtigungen");
                                 } else {
                                     $("#notifications").text("Benachrichtigungen (" + xhr.responseText + ")");
+                                }
+                            },
+                            error: function(xhr,status,error) {
+                            }
+                        });
+
+                        $.ajax({
+                            url: '/messages/new/count',
+                            method: 'GET',
+                            dataType: "text",
+                            success: function(data,status,xhr) {
+                                count = xhr.responseText;
+                                if (count === "0") {
+                                    $("#messages").text("Messages");
+                                } else {
+                                    $("#messages").text("Messages (" + xhr.responseText + ")");
                                 }
                             },
                             error: function(xhr,status,error) {

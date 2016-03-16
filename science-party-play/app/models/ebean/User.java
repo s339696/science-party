@@ -500,6 +500,11 @@ public class User extends Model {
                 .findList();
     }
 
+    @JsonIgnore
+    public int getUnseenMessageCount() {
+        return Message.getUnseenMessageCount(this);
+    }
+
     /*
      * METHODS TO MANAGE NOTIFICATIONS OF A USER
      */
