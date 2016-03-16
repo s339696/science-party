@@ -1,6 +1,7 @@
 package controllers;
 
 import controllers.*;
+import controllers.routes;
 import exception.perks.GetPerkException;
 import manager.LoginManager;
 import models.ebean.Game;
@@ -144,7 +145,12 @@ public class Profil extends Controller {
      * @return
      */
     public Result renderScanQr() {
-        return ok(views.html.profile.qrScanner.render());
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
+
+        return ok(views.html.profile.qrScanner.render(user));
     }
 
     /**
