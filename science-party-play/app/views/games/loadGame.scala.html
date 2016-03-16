@@ -1,6 +1,7 @@
-@(games: List[models.ebean.Game], feedback: String)
+@import models.ebean.User
+@(user: User, games: List[models.ebean.Game], feedback: String)
 
-@mainIntern("Spiel laden") {
+@mainIntern("Spiel laden", user) {
     <div>
         <div class="tabele">
             <br>

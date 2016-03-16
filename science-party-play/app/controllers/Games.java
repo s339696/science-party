@@ -34,7 +34,7 @@ public class Games extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        return ok(views.html.games.mainGame.render("Games"));
+        return ok(views.html.games.mainGame.render(user));
     }
 
     /**
@@ -49,7 +49,7 @@ public class Games extends Controller {
         List<User> users = User.find.all();
         users.remove(user);
 
-        return ok(views.html.games.createGame.render(Topic.find.all(), users));
+        return ok(views.html.games.createGame.render(user, Topic.find.all(), users));
     }
 
     /**
@@ -79,7 +79,7 @@ public class Games extends Controller {
 
         List<Game> runningGames = user.getRunningGames();
 
-        return ok(views.html.games.loadGame.render(runningGames, feedback));
+        return ok(views.html.games.loadGame.render(user, runningGames, feedback));
     }
 
     /**
@@ -109,7 +109,7 @@ public class Games extends Controller {
             return renderRunningGames("Du bist kein aktiver Mitspieler dieses Spiels.");
         }
 
-        return ok(views.html.games.playGame.render(player, game, feedback));
+        return ok(views.html.games.playGame.render(user, player, game, feedback));
     }
 
     /**

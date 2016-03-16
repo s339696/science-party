@@ -1,5 +1,5 @@
-@(title: String)(content: Html)
-
+@import models.ebean.User
+@(title: String, user: User)(content: Html)
 
 <!DOCTYPE html>
 
@@ -19,11 +19,38 @@
                 <li class="Navigator"><a class="Navigator" href="/ranking">Ranking</a></li>
                 <li class="Navigator"><a class="Navigator" href="/news">News</a></li>
                 <ul class="topLoginSignin">
-                    <li class="topLoginSignin"><a class="topLoginSignin" href="/messages">Messages</a></li>
+                    <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">Benachrichtigungen</a></li>
+                    <li class="topLoginSignin"><a id="messages" class="topLoginSignin" href="/messages">Messages</a></li>
                     <li class="topLoginSignin"><a id="logout" class="topLoginSignin" href="/logout">Logout</a></li>
                 </ul>
             </ul>
         </div>
+        <script>
+                    // Initial and auto refresh of navigation bar
+                    window.onload = (function() {
+                        updateNavigator();
+                    });
+
+                    window.setInterval(function(){
+                        updateNavigator();
+                    }, 5000);
+
+
+                    function updateNavigator() {
+                        $.ajax({
+                            url: '/notifications/private/count',
+                            method: 'GET',
+                            //contentType: "application/json",
+                            dataType: "text",
+                            success: function(data,status,xhr) {
+                                $("#notifications").text("Benachrichtigungen (" + xhr.responseText + ")");
+                            },
+                            error: function(xhr,status,error) {
+                                alert(xhr.responseText);
+                            }
+                        });
+                    }
+            </script>
         @content
     </body>
 </html>

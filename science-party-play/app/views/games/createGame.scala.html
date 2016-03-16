@@ -1,6 +1,7 @@
-@(topics: List[models.ebean.Topic], users: List[models.ebean.User])
+@import models.ebean.User
+@(user : User, topics: List[models.ebean.Topic], users: List[User])
 
-    @mainIntern("Spiel erstellen") {
+    @mainIntern("Spiel erstellen", user) {
         <br>
         <br>
         <br>

@@ -35,11 +35,21 @@ public class Search extends Controller {
     /**
      * Returns a list of users which are fitting to the search string.
      *
-     * FIXME: It's just working for firstname.
      * @param sstring
      * @return
      */
     public List<User> searchUser(String sstring) {
+        String[] sstrings = sstring.split(" ");
+        if (sstrings.length > 0) {
+            sstring = "";
+            for (int i = 0; i < sstrings.length; i++) {
+                sstrings[i] += "* ";
+                sstring += sstrings[i];
+            }
+        } else {
+            sstring += "*";
+        }
+
         String query = "WHERE MATCH (firstname,lastname,email) AGAINST ('" + sstring + "' IN BOOLEAN MODE)";
         List<User> resultUsers = User.find
                 //.where().contains("firstname", sstring)

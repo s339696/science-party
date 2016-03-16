@@ -10,6 +10,7 @@ import exception.UserException;
 import exception.friends.FriendRequestException;
 import exception.perks.GetPerkException;
 import javassist.expr.ExprEditor;
+import net.sf.ehcache.search.expression.Not;
 import util.Helper;
 
 import javax.persistence.*;
@@ -83,6 +84,10 @@ public class User extends Model {
     @JsonIgnoreProperties
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Message> messages;
+
+    @JsonIgnoreProperties
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Notification> notifications;
 
     /**
      * Creates a new User into the Database with given parameters.
@@ -326,11 +331,8 @@ public class User extends Model {
                 throw new FriendRequestException("Es gibt bereits eine Freundschaft oder eine Freundschaftsanfrage zwischen diesen beiden Usern.");
             }
 
-            friend = new Friend();
-            friend.setRequest(true);
-            friend.setUserSendReq(this);
-            friend.setUserGetReq(to);
-            friend.insert();
+            // Create friend request
+            friend  = Friend.createFriendRequest(this,to);
 
         return friend;
     }

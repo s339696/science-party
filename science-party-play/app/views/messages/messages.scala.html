@@ -1,6 +1,7 @@
-@(chats: List[models.ebean.Chat])
+@import models.ebean.User
+@(user:User, chats: List[models.ebean.Chat])
 
-@mainIntern("Nachrichten") {
+@mainIntern("Nachrichten", user) {
     <br>
     <br>
     <br>

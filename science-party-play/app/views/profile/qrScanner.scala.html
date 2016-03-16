@@ -1,4 +1,7 @@
-@mainIntern("Fähigkeit scannen") {
+@import models.ebean.User
+@(user: User)
+
+@mainIntern("Fähigkeit scannen", user) {
 
     <script type="text/javascript" src="@routes.Assets.versioned("javascripts/qcode-decoder.min.js")"></script>
     <div style="text-align:center ;">

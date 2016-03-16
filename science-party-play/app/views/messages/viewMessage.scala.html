@@ -1,6 +1,7 @@
-@(messages: List[models.ebean.Message], user: models.ebean.User)
+@import models.ebean.User
+@(user: User, messages: List[models.ebean.Message])
 
-@mainIntern("Nachrichten") {
+@mainIntern("Nachrichten", user) {
     <br>
     <br>
     <div>

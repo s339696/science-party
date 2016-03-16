@@ -1,8 +1,8 @@
 @import models.ebean.Player
-
+@import models.ebean.User
 @(user: models.ebean.User, feedback: String)
 
-@mainIntern("Spieleinladungen") {
+@mainIntern("Spieleinladungen", user) {
     <br>
     <br>
     <br>

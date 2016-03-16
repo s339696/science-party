@@ -33,7 +33,7 @@ public class Messages extends Controller {
 
         List<Chat> chats = user.getChats();
 
-        return ok(views.html.messages.messages.render(chats));
+        return ok(views.html.messages.messages.render(user, chats));
     }
 
     /**
@@ -50,7 +50,7 @@ public class Messages extends Controller {
         List<User> users = User.find.all();
         users.remove(user);
 
-        return ok(views.html.messages.newMessage.render(users));
+        return ok(views.html.messages.newMessage.render(user, users));
     }
 
     /**
@@ -150,7 +150,7 @@ public class Messages extends Controller {
 
         List<Message> messages =  Message.getMessagesOfChat(chat);
 
-        return ok(views.html.messages.viewMessage.render(messages, user));
+        return ok(views.html.messages.viewMessage.render(user, messages));
     }
 
     /**

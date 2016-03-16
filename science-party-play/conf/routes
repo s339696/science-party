@@ -59,6 +59,11 @@ GET           /ranking                          controllers.Ranking.renderRankin
 # Search
 GET           /search/user/:sstring             controllers.Search.searchUserForNewFriends(sstring: String)
 
+# Notifications
+GET           /notifications/private/count      controllers.Notifications.handlePersonalNotificationCount()
+GET           /notifications/private            controllers.Notifications.renderPersonalNotifications()
+GET           /notifications/public             controllers.Notifications.renderPublicNotifications()
+
 # Playground -> Let's play a bit
 GET           /playground                       controllers.Application.playground()
 

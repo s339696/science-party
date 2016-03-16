@@ -1,6 +1,7 @@
-@(player: models.ebean.Player, game: models.ebean.Game, feedback: String)
+@import models.ebean._
+@(user: User, player: Player, game: Game, feedback: String)
 
-@mainIntern("Science Party") {
+@mainIntern("Science Party", user) {
     <br>
     <br>
     <br>

@@ -55,6 +55,17 @@ create table messages (
   constraint pk_messages primary key (id)
 );
 
+create table notifications (
+  id                            bigint auto_increment not null,
+  private_text                  varchar(255),
+  public_text                   varchar(255),
+  public_available              tinyint(1) default 0,
+  private_seen                  tinyint(1) default 0,
+  user_id                       bigint,
+  date_created                  datetime not null,
+  constraint pk_notifications primary key (id)
+);
+
 create table perks (
   id                            bigint auto_increment not null,
   name                          varchar(255),
@@ -156,6 +167,9 @@ create index ix_messages_user_id on messages (user_id);
 alter table messages add constraint fk_messages_chat_id foreign key (chat_id) references chats (id) on delete restrict on update restrict;
 create index ix_messages_chat_id on messages (chat_id);
 
+alter table notifications add constraint fk_notifications_user_id foreign key (user_id) references users (id) on delete restrict on update restrict;
+create index ix_notifications_user_id on notifications (user_id);
+
 alter table perks_per_player add constraint fk_perks_per_player_player_id foreign key (player_id) references players (id) on delete restrict on update restrict;
 create index ix_perks_per_player_player_id on perks_per_player (player_id);
 
@@ -216,6 +230,9 @@ drop index ix_messages_user_id on messages;
 alter table messages drop foreign key fk_messages_chat_id;
 drop index ix_messages_chat_id on messages;
 
+alter table notifications drop foreign key fk_notifications_user_id;
+drop index ix_notifications_user_id on notifications;
+
 alter table perks_per_player drop foreign key fk_perks_per_player_player_id;
 drop index ix_perks_per_player_player_id on perks_per_player;
 
@@ -254,6 +271,8 @@ drop table if exists friends;
 drop table if exists games;
 
 drop table if exists messages;
+
+drop table if exists notifications;
 
 drop table if exists perks;
 
