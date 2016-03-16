@@ -1,13 +1,9 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sun.org.apache.xalan.internal.xsltc.util.IntegerArray;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldListCell;
 import model.Answer;
 import model.Question;
 import model.Topic;
@@ -16,7 +12,6 @@ import model.manager.QuestionManager;
 import model.manager.TopicManager;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -142,10 +137,10 @@ public class QuizController implements Initializable {
         answerC.textProperty().set("");
         answerD.textProperty().set("");
 
-        answerA.setDisable(true);
-        answerB.setDisable(true);
-        answerC.setDisable(true);
-        answerD.setDisable(true);
+        answerA.setDisable(false);
+        answerB.setDisable(false);
+        answerC.setDisable(false);
+        answerD.setDisable(false);
 
         radioA.setDisable(true);
         radioB.setDisable(true);
@@ -156,25 +151,21 @@ public class QuizController implements Initializable {
 
        switch(size){
            case 4:
-               answerD.setDisable(false);
                radioD.setDisable(false);
                answerD.textProperty().set(AnswerManager.answerList.get(3).getText());
                radioD.setSelected(AnswerManager.answerList.get(3).isCorrect());
                idArray[3] = AnswerManager.answerList.get(3).getId();
            case 3:
-               answerC.setDisable(false);
                radioC.setDisable(false);
                answerC.textProperty().set(AnswerManager.answerList.get(2).getText());
                radioC.setSelected(AnswerManager.answerList.get(2).isCorrect());
                idArray[2] = AnswerManager.answerList.get(2).getId();
            case 2:
-               answerB.setDisable(false);
                radioB.setDisable(false);
                answerB.textProperty().set(AnswerManager.answerList.get(1).getText());
                radioB.setSelected(AnswerManager.answerList.get(1).isCorrect());
                idArray[1] = AnswerManager.answerList.get(1).getId();
            case 1:
-               answerA.setDisable(false);
                radioA.setDisable(false);
                answerA.textProperty().set(AnswerManager.answerList.get(0).getText());
                radioA.setSelected(AnswerManager.answerList.get(0).isCorrect());
@@ -188,6 +179,40 @@ public class QuizController implements Initializable {
     @FXML
     public void createNewTopic() throws IOException {
 
+    }
+
+
+    @FXML
+    public void activateRadioButtonA(){
+        if(!answerA.textProperty().get().equals(null)){
+            radioA.setDisable(false);
+        } else{
+            radioA.setDisable(true);
+        }
+    }
+    @FXML
+    public void activateRadioButtonB(){
+        if(!answerB.textProperty().get().equals(null)){
+            radioB.setDisable(false);
+        }else{
+            radioB.setDisable(true);
+        }
+    }
+    @FXML
+    public void activateRadioButtonC(){
+        if(!answerC.textProperty().get().equals(null)){
+            radioC.setDisable(false);
+        }else{
+            radioC.setDisable(true);
+        }
+    }
+    @FXML
+    public void activateRadioButtonD(){
+        if(!answerD.textProperty().get().equals(null)){
+            radioD.setDisable(false);
+        }else if(answerD.textProperty().get().equals(null) || answerD.textProperty().get().equals("")){
+            radioD.setDisable(true);
+        }
     }
 
     @FXML
@@ -206,28 +231,37 @@ public class QuizController implements Initializable {
         int qid = questionsListView.getSelectionModel().getSelectedItem().getId();
 
         Answer answer1 = new Answer();
-        answer1.setQuesteionId(qid);
-        answer1.setId(idArray[0]);
-        answer1.setText(answerA.textProperty().get());
-        answer1.setCorrect(radioA.isSelected());
+        if(idArray[0] != null){
+            answer1.setQuesteionId(qid);
+            answer1.setId(idArray[0]);
+            answer1.setText(answerA.textProperty().get());
+            answer1.setCorrect(radioA.isSelected());
+        }
 
         Answer answer2 = new Answer();
-        answer2.setQuesteionId(qid);
-        answer2.setId(idArray[1]);
-        answer2.setText(answerB.textProperty().get());
-        answer2.setCorrect(radioB.isSelected());
+        if (idArray[1] != null) {
+            answer2.setQuesteionId(qid);
+            answer2.setId(idArray[1]);
+            answer2.setText(answerB.textProperty().get());
+            answer2.setCorrect(radioB.isSelected());
+        }
 
         Answer answer3 = new Answer();
-        answer3.setQuesteionId(qid);
-        answer3.setId(idArray[2]);
-        answer3.setText(answerC.textProperty().get());
-        answer3.setCorrect(radioC.isSelected());
+        if (idArray[2] != null) {
+            answer3.setQuesteionId(qid);
+            answer3.setId(idArray[2]);
+            answer3.setText(answerC.textProperty().get());
+            answer3.setCorrect(radioC.isSelected());
+        }
 
         Answer answer4 = new Answer();
-        answer4.setId(idArray[3]);
-        answer4.setQuesteionId(qid);
-        answer4.setText(answerD.textProperty().get());
-        answer4.setCorrect(radioD.isSelected());
+        if (idArray[3] != null) {
+            answer4.setId(idArray[3]);
+            answer4.setQuesteionId(qid);
+            answer4.setText(answerD.textProperty().get());
+            answer4.setCorrect(radioD.isSelected());
+        }
+
 
         //hier noch Datenbank zeugs
         QuestionManager.updateQuestion(question);
@@ -235,17 +269,40 @@ public class QuizController implements Initializable {
         List<Answer> aList = new ArrayList<>();
         aList.addAll(Arrays.asList(answer1, answer2, answer3, answer4));
 
+        //hier nicht answers sonder die Textfelder durch iterieren!!!!
+        //dazu wieder Liste mit Textfeldern -> die dann durchgehen
         for(Answer answer : aList){
-            if (answer.getText().equals("")){
-                //delete
-                
-            } else {
-                //update
-                AnswerManager.updateAnswer(answer);
+            System.out.println(answer.getText());
+            if(answer.getText() != null){
+
+                //hier noch irgendwie erstellen einbauen
+                if (answer.getText().equals("")) {
+                    //delete
+                    AnswerManager.deleteAnswer(answer);
+                }else if(false){
+                    //create
+
+                }else{
+                    //update
+                    AnswerManager.updateAnswer(answer);
+                }
             }
+
         }
+    }
 
+    public void createAnswer(String text){
+        int i = AnswerManager.answerList.size();
 
+        List<RadioButton> radioList = new ArrayList<>();
+        radioList.addAll(Arrays.asList(radioA, radioB, radioC, radioD));
+
+        Answer answer = new Answer();
+        answer.setText(text);
+        answer.setCorrect(radioList.get(i).isSelected());
+        answer.setQuesteionId(questionsListView.getSelectionModel().getSelectedItem().getId());
+
+        //datenbank zeugs
     }
 
 

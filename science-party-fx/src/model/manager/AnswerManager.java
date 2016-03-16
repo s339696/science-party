@@ -27,7 +27,7 @@ public class AnswerManager {
     public static String getAllAnswersJson(int qid) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/get/answer/list/" + qid;
+        String urlPath = DatabaseConnect.serverAddress + "/ac/get/answer/list/" + qid;
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -70,7 +70,7 @@ public class AnswerManager {
 
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/update/answer";
+        String urlPath = DatabaseConnect.serverAddress + "/ac/update/answer";
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -88,7 +88,18 @@ public class AnswerManager {
         connection.getResponseMessage();
     }
 
-    public static void deleteAnswer(int id){
+    public static void deleteAnswer(Answer answer) throws IOException {
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = DatabaseConnect.serverAddress + "/ac/delete/answer/" + answer.getId();
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        System.out.println(connection.getResponseMessage());
+
+        refreshAnswerListPerQuestion(answer.getQuesteionId());
 
     }
 

@@ -24,7 +24,7 @@ public class QuestionManager {
     public static String getAllQuestionsJson(int tid) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/get/question/list/" + tid;
+        String urlPath = DatabaseConnect.serverAddress + "/ac/get/question/list/" + tid;
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -68,7 +68,7 @@ public class QuestionManager {
 
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/update/question";
+        String urlPath = DatabaseConnect.serverAddress + "/ac/update/question";
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 

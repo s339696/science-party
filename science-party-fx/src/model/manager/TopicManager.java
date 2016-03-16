@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.ObservableMap;
 import model.Topic;
 import model.database.DatabaseConnect;
 
@@ -14,9 +13,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Richard on 13.03.2016.
@@ -28,7 +25,7 @@ public class TopicManager {
     public static String getAllTopicsJson() throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/get/topic/list";
+        String urlPath = DatabaseConnect.serverAddress + "/ac/get/topic/list";
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -70,7 +67,7 @@ public class TopicManager {
 
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/insert/topic";
+        String urlPath = DatabaseConnect.serverAddress + "/ac/insert/topic";
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 

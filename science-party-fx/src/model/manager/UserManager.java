@@ -28,7 +28,7 @@ public class UserManager {
     public static String getAllUserJson() throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/get/user/list";
+        String urlPath = DatabaseConnect.serverAddress + "/ac/get/user/list";
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -70,7 +70,7 @@ public class UserManager {
     public static void lockUser(int id, boolean lock) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/update/user";
+        String urlPath = DatabaseConnect.serverAddress + "/ac/update/user";
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -105,7 +105,7 @@ public class UserManager {
     public static void deleteUser(int id) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/delete/user/" + id;
+        String urlPath = DatabaseConnect.serverAddress + "/ac/delete/user/" + id;
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("DELETE");

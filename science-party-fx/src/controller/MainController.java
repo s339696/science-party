@@ -27,7 +27,7 @@ public class MainController implements Initializable {
     private TextField LoginEmail;
 
     @FXML
-    private TextField LoginPassword;
+    private PasswordField LoginPassword;
 
     @FXML
     private TextField LoginServer;
@@ -71,8 +71,10 @@ public class MainController implements Initializable {
 
         String email = LoginEmail.getText();
         String password = LoginPassword.getText();
+        String server = LoginServer.getText();
 
         DatabaseConnect.setRecentUser(email, password);
+        DatabaseConnect.setServerAddress(server);
 
         if(DatabaseConnect.connectedToDatabase()){
             LoadMainWindow();
