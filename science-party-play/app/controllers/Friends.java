@@ -1,7 +1,5 @@
 package controllers;
 
-import controllers.*;
-import controllers.routes;
 import exception.friends.FriendRequestException;
 import manager.LoginManager;
 import models.ebean.Friend;

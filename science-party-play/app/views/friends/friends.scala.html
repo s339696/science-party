@@ -2,72 +2,82 @@
 @(users: List[User], friendRequests: List[User], friends: List[User], feedback: String)
 
 
-@mainIntern("Freunde") {
-    <br>
-    <br>
-    <br>
-    <div class="tabeleHead">
-        <h1>
-            Freunde
-        </h1>
-    </div>
-    <br>
-    <div class="tabele">
-            <!-- VORLÄUFIG PERSONEN SUCHEN VIA <Select> <Option> (Option -> Liste aller Personen) -->
-        <form>
-            <select class="search" onchange="userSelected(this.options[this.selectedIndex].value)">
-                <option value="">Wähle eine Person</option>
-            @for( user <- users) {
-                <option value="@user.getId">@user.toString</option>
-            }
-            </select>
-                <!-- <input type="search" placeholder="Vorname, Nachname oder E-Mail"> -->
-            <a class="squareButton" id="addFriend" href="#">Freund hinzufügen</a>
-            <a class="squareButton" id="viewProfile" href="#">Profil</a>
-        </form>
+    @mainIntern("Freunde") {
         <br>
         <br>
         <br>
-        <br>
-        <h2>Offene Freundschaftsanfragen</h2>
-        <div class="list">
-            <ul class="tabele">
-                @for( friendRequest <- friendRequests) {
-                <li class="tabele">
-                    <a class="tabele" href="/profile/@friendRequest.getId">@friendRequest.toString</a>
-                    <a class="tabeleDelete" href="/friends/decline/@friendRequest.getId">Ignorieren</a>
-                    <a class="tabeleAdd" href="/friends/accept/@friendRequest.getId">Annehmen</a>
-                </li>
-                }
-            </ul>
+        <div class="tabeleHead">
+            <h1>
+                Freunde
+            </h1>
         </div>
         <br>
-        <h2>Freunde</h2>
-        <div class="list">
-            <ul class="tabele">
-                @for( friend <- friends) {
-                    <li class="tabele">
-                        <a class="tabele" href="/profile/@friend.getId">@friend.toString</a>
-                        <a class="tabeleDelete" href="/friends/delete/@friend.getId">Freund entfernen</a>
-                        <a class="tabeleFloatRight" href="/message/send/@friend.getId">Nachricht senden</a>
-                    </li>
+        <div class="tabele">
+            <h2>Suche neue Freunde</h2>
+            <input type="text" size="30" onkeyup="showResult(this.value)">
+            <div id="livesearch"></div>
+            @if(friendRequests.nonEmpty) {
+                <h2>Offene Freundschaftsanfragen</h2>
+                <div class="list">
+                    <ul class="tabele">
+                    @for(friendRequest <- friendRequests) {
+                        <li class="tabele">
+                            <a class="tabele" href="/profile/@friendRequest.getId">@friendRequest.toString</a>
+                            <a class="tabeleDelete" href="/friends/decline/@friendRequest.getId">Ignorieren</a>
+                            <a class="tabeleAdd" href="/friends/accept/@friendRequest.getId">Annehmen</a>
+                        </li>
+                    }
+                    </ul>
+                </div>
+                <br>
+            }
+            <h2>Freunde</h2>
+            <div class="list">
+                <ul class="tabele">
+                @if(friends.nonEmpty) {
+                    @for(friend <- friends) {
+                        <li class="tabele">
+                            <a class="tabele" href="/profile/@friend.getId">@friend.toString</a>
+                            <a class="tabeleDelete" href="/friends/delete/@friend.getId">Freund entfernen</a>
+                            <a class="tabeleFloatRight" href="/message/send/@friend.getId">Nachricht senden</a>
+                        </li>
+                    }
+                } else {
+                    Du hast noch keine Freunde.
                 }
-            </ul>
+                </ul>
+            </div>
+            <br>
         </div>
-        <br>
-    </div>
 
-    <script>
-            @if(feedback != "") {
-                window.onload = function() {
-                    window.alert("@feedback")
-                };
-            }
+        <script>
+                @if(feedback != "") {
+                    window.onload = function() {
+                        window.alert("@feedback");
+                    };
+                }
 
-            function userSelected(id) {
-                $("#addFriend").attr("href", "/friends/add/" + id);
-                $("#sendMessage").attr("href", "/messages/send/" + id);
-                $("#viewProfile").attr("href", "/profile/" + id);
-            }
-    </script>
-}
+                function showResult(str) {
+                    if (str.length==0) {
+                        document.getElementById("livesearch").innerHTML="";
+                        document.getElementById("livesearch").style.border="0px";
+                        return;
+                    }
+                    if (window.XMLHttpRequest) {
+                        // code for IE7+, Firefox, Chrome, Opera, Safari
+                        xmlhttp=new XMLHttpRequest();
+                    } else {  // code for IE6, IE5
+                        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                    }
+                    xmlhttp.onreadystatechange=function() {
+                        if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                            document.getElementById("livesearch").innerHTML=xmlhttp.responseText;
+                            document.getElementById("livesearch").style.border="1px solid #A5ACB2";
+                        }
+                    }
+                    xmlhttp.open("GET","/search/user/"+str,true);
+                    xmlhttp.send();
+                }
+
+        </script>
+    }

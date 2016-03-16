@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import exception.ac.AuthenticationException;
 import manager.LoginManager;
 import manager.PerkManager;
-import models.ebean.Answer;
-import models.ebean.Question;
-import models.ebean.Topic;
-import models.ebean.User;
+import models.ebean.*;
 
 import play.mvc.*;
 
@@ -490,6 +487,56 @@ public class AuthorConnect extends Controller {
         }
 
         return ok("Die Antwort wurde gelöscht.");
+    }
+
+    /*
+     * PERK
+     */
+
+    /**
+     * Retuns a list of all perks for all topics
+     *
+     * @param
+     * @return
+     */
+    public Result servePerkList() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        List<PerkPerTopic> perkList = PerkPerTopic.find.all();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(perkList, JsonNode.class);
+
+        return ok(node);
+    }
+
+    /**
+     * Retuns a list of all perks for a given topic id.
+     *
+     * @param
+     * @return
+     */
+    public Result servePerkListByTopic(Long topicId) {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+        System.out.println(topicId);
+        List<PerkPerTopic> perkList = PerkPerTopic.find.where()
+                .ieq("topic_id", topicId.toString())
+                .findList();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(perkList, JsonNode.class);
+
+        return ok(node);
     }
 
     /*

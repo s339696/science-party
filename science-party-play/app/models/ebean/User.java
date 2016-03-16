@@ -317,18 +317,19 @@ public class User extends Model {
      * @return
      * @throws FriendRequestException
      */
-    public Friend sendFriendRequestTo(User to) throws FriendRequestException {
+    public synchronized Friend sendFriendRequestTo(User to) throws FriendRequestException {
         // Proof if there is already a friendship or request
         Friend friend = getFriendshipOrRequestWith(to);
-        if (friend != null) {
-            throw new FriendRequestException("Es gibt bereits eine Freundschaft oder eine Freundschaftsanfrage zwischen diesen beiden Usern.");
-        }
 
-        friend = new Friend();
-        friend.setRequest(true);
-        friend.setUserSendReq(this);
-        friend.setUserGetReq(to);
-        friend.insert();
+            if (friend != null) {
+                throw new FriendRequestException("Es gibt bereits eine Freundschaft oder eine Freundschaftsanfrage zwischen diesen beiden Usern.");
+            }
+
+            friend = new Friend();
+            friend.setRequest(true);
+            friend.setUserSendReq(this);
+            friend.setUserGetReq(to);
+            friend.insert();
 
         return friend;
     }

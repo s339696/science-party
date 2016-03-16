@@ -1,0 +1,19 @@
+
+@(resultUsers: List[models.ebean.User])
+
+<div class="list">
+    <ul class="tabele">
+        @if(resultUsers.isEmpty) {
+            <li class="tabele">
+                Keine Ergebnisse.
+            </li>
+        } else {
+            @for(user <- resultUsers) {
+                <li class="tabele">
+                    <a class="tabele" href="/profile/@user.getId">@user</a>
+                    <a class="tabeleFloatRight" href="/friends/add/@user.getId">Freund hinzufügen</a>
+                </li>
+            }
+        }
+    </ul>
+</div>

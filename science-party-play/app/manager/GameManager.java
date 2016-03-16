@@ -1,11 +1,8 @@
 package manager;
 
-import exception.games.CreateGameException;
-import exception.games.GameException;
-import exception.games.StartGameException;
-import exception.games.StopGameException;
+import exception.games.*;
 import models.ebean.*;
-import play.Logger;
+import models.enums.PerkType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +20,7 @@ public class GameManager {
      * @param users
      * @return
      */
-    public static Game createGame(Topic topic, List<User> users) throws GameException {
+    public static Game createGame(Topic topic, String name, List<User> users) throws GameException {
         if (topic == null) {
             throw new CreateGameException("Das ausgewählte Thema ist ungültig.");
         }
@@ -32,7 +29,7 @@ public class GameManager {
         Game game = new Game();
         game.setGameStatus(Game.GameStatus.PENDING);
         game.setTopic(topic);
-
+        game.setName(name);
         game.insert();
 
         // Create Players for the Games, each user represent a player
@@ -157,7 +154,7 @@ public class GameManager {
 
         // Random start: Generate starting player id as long a starting player has status PLAYING
         System.out.println("Wähle zufällig Startspieler...");
-        List <Player> activePlayers = game.getPlayingPlayer();
+        List<Player> activePlayers = game.getPlayingPlayer();
         Random random = new Random();
         int startNumb = random.nextInt(activePlayers.size());
 
@@ -249,5 +246,38 @@ public class GameManager {
         game.nextTurn();
 
         return result;
+    }
+
+    /**
+     * Uses a perk for a given game.
+     *
+     * @param game
+     * @param perk
+     * @return
+     */
+    public static void usePerk(Game game, PerkPerPlayer perk) throws Exception {
+        if (perk.isUsed()) {
+            throw new UsePerkGameException("Diese Fähigkeit wurde bereits eingesetzt.");
+        }
+        PerkType perkType = PerkType.fromInt(perk.getPerkPerUser().getPerkPerTopic().getId().intValue());
+        switch (perkType) {
+            case GIVE_ANSWER:
+                usePerkGiveAnswer(game);
+                break;
+            default:
+                throw new UsePerkGameException("Die eingesetzte Fähigkeit ist ungültig.");
+        }
+        perk.setUsed(true);
+        perk.save();
+    }
+
+    /**
+     * Gives the correct answer to the active question.
+     *
+     * @param game
+     * @throws Exception
+     */
+    private static void usePerkGiveAnswer(Game game) throws Exception {
+        answerActiveQuestion(game, game.getActiveQuestion().getCorrectAnswer());
     }
 }

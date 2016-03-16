@@ -40,7 +40,7 @@ public class Profil extends Controller {
      * @param id
      * @return
      */
-    public Result renderProfile(long id) {
+    public Result renderProfile(long id, String feedback) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
@@ -51,7 +51,7 @@ public class Profil extends Controller {
             ownProfile = true;
         }
 
-        return ok(views.html.profile.profile.render(User.find.byId(id), ownProfile));
+        return ok(views.html.profile.profile.render(User.find.byId(id), ownProfile, feedback));
     }
 
     /**
@@ -144,7 +144,7 @@ public class Profil extends Controller {
      * @return
      */
     public Result renderScanQr() {
-        return ok();
+        return ok(views.html.profile.qrScanner.render());
     }
 
     /**
@@ -164,6 +164,6 @@ public class Profil extends Controller {
         } catch (GetPerkException e) {
             badRequest(e.getMessage());
         }
-        return ok("Die Fähigkeit wurde erfolgreich hinzugefügt und kann jetzt verwendet werden.");
+        return renderProfile(user.getId(), "Die Fähigkeit wurde erfolgreich hinzugefügt und kann jetzt verwendet werden.");
     }
 }

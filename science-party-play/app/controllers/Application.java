@@ -44,7 +44,7 @@ public class Application extends Controller {
         //Topic.find.byId(5L).delete();
         PerkManager.updatePerksPerTopic();
 
-        return ok("Play!");
+        return ok(views.html.playground.render(""));
     }
 
 }
