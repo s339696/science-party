@@ -32,6 +32,8 @@ public class Message extends Model {
     @Size(max = 1000)
     private String text;
 
+    boolean seen;
+
     @CreatedTimestamp
     @Column(name = "date_created", columnDefinition = "datetime")
     private Timestamp whenCreated;
@@ -79,4 +81,11 @@ public class Message extends Model {
         return whenCreated;
     }
 
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public void setSeen(boolean seen) {
+        this.seen = seen;
+    }
 }

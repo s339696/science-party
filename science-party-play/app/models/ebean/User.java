@@ -327,12 +327,12 @@ public class User extends Model {
         // Proof if there is already a friendship or request
         Friend friend = getFriendshipOrRequestWith(to);
 
-            if (friend != null) {
-                throw new FriendRequestException("Es gibt bereits eine Freundschaft oder eine Freundschaftsanfrage zwischen diesen beiden Usern.");
-            }
+        if (friend != null) {
+            throw new FriendRequestException("Es gibt bereits eine Freundschaft oder eine Freundschaftsanfrage zwischen diesen beiden Usern.");
+        }
 
-            // Create friend request
-            friend  = Friend.createFriendRequest(this,to);
+        // Create friend request
+        friend = Friend.createFriendRequest(this, to);
 
         return friend;
     }
@@ -498,6 +498,14 @@ public class User extends Model {
                 .ieq("users.id", this.getId().toString())
                 .orderBy().asc("messages.whenCreated")
                 .findList();
+    }
+
+    /*
+     * METHODS TO MANAGE NOTIFICATIONS OF A USER
+     */
+    @JsonIgnore
+    public int getUnseenNotificationsCount() {
+        return Notification.getUnseenNotificationCount(this);
     }
 
     /*

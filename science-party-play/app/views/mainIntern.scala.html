@@ -17,9 +17,13 @@
                 <li class="Navigator"><a class="Navigator" href="/friends">Freunde</a></li>
                 <li class="Navigator"><a class="Navigator" href="/games">Spielen</a></li>
                 <li class="Navigator"><a class="Navigator" href="/ranking">Ranking</a></li>
-                <li class="Navigator"><a class="Navigator" href="/news">News</a></li>
+                <li class="Navigator"><a class="Navigator" href="/#">News</a></li>
                 <ul class="topLoginSignin">
-                    <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">Benachrichtigungen</a></li>
+                    @if(user.getUnseenNotificationsCount != 0) {
+                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">Benachrichtigungen (@user.getUnseenNotificationsCount)</a></li>
+                    } else {
+                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">Benachrichtigungen</a></li>
+                    }
                     <li class="topLoginSignin"><a id="messages" class="topLoginSignin" href="/messages">Messages</a></li>
                     <li class="topLoginSignin"><a id="logout" class="topLoginSignin" href="/logout">Logout</a></li>
                 </ul>
@@ -40,13 +44,16 @@
                         $.ajax({
                             url: '/notifications/private/count',
                             method: 'GET',
-                            //contentType: "application/json",
                             dataType: "text",
                             success: function(data,status,xhr) {
-                                $("#notifications").text("Benachrichtigungen (" + xhr.responseText + ")");
+                                count = xhr.responseText;
+                                if (count === "0") {
+                                    $("#notifications").text("Benachrichtigungen");
+                                } else {
+                                    $("#notifications").text("Benachrichtigungen (" + xhr.responseText + ")");
+                                }
                             },
                             error: function(xhr,status,error) {
-                                alert(xhr.responseText);
                             }
                         });
                     }

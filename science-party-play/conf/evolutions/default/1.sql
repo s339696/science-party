@@ -51,6 +51,7 @@ create table messages (
   user_id                       bigint,
   chat_id                       bigint,
   text                          varchar(1000),
+  seen                          tinyint(1) default 0,
   date_created                  datetime not null,
   constraint pk_messages primary key (id)
 );
