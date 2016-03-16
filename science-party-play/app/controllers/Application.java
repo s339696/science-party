@@ -5,10 +5,7 @@ import exception.games.StartGameException;
 import manager.GameManager;
 import manager.LoginManager;
 import manager.PerkManager;
-import models.ebean.Game;
-import models.ebean.Question;
-import models.ebean.Topic;
-import models.ebean.User;
+import models.ebean.*;
 import play.mvc.*;
 
 import java.util.ArrayList;
@@ -42,7 +39,11 @@ public class Application extends Controller {
     public Result playground() {
 
         //Topic.find.byId(5L).delete();
-        PerkManager.updatePerksPerTopic();
+        List<Chat> chats = Chat.find.all();
+        for (Chat chat: chats) {
+            chat.delete();
+        }
+
 
         return ok(views.html.playground.render(""));
     }

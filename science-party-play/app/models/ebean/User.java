@@ -502,7 +502,12 @@ public class User extends Model {
 
     @JsonIgnore
     public int getUnseenMessageCount() {
-        return Message.getUnseenMessageCount(this);
+        return Chat.find
+                .where()
+                .ieq("users.id", this.getId().toString())
+                .ne("messages.user", this)
+                .eq("messages.seen", false)
+                .findRowCount();
     }
 
     /*
