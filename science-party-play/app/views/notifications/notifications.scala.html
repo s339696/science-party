@@ -1,0 +1,28 @@
+@import models.ebean.User
+@import models.ebean.Notification
+@(user: User, unseenNoti: List[Notification], seenNoti: List[Notification])
+
+@mainIntern("News", user) {
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+        <div>
+            <h1>
+                Benachrichtigungen
+            </h1>
+        </div>
+        <div>
+            <ul>
+                @for(noti <- unseenNoti) {
+                    <li>NEU: @noti.getWhenCreated - @noti.getPrivateText</li>
+                }
+                @for(noti <- seenNoti) {
+                    <li>@noti.getWhenCreated - @noti.getPrivateText</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+}

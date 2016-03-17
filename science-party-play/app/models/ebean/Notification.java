@@ -83,6 +83,19 @@ public class Notification extends Model {
     }
 
     /**
+     * Returns a list of unseen notifications for a user
+     *
+     * @param user
+     * @return
+     */
+    public static List<Notification> getSeenNotifications(User user) {
+        return find.where()
+                .ieq("user_id", user.getId().toString())
+                .eq("privateSeen", true)
+                .findList();
+    }
+
+    /**
      * Returns all notifications for a special user.
      *
      * @param user
