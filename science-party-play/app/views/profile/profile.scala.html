@@ -27,7 +27,10 @@
         </div>
         <div class="userStatistics">
             <h3>Statistik</h3>
-            <p>some statistics...</p>
+            <p>
+                Gespielte Spiele: @user.getNumberOfPlayedGames<br>
+                Laufende Spiele: @user.getNumberOfPlayingGames
+            </p>
         </div>
         <div class="userPerks">
             <h3>Fähigkeiten</h3>
@@ -49,10 +52,10 @@
         </div>
     </div>
     <script>
-                @if(feedback != "") {
-            window.onload = function() {
-                window.alert("@feedback")
-            };
-        }
+            @if(feedback != "") {
+                window.onload = (function() {
+                window.alert("@feedback");
+                });
+            }
     </script>
 }

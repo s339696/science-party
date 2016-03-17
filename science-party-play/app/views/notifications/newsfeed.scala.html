@@ -1,0 +1,24 @@
+@import models.ebean.User
+@(user: User, notis: List[models.ebean.Notification])
+
+@mainIntern("News", user) {
+    <br>
+    <br>
+    <br>
+    <br>
+    <div>
+        <div>
+            <h1>
+                Newsfeed
+            </h1>
+        </div>
+        <div>
+            <ul>
+                @for(noti <- notis) {
+                    <li>@noti.getWhenCreated - @noti.getPublicText</li>
+                }
+            </ul>
+        </div>
+    </div>
+
+}

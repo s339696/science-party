@@ -312,6 +312,22 @@ public class User extends Model {
         return runningGames;
     }
 
+    @JsonIgnore
+    public int getNumberOfPlayedGames() {
+        return Game.find.where()
+                .eq("players.user", this)
+                .eq("players.playerStatus", Player.PlayerStatus.FINISHED)
+                .findRowCount();
+    }
+
+    @JsonIgnore
+    public int getNumberOfPlayingGames() {
+        return Game.find.where()
+                .eq("players.user", this)
+                .eq("players.playerStatus", Player.PlayerStatus.PLAYING)
+                .findRowCount();
+    }
+
     /*
      * METHODS TO MANAGE FRIENDS OF A USER
      */
@@ -357,6 +373,9 @@ public class User extends Model {
             if (accept == true) {
                 friendRequest.setRequest(false);
                 friendRequest.update();
+                Notification.createNotification(this, "Du bist jetzt mit " + from + " befreundet.", "");
+                Notification.createNotification(from, "Du bist jetzt mit " + this + " befreundet.",
+                        from + " ist jetzt mit " + this + " befreundet.");
                 throw new FriendRequestException("Die Freundschaftsanfrage wurde angenommen.");
             } else {
                 friendRequest.delete();
