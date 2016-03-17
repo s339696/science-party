@@ -50,7 +50,7 @@ public class PerkManager {
         ObservableList<Perk> list = FXCollections.observableArrayList();
         String allTopicsJson = TopicManager.getAllTopicsJson();
         ObjectMapper mapper = new ObjectMapper();
-        List<Perk> topicList = mapper.readValue(allTopicsJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Perk.class));
+        List<Perk> perkList = mapper.readValue(allTopicsJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Perk.class));
 
         for(Perk perk : perkList){
             list.add(perk);
@@ -63,10 +63,7 @@ public class PerkManager {
         DatabaseConnect.setRecentUser("bastian95@live.de", "araluen");
         DatabaseConnect.setServerAddress("http://localhost:9000");
 
+        System.out.println(PerkManager.getAllPerksJson());
 
-        PerkManager.getAllPerksJson();
-        refreshPerkList();
-
-        System.out.println(perkList.toString());
     }
 }

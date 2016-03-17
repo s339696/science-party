@@ -24,7 +24,6 @@
          <children>
             <ListView fx:id="lv" layoutY="61.0" onMouseClicked="#handleUserInSelect" prefHeight="540.0" prefWidth="338.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="61.0" />
             <TextField fx:id="search" layoutX="-1.0" layoutY="-1.0" onAction="#handleUpdate" prefHeight="63.0" prefWidth="346.0" promptText="funktioniere du arsch" />
-            <ScrollBar layoutX="331.0" layoutY="-7.0" orientation="VERTICAL" prefHeight="615.0" prefWidth="14.0" AnchorPane.bottomAnchor="-7.0" AnchorPane.leftAnchor="331.0" AnchorPane.topAnchor="-7.0" />
          </children>
       </AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

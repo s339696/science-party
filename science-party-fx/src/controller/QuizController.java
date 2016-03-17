@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.TextFieldListCell;
 import model.Answer;
 import model.Question;
 import model.Topic;
@@ -178,6 +179,11 @@ public class QuizController implements Initializable {
 
     @FXML
     public void createNewTopic() throws IOException {
+        topicsListView.setEditable(true);
+
+        ListCell<Topic> cell = new TextFieldListCell<>();
+        TopicManager.topicList.add(new Topic(4, cell.textProperty().get()));
+        topicsListView.edit(1);
 
     }
 
