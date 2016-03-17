@@ -107,4 +107,19 @@ public class Player extends Model {
     public String toString() {
         return getUser().getFirstname() + " " +  getUser().getLastname();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Player player = (Player) o;
+
+        return !(id != null ? !id.equals(player.id) : player.id != null);
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }
