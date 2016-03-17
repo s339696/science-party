@@ -107,6 +107,18 @@ public class Notification extends Model {
                 .findList();
     }
 
+    /**
+     * Returns all public notifications ordered by time
+     *
+     * @return
+     */
+    public static List<Notification> getPublicNotifications() {
+        return find.where()
+                .eq("publicAvailable", true)
+                .orderBy().asc("whenCreated")
+                .findList();
+    }
+
     public Timestamp getWhenCreated() {
         return whenCreated;
     }

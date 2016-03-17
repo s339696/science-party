@@ -1,5 +1,5 @@
 @import models.ebean.User
-@(user: User, notifications: List[models.ebean.Notification])
+@(user: User, notis: List[models.ebean.Notification])
 
 @mainIntern("News", user) {
     <br>
@@ -9,11 +9,15 @@
     <div>
         <div>
             <h1>
-                News
+                Newsfeed
             </h1>
         </div>
         <div>
-            <p>This is a News paragrph! :)</p>
+            <ul>
+                @for(noti <- notis) {
+                    <li>@noti.getWhenCreated - @noti.getPublicText</li>
+                }
+            </ul>
         </div>
     </div>
 

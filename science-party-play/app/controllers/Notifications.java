@@ -45,7 +45,7 @@ public class Notifications extends Controller {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
-        List<Notification> noti = null;
+        List<Notification> noti = Notification.getPublicNotifications();
 
         return ok(views.html.notifications.newsfeed.render(user, noti));
     }
