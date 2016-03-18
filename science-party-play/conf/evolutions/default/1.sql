@@ -70,6 +70,7 @@ create table notifications (
 create table perks (
   id                            bigint auto_increment not null,
   name                          varchar(255),
+  constraint uq_perks_name unique (name),
   constraint pk_perks primary key (id)
 );
 
