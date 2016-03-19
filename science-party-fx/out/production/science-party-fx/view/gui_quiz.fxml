@@ -83,7 +83,7 @@
                   <Font size="15.0" />
                </font>
             </Text>
-            <Button layoutX="41.0" layoutY="492.0" mnemonicParsing="false" text="Frage Löschen" AnchorPane.leftAnchor="41.0" />
+            <Button fx:id="deleteQuestionButton" layoutX="41.0" layoutY="492.0" mnemonicParsing="false" onAction="#deleteQuestion" text="Frage Löschen" AnchorPane.leftAnchor="41.0" />
             <RadioButton fx:id="radioA" layoutX="385.0" layoutY="291.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
             <RadioButton fx:id="radioB" layoutX="385.0" layoutY="331.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />
             <RadioButton fx:id="radioC" layoutX="385.0" layoutY="372.0" mnemonicParsing="false" text="Richtig" AnchorPane.leftAnchor="385.0" />

@@ -82,6 +82,9 @@ public class QuizController implements Initializable {
     @FXML
     Button actionButton;
 
+    @FXML
+    Button deleteQuestionButton;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -271,6 +274,13 @@ public class QuizController implements Initializable {
             addQuestionField.setVisible(false);
             addQuestionButton.textProperty().set("+Neue Frage");
         }
+    }
+
+    @FXML
+    public void deleteQuestion() throws IOException {
+        Question question = questionsListView.getSelectionModel().getSelectedItem();
+        QuestionManager.deleteQuestion(question);
+        questionsListView.setItems(QuestionManager.questionList);
     }
 
 
