@@ -90,6 +90,10 @@ public class QuestionManager {
 
     }
 
+    public static void insertQuestion(){
+
+    }
+
     public static void main(String[] args) throws IOException {
         DatabaseConnect.setRecentUser("bastian95@live.de", "araluen");
 

@@ -85,15 +85,31 @@ public class TopicManager {
         connection.getResponseMessage();
     }
 
+    public static void deleteTopic(Topic topic) throws IOException {
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = DatabaseConnect.serverAddress + "/ac/delete/topic/" + topic.getId();
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        System.out.println(connection.getResponseMessage());
+
+        refreshTopicList();
+    }
+
 
 
     public static void main(String[] args) throws IOException {
         DatabaseConnect.setRecentUser("bastian95@live.de", "araluen");
+        DatabaseConnect.setServerAddress("http://localhost:9000");
 
-       Topic t = new Topic();
-        t.setName("test-Topic");
+        Topic t =  new Topic();
+        t.setId(3);
 
-        insertTopic(t);
+        deleteTopic(t);
+
     }
 
 }

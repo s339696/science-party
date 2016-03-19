@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TextFieldListCell;
 import model.Answer;
 import model.Question;
 import model.Topic;
@@ -18,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import static controller.TopicButtonPressed.*;
 
 /**
  * Created by Richard on 13.03.2016.
@@ -64,7 +65,22 @@ public class QuizController implements Initializable {
     Button addTopicButton;
 
     @FXML
+    Button editTopicButton;
+
+    @FXML
+    Button deleteTopicButton;
+
+    @FXML
+    TextField TopicTextField;
+
+    @FXML
     Button addQuestionButton;
+
+    @FXML
+    TextField addQuestionField;
+
+    @FXML
+    Button actionButton;
 
 
     @Override
@@ -176,15 +192,66 @@ public class QuizController implements Initializable {
 
 
     }
+    TopicButtonPressed bttn = DEFAULT;
 
     @FXML
     public void createNewTopic() throws IOException {
-        topicsListView.setEditable(true);
+        TopicTextField.setVisible(true);
+        actionButton.setVisible(true);
+        actionButton.textProperty().set("Hinzufügen");
+        bttn = ADD;
+    }
 
-        ListCell<Topic> cell = new TextFieldListCell<>();
-        TopicManager.topicList.add(new Topic(4, cell.textProperty().get()));
-        topicsListView.edit(1);
+    @FXML
+    public void editTopic(){
 
+    }
+
+    @FXML
+    public void deleteTopic(){
+
+    }
+
+    @FXML
+    public void doAction() throws IOException {
+        switch (bttn){
+            case ADD:
+                Topic t = new Topic();
+                t.setName(TopicTextField.textProperty().get());
+                TopicManager.insertTopic(t);
+                TopicManager.refreshTopicList();
+                topicsListView.setItems(TopicManager.topicList);
+
+                TopicTextField.setVisible(false);
+                actionButton.setVisible(false);
+                bttn=DEFAULT;
+                break;
+            case EDIT:
+
+                break;
+            case DELETE:
+
+                break;
+        }
+    }
+
+    @FXML
+    public void createNewQuestion() throws IOException {
+
+        if(!addQuestionField.isVisible()) {
+            addQuestionField.setVisible(true);
+            addQuestionButton.textProperty().set("Hinzufügen");
+        } else {
+            Question q = new Question();
+            q.setText(addQuestionField.textProperty().get());
+            //QuestionManager.insert
+            TopicManager.refreshTopicList();
+            topicsListView.setItems(TopicManager.topicList);
+
+            TopicTextField.textProperty().set("");
+            TopicTextField.setVisible(false);
+            addTopicButton.textProperty().set("+Neues Thema");
+        }
     }
 
 
