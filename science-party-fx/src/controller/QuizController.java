@@ -194,17 +194,32 @@ public class QuizController implements Initializable {
     }
     TopicButtonPressed bttn = DEFAULT;
 
-    @FXML
-    public void createNewTopic() throws IOException {
+    public void openTopicEditorMode(TopicButtonPressed tbp, String text){
         TopicTextField.setVisible(true);
         actionButton.setVisible(true);
-        actionButton.textProperty().set("Hinzufügen");
-        bttn = ADD;
+        actionButton.textProperty().set(text);
+        bttn = tbp;
+    }
+
+    public void closeTopicEditorMode() throws IOException {
+        TopicManager.refreshTopicList();
+        topicsListView.setItems(TopicManager.topicList);
+        TopicTextField.textProperty().set("");
+        TopicTextField.setVisible(false);
+        actionButton.setVisible(false);
+        bttn=DEFAULT;
+    }
+
+    @FXML
+    public void createNewTopic() throws IOException {
+        openTopicEditorMode(ADD, "Hinzufügen");
     }
 
     @FXML
     public void editTopic(){
-
+        Topic t = topicsListView.getSelectionModel().getSelectedItem();
+        TopicTextField.textProperty().set(t.getName());
+        openTopicEditorMode(EDIT, "Bearbeiten");
     }
 
     @FXML
@@ -214,20 +229,18 @@ public class QuizController implements Initializable {
 
     @FXML
     public void doAction() throws IOException {
+        Topic t = new Topic();
         switch (bttn){
             case ADD:
-                Topic t = new Topic();
                 t.setName(TopicTextField.textProperty().get());
                 TopicManager.insertTopic(t);
-                TopicManager.refreshTopicList();
-                topicsListView.setItems(TopicManager.topicList);
-
-                TopicTextField.setVisible(false);
-                actionButton.setVisible(false);
-                bttn=DEFAULT;
+                closeTopicEditorMode();
                 break;
             case EDIT:
-
+                t = topicsListView.getSelectionModel().getSelectedItem();
+                t.setName(TopicTextField.textProperty().get());
+                TopicManager.updateTopic(t);
+                closeTopicEditorMode();
                 break;
             case DELETE:
 
