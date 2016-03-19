@@ -86,12 +86,42 @@ public class QuestionManager {
         connection.getResponseMessage();
     }
 
-    public static void deleteQuestion(int qid){
+    public static void deleteQuestion(Question question) throws IOException {
+        String loginCookie = DatabaseConnect.getLoginCookie();
 
+        String urlPath = DatabaseConnect.serverAddress + "/ac/delete/question/" + question.getId();
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        System.out.println(connection.getResponseMessage());
+
+        refreshQuestionListPerTopic(question.getTopicId());
     }
 
-    public static void insertQuestion(){
+    public static void insertQuestion(Question question) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(question);
 
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = DatabaseConnect.serverAddress + "/ac/insert/question";
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+
+        connection.setRequestMethod("PUT");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
+        outWriter.write(jsonString);
+        outWriter.flush();
+
+        connection.getResponseMessage();
     }
 
     public static void main(String[] args) throws IOException {

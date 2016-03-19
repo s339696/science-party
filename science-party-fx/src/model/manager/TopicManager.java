@@ -119,8 +119,6 @@ public class TopicManager {
 
         connection.setRequestProperty("Cookie", loginCookie);
         System.out.println(connection.getResponseMessage());
-
-        refreshTopicList();
     }
 
 

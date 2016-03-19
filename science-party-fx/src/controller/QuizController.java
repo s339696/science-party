@@ -262,13 +262,14 @@ public class QuizController implements Initializable {
         } else {
             Question q = new Question();
             q.setText(addQuestionField.textProperty().get());
-            //QuestionManager.insert
-            TopicManager.refreshTopicList();
-            topicsListView.setItems(TopicManager.topicList);
+            q.setTopicId(topicsListView.getSelectionModel().getSelectedItem().getId());
+            QuestionManager.insertQuestion(q);
+            QuestionManager.refreshQuestionListPerTopic(q.getTopicId());
+            questionsListView.setItems(QuestionManager.questionList);
 
-            TopicTextField.textProperty().set("");
-            TopicTextField.setVisible(false);
-            addTopicButton.textProperty().set("+Neues Thema");
+            addQuestionField.textProperty().set("");
+            addQuestionField.setVisible(false);
+            addQuestionButton.textProperty().set("+Neue Frage");
         }
     }
 
