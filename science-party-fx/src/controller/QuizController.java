@@ -224,6 +224,9 @@ public class QuizController implements Initializable {
 
     @FXML
     public void deleteTopic(){
+        bttn = DELETE;
+        openTopicEditorMode(DELETE, "Wirklich Löschen?");
+        TopicTextField.setVisible(false);
 
     }
 
@@ -243,7 +246,9 @@ public class QuizController implements Initializable {
                 closeTopicEditorMode();
                 break;
             case DELETE:
-
+                t = topicsListView.getSelectionModel().getSelectedItem();
+                TopicManager.deleteTopic(t);
+                closeTopicEditorMode();
                 break;
         }
     }
