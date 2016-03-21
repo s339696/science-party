@@ -100,7 +100,30 @@ public class AnswerManager {
         System.out.println(connection.getResponseMessage());
 
         refreshAnswerListPerQuestion(answer.getQuesteionId());
+    }
 
+    public static void insertAnswer(Answer answer) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(answer);
+
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = DatabaseConnect.serverAddress + "/ac/insert/answer";
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+
+        connection.setRequestMethod("PUT");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
+        outWriter.write(jsonString);
+        outWriter.flush();
+
+        connection.getResponseMessage();
     }
 
     public static void main(String[] args) throws IOException {

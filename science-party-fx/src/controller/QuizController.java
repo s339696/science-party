@@ -1,6 +1,8 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
+import com.sun.xml.internal.bind.v2.model.annotation.AnnotationSource;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -128,7 +130,8 @@ public class QuizController implements Initializable {
 
     }
 
-    Integer[] idArray = new Integer[4];
+    List<Integer> idList = new ArrayList<>();
+
 
     @FXML
     public void handleQuestionsInSelect() throws IOException {
@@ -168,28 +171,34 @@ public class QuizController implements Initializable {
         radioD.setDisable(true);
 
         int size = AnswerManager.answerList.size();
+        System.out.println("Länge der AnswerList: " + size);
+
+        for (Answer a :
+                AnswerManager.answerList) {
+            System.out.println(a.getText());
+        }
 
        switch(size){
            case 4:
                radioD.setDisable(false);
                answerD.textProperty().set(AnswerManager.answerList.get(3).getText());
                radioD.setSelected(AnswerManager.answerList.get(3).isCorrect());
-               idArray[3] = AnswerManager.answerList.get(3).getId();
+               idList.set(3, AnswerManager.answerList.get(3).getId());
            case 3:
                radioC.setDisable(false);
                answerC.textProperty().set(AnswerManager.answerList.get(2).getText());
                radioC.setSelected(AnswerManager.answerList.get(2).isCorrect());
-               idArray[2] = AnswerManager.answerList.get(2).getId();
+               idList.set(2, AnswerManager.answerList.get(2).getId());
            case 2:
                radioB.setDisable(false);
                answerB.textProperty().set(AnswerManager.answerList.get(1).getText());
                radioB.setSelected(AnswerManager.answerList.get(1).isCorrect());
-               idArray[1] = AnswerManager.answerList.get(1).getId();
+               idList.set(1, AnswerManager.answerList.get(1).getId());
            case 1:
                radioA.setDisable(false);
                answerA.textProperty().set(AnswerManager.answerList.get(0).getText());
                radioA.setSelected(AnswerManager.answerList.get(0).isCorrect());
-               idArray[0] = AnswerManager.answerList.get(0).getId();
+               idList.set(0, AnswerManager.answerList.get(0).getId());
                break;
        }
 
@@ -317,23 +326,17 @@ public class QuizController implements Initializable {
         }
     }
 
+    /*
     @FXML
     public void saveQuestion() throws IOException {
-
-        Question question = new Question();
-        question.setId(questionsListView.getSelectionModel().getSelectedItem().getId());
-        question.setTopicId(topicsListView.getSelectionModel().getSelectedItem().getId());
+        Question question = questionsListView.getSelectionModel().getSelectedItem();
         question.setDifficulty(Integer.parseInt(difficultyField.textProperty().get()));
         question.setText(questionBox.textProperty().get());
 
-        ObjectMapper mapper = new ObjectMapper();
-        String s = mapper.writeValueAsString(question);
-        System.out.println(s);
-
-        int qid = questionsListView.getSelectionModel().getSelectedItem().getId();
+        int qid = question.getId();
 
         Answer answer1 = new Answer();
-        if(idArray[0] != null){
+        if(!answerA.textProperty().get().equals("")){
             answer1.setQuesteionId(qid);
             answer1.setId(idArray[0]);
             answer1.setText(answerA.textProperty().get());
@@ -391,6 +394,46 @@ public class QuizController implements Initializable {
             }
 
         }
+    }
+    */
+
+    @FXML
+    public void saveQuestion() throws IOException {
+        Question question = questionsListView.getSelectionModel().getSelectedItem();
+        question.setDifficulty(Integer.parseInt(difficultyField.textProperty().get()));
+        question.setText(questionBox.textProperty().get());
+        int qid = question.getId();
+
+        System.out.println("Inhalt AntwortFeld A: (" + answerA.textProperty().get() + ")");
+        Answer answer = new Answer();
+        if(AnswerManager.answerList.size()>=1){
+            if(answerA.textProperty().get().equals("")){
+                System.out.println("Antwort A wird gelöscht");
+                //deleteAnswer
+                answer = AnswerManager.answerList.get(0);
+                AnswerManager.deleteAnswer(answer);
+                
+            } else {
+                //updateAnswer
+                System.out.println("Antwort A wird geupdatet");
+                answer= AnswerManager.answerList.get(0);
+                answer.setText(answerA.textProperty().get());
+                answer.setCorrect(radioA.isSelected());
+                AnswerManager.updateAnswer(answer);
+                AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
+            }
+        } else if(!answerA.textProperty().get().equals("")){
+            //createAnswer
+            System.out.println("Antwort A wird erstellt");
+            answer.setText(answerA.textProperty().get());
+            answer.setQuesteionId(questionsListView.getSelectionModel().getSelectedItem().getId());
+            AnswerManager.insertAnswer(answer);
+            AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
+            //handleQuestionsInSelect();
+        }
+
+
+
     }
 
     public void createAnswer(String text){
