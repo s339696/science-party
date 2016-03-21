@@ -4,28 +4,52 @@
 
 @mainIntern("Profil von " + user.getFirstname, user) {
 
-    <br>
+    <br xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
     <br>
     <br>
     <br>
 
     <div class="tabele">
-        <div class="Profilbild">
-            <img src="profilbild.png" alt="Profilbild" height="250" width="250">
-        </div>
-        <div class="userInfo">
+        <div class="user">
             <h3>Profil</h3>
-            <ul>
-                <li>Vorname: @(user.getFirstname)</li>
-                <li>Nachname: @(user.getLastname)</li>
-                <li>Geburtsdatum: @(user.getBirthdayAsString)</li>
-                <li>E-Mail: @(user.getEmail)</li>
-            </ul>
+            <p id="getFirstname">
+                <b>Vorname:</b> @(user.getFirstname)
+            </p>
+            <p id="setFirstname" style="display: none;">
+                <b>Vorname:</b> <input id="firstname" type="text" name="firstname" value="@(user.getFirstname)" required>
+            </p>
+            <p id="getLastname">
+                <b>Nachname:</b> @(user.getLastname)
+            </p>
+            <p id="setLastname" style="display: none;">
+                <b>Nachname:</b> <input id="lastname" type="text" name="lastname" value="@(user.getLastname)" required>
+            </p>
+            <p id="getBirthday">
+                <b>Geburtsdatum:</b> @(user.getBirthdayAsString)
+            </p>
+            <p id="setBirthday" style="display: none;">
+                <b>Geburtsdatum:</b> <input id="birthday" type="text" name="birthday" value="@(user.getBirthdayAsString)" required>
+            </p>
+            <p id="getEmail">
+                <b>E-Mail:</b> @(user.getEmail)
+            </p>
+            <p id="setEmail" style="display: none;">
+                <b>E-Mail:</b> <input id="email" type="email" name="email" value="@(user.getEmail)" required>
+            </p>
+            <p id="setPassword" style="display: none;">
+                <b>E-Mail:</b> <input id="password" type="password" name="password" placeholder="Passwort" required>
+            </p>
             @if(ownProfile) {
-                <p>TODO: Button Profil bearbeiten einfügen</p>
+                <button id="updateProfil" >
+                    Profil bearbeiten
+                </button>
+                <button id="setUpdate" style="display: none;">
+                    Speichern
+                </button>
+
             }
         </div>
-        <div class="userStatistics">
+        <div class="user">
             <h3>Statistik</h3>
             <p>
                 <b>Laufende Spiele:</b> @user.getNumberOfPlayingGames
@@ -51,7 +75,9 @@
             </ul>
 
             @if(ownProfile) {
-                <a href="/profile/scan" class="addPerkButton">+Fähigkeit</a>
+                <div class="formularHead">
+                    <a href="/profile/scan" class="bigButton">+Fähigkeit</a>
+                </div>
             }
         </div>
 
@@ -73,6 +99,49 @@
         var pointsPerGame = numberOfPoints/numberOfGames;
 
         document.getElementById("pointsPerGame").innerHTML = pointsPerGame;
+
+        $("#updateProfil").click(function(){
+            $("#getFirstname").hide();
+            $("#getLastname").hide();
+            $("#getBirthday").hide();
+            $("#getEmail").hide();
+            $("#updateProfil").hide();
+            $("#setFirstname").fadeIn("slow");
+            $("#setLastname").fadeIn("slow");
+            $("#setBirthday").fadeIn("slow");
+            $("#setEmail").fadeIn("slow");
+            $("#setPassword").fadeIn("slow");
+            $("#setUpdate").fadeIn("slow");
+        })
+
+        $("#setUpdate").click(function (e) {
+            e.preventDefault();
+            var firstname = $("#firstname").val();
+            var lastname = $("#lastname").val();
+            var birthday = $("#birthday").val();
+            var email = $("#email").val();
+            var password = $("#password").val();
+            $.ajax({
+                url: "/profile/update",
+                method: "POST",
+                contentType: "application/json",
+                dataType: "text",
+                data: JSON.stringify({
+                    firstname: firstname,
+                    lastname: lastname,
+                    birthday: birthday,
+                    email: email,
+                    password: password,
+                }),
+                success: function(data,status,xhr) {
+                    location.reload();
+                },
+                error: function(xhr,status,error) {
+                    alert(xhr.responseText);
+                }
+            });
+
+        });
 
     </script>
 }

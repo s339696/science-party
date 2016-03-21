@@ -7,15 +7,18 @@
     <br>
     <br>
     <div>
-        <div>
+        <div class="tabeleHead">
             <h1>
                 Newsfeed
             </h1>
         </div>
-        <div>
-            <ul>
+        <div class="tabele">
+            <ul class="tabele">
                 @for(noti <- notis) {
-                    <li>@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'") - @noti.getPublicText</li>
+                    <li class="tabele">
+                        <a class="noFunctionTabele">@noti.getPublicText</a>
+                        <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
+                    </li>
                 }
             </ul>
         </div>
