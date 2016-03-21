@@ -6,7 +6,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Popup;
 import model.database.DatabaseConnect;
+import standard.Main;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.IOException;
@@ -68,7 +70,6 @@ public class MainController implements Initializable {
     }
 
     public void checkLogin() throws IOException {
-
         String email = LoginEmail.getText();
         String password = LoginPassword.getText();
         String server = LoginServer.getText();
@@ -76,11 +77,29 @@ public class MainController implements Initializable {
         DatabaseConnect.setRecentUser(email, password);
         DatabaseConnect.setServerAddress(server);
 
-        if(DatabaseConnect.connectedToDatabase()){
-            LoadMainWindow();
-        } else {
-            System.out.println("Anmeldung fehlgeschlagen");
+        boolean connected = false;
+        try {
+            connected=DatabaseConnect.connectedToDatabase();
+        } catch (Exception e){
+            Main.showPopup("Keine Verbindung zum Server möglich!" +
+                    "\n" +
+                    "Bitte überprüfen Sie die Verbindung und die angegebene Adresse."
+            );
+
         }
+        String loginCookie = DatabaseConnect.getLoginCookie();
+        System.out.println(loginCookie);
+        if(connected && loginCookie!=null){
+            try {
+                LoadMainWindow();
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+        } else{
+            Main.showPopup("Die Anmeldedaten sind ungültig!");
+        }
+
 
     }
 

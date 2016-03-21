@@ -2,6 +2,7 @@ package model.database;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.sun.javaws.Main;
 
 
 import java.io.*;
@@ -64,13 +65,13 @@ public class DatabaseConnect {
     }
 
     public static void main(String[] args) throws IOException {
-
         DatabaseConnect.setRecentUser("bastian95@live.de","araluen");
         DatabaseConnect.setServerAddress("http://localhost:9000");
 
         //DatabaseConnect.sendPost("user/list");
 
         System.out.println(DatabaseConnect.getLoginCookie());
+
 
     }
  }

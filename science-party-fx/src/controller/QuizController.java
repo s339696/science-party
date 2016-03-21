@@ -330,8 +330,6 @@ public class QuizController implements Initializable {
         question.setText(questionBox.textProperty().get());
         QuestionManager.updateQuestion(question);
 
-
-
         handleAnswerA();
         handleAnswerB();
         handleAnswerC();

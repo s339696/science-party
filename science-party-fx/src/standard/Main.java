@@ -4,6 +4,10 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.stage.Modality;
+import javafx.stage.Popup;
+import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 
 
@@ -25,6 +29,17 @@ public class Main extends Application {
 
         primaryStage.setScene(new Scene(root, 949, 632));
         primaryStage.show();
+
+    }
+
+    public static void showPopup(String text){
+        Stage popup = new Stage();
+        popup.initModality(Modality.NONE);
+        popup.setResizable(false);
+        popup.initOwner(mainStage);
+
+        popup.setScene(new Scene(new Label(text)));
+        popup.show();
 
     }
 
