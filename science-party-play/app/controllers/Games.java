@@ -101,7 +101,6 @@ public class Games extends Controller {
         }
 
         Player player = Player.getPlayerOfGameAndUser(game, user);
-        System.out.println(player.getPlayerStatus());
         if (player.getPlayerStatus() == Player.PlayerStatus.FINISHED) {
             return renderRunningGames("Die Spiel wurde beendet. Du hast in diesem Spiel insgesamt " + player.getFieldPosition() + " Punkte erreicht.");
         }
@@ -140,7 +139,6 @@ public class Games extends Controller {
         if (topic == null) {
             return badRequest("Das ausgewählte Thema ist ungültig.");
         }
-        System.out.println("ljljköj");
 
         // Get involved Users and add them to Playerlist
         List<User> playerList = new ArrayList<User>();
