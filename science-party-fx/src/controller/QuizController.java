@@ -183,22 +183,22 @@ public class QuizController implements Initializable {
                radioD.setDisable(false);
                answerD.textProperty().set(AnswerManager.answerList.get(3).getText());
                radioD.setSelected(AnswerManager.answerList.get(3).isCorrect());
-               idList.set(3, AnswerManager.answerList.get(3).getId());
+               //idList.add(3, AnswerManager.answerList.get(3).getId());
            case 3:
                radioC.setDisable(false);
                answerC.textProperty().set(AnswerManager.answerList.get(2).getText());
                radioC.setSelected(AnswerManager.answerList.get(2).isCorrect());
-               idList.set(2, AnswerManager.answerList.get(2).getId());
+               //idList.add(2, AnswerManager.answerList.get(2).getId());
            case 2:
                radioB.setDisable(false);
                answerB.textProperty().set(AnswerManager.answerList.get(1).getText());
                radioB.setSelected(AnswerManager.answerList.get(1).isCorrect());
-               idList.set(1, AnswerManager.answerList.get(1).getId());
+               //idList.add(1, AnswerManager.answerList.get(1).getId());
            case 1:
                radioA.setDisable(false);
                answerA.textProperty().set(AnswerManager.answerList.get(0).getText());
                radioA.setSelected(AnswerManager.answerList.get(0).isCorrect());
-               idList.set(0, AnswerManager.answerList.get(0).getId());
+               //idList.add(0, AnswerManager.answerList.get(0).getId());
                break;
        }
 
@@ -326,84 +326,21 @@ public class QuizController implements Initializable {
         }
     }
 
-    /*
+
     @FXML
     public void saveQuestion() throws IOException {
         Question question = questionsListView.getSelectionModel().getSelectedItem();
         question.setDifficulty(Integer.parseInt(difficultyField.textProperty().get()));
         question.setText(questionBox.textProperty().get());
 
-        int qid = question.getId();
-
-        Answer answer1 = new Answer();
-        if(!answerA.textProperty().get().equals("")){
-            answer1.setQuesteionId(qid);
-            answer1.setId(idArray[0]);
-            answer1.setText(answerA.textProperty().get());
-            answer1.setCorrect(radioA.isSelected());
-        }
-
-        Answer answer2 = new Answer();
-        if (idArray[1] != null) {
-            answer2.setQuesteionId(qid);
-            answer2.setId(idArray[1]);
-            answer2.setText(answerB.textProperty().get());
-            answer2.setCorrect(radioB.isSelected());
-        }
-
-        Answer answer3 = new Answer();
-        if (idArray[2] != null) {
-            answer3.setQuesteionId(qid);
-            answer3.setId(idArray[2]);
-            answer3.setText(answerC.textProperty().get());
-            answer3.setCorrect(radioC.isSelected());
-        }
-
-        Answer answer4 = new Answer();
-        if (idArray[3] != null) {
-            answer4.setId(idArray[3]);
-            answer4.setQuesteionId(qid);
-            answer4.setText(answerD.textProperty().get());
-            answer4.setCorrect(radioD.isSelected());
-        }
-
-
-        //hier noch Datenbank zeugs
-        QuestionManager.updateQuestion(question);
-
-        List<Answer> aList = new ArrayList<>();
-        aList.addAll(Arrays.asList(answer1, answer2, answer3, answer4));
-
-        //hier nicht answers sonder die Textfelder durch iterieren!!!!
-        //dazu wieder Liste mit Textfeldern -> die dann durchgehen
-        for(Answer answer : aList){
-            System.out.println(answer.getText());
-            if(answer.getText() != null){
-
-                //hier noch irgendwie erstellen einbauen
-                if (answer.getText().equals("")) {
-                    //delete
-                    AnswerManager.deleteAnswer(answer);
-                }else if(false){
-                    //create
-
-                }else{
-                    //update
-                    AnswerManager.updateAnswer(answer);
-                }
-            }
-
-        }
+        //BUG!!! Wenn mittendrin eine Frage gelöscht wird, erhält diese den Text der nachfolgenden Frage, wird aber nicht gelöscht
+        handleAnswerA();
+        handleAnswerB();
+        handleAnswerC();
+        handleAnswerD();
     }
-    */
 
-    @FXML
-    public void saveQuestion() throws IOException {
-        Question question = questionsListView.getSelectionModel().getSelectedItem();
-        question.setDifficulty(Integer.parseInt(difficultyField.textProperty().get()));
-        question.setText(questionBox.textProperty().get());
-        int qid = question.getId();
-
+    public void handleAnswerA() throws IOException {
         System.out.println("Inhalt AntwortFeld A: (" + answerA.textProperty().get() + ")");
         Answer answer = new Answer();
         if(AnswerManager.answerList.size()>=1){
@@ -412,7 +349,7 @@ public class QuizController implements Initializable {
                 //deleteAnswer
                 answer = AnswerManager.answerList.get(0);
                 AnswerManager.deleteAnswer(answer);
-
+                handleQuestionsInSelect();
             } else {
                 //updateAnswer
                 System.out.println("Antwort A wird geupdatet");
@@ -429,25 +366,96 @@ public class QuizController implements Initializable {
             answer.setQuesteionId(questionsListView.getSelectionModel().getSelectedItem().getId());
             AnswerManager.insertAnswer(answer);
             AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
-            //handleQuestionsInSelect();
+
         }
-
-
-
     }
 
-    public void createAnswer(String text){
-        int i = AnswerManager.answerList.size();
-
-        List<RadioButton> radioList = new ArrayList<>();
-        radioList.addAll(Arrays.asList(radioA, radioB, radioC, radioD));
-
+    public void handleAnswerB() throws IOException {
+        System.out.println("Inhalt AntwortFeld B: (" + answerB.textProperty().get() + ")");
         Answer answer = new Answer();
-        answer.setText(text);
-        answer.setCorrect(radioList.get(i).isSelected());
-        answer.setQuesteionId(questionsListView.getSelectionModel().getSelectedItem().getId());
+        if(AnswerManager.answerList.size()>=2){
+            if(answerB.textProperty().get().equals("")){
+                System.out.println("Antwort B wird gelöscht");
+                //deleteAnswer
+                answer = AnswerManager.answerList.get(1);
+                AnswerManager.deleteAnswer(answer);
+                handleQuestionsInSelect();
+            } else {
+                //updateAnswer
+                System.out.println("Antwort B wird geupdatet");
+                answer= AnswerManager.answerList.get(1);
+                answer.setText(answerB.textProperty().get());
+                answer.setCorrect(radioB.isSelected());
+                AnswerManager.updateAnswer(answer);
+                AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
+            }
+        } else if(!answerB.textProperty().get().equals("")){
+            //createAnswer
+            System.out.println("Antwort B wird erstellt");
+            answer.setText(answerB.textProperty().get());
+            answer.setQuesteionId(questionsListView.getSelectionModel().getSelectedItem().getId());
+            answer.setCorrect(radioB.isSelected());
+            AnswerManager.insertAnswer(answer);
+            AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
+        }
+    }
 
-        //datenbank zeugs
+    public void handleAnswerC() throws IOException {
+        System.out.println("Inhalt AntwortFeld C: (" + answerC.textProperty().get() + ")");
+        Answer answer = new Answer();
+        if(AnswerManager.answerList.size()>=3){
+            if(answerC.textProperty().get().equals("")){
+                System.out.println("Antwort C wird gelöscht");
+                //deleteAnswer
+                answer = AnswerManager.answerList.get(2);
+                AnswerManager.deleteAnswer(answer);
+                handleQuestionsInSelect();
+            } else {
+                //updateAnswer
+                System.out.println("Antwort C wird geupdatet");
+                answer= AnswerManager.answerList.get(2);
+                answer.setText(answerC.textProperty().get());
+                answer.setCorrect(radioC.isSelected());
+                AnswerManager.updateAnswer(answer);
+                AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
+            }
+        } else if(!answerC.textProperty().get().equals("")){
+            //createAnswer
+            System.out.println("Antwort C wird erstellt");
+            answer.setText(answerC.textProperty().get());
+            answer.setQuesteionId(questionsListView.getSelectionModel().getSelectedItem().getId());
+            AnswerManager.insertAnswer(answer);
+            AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
+        }
+    }
+
+    public void handleAnswerD() throws IOException {
+        System.out.println("Inhalt AntwortFeld D: (" + answerD.textProperty().get() + ")");
+        Answer answer = new Answer();
+        if(AnswerManager.answerList.size()>=4){
+            if(answerD.textProperty().get().equals("")){
+                System.out.println("Antwort D wird gelöscht");
+                //deleteAnswer
+                answer = AnswerManager.answerList.get(3);
+                AnswerManager.deleteAnswer(answer);
+                handleQuestionsInSelect();
+            } else {
+                //updateAnswer
+                System.out.println("Antwort D wird geupdatet");
+                answer= AnswerManager.answerList.get(3);
+                answer.setText(answerD.textProperty().get());
+                answer.setCorrect(radioD.isSelected());
+                AnswerManager.updateAnswer(answer);
+                AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
+            }
+        } else if(!answerD.textProperty().get().equals("")){
+            //createAnswer
+            System.out.println("Antwort D wird erstellt");
+            answer.setText(answerD.textProperty().get());
+            answer.setQuesteionId(questionsListView.getSelectionModel().getSelectedItem().getId());
+            AnswerManager.insertAnswer(answer);
+            AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
+        }
     }
 
 
