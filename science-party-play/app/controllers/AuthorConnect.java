@@ -540,6 +540,32 @@ public class AuthorConnect extends Controller {
     }
 
     /*
+     * GAMES
+     */
+
+    /**
+     * Retuns a list of all games.
+     *
+     * @param
+     * @return
+     */
+    public Result serveGamesList() {
+        User user;
+        try {
+            user = isAuthorized();
+        } catch (AuthenticationException e) {
+            return badRequest(e.getMessage());
+        }
+
+        List<Game> gameList = Game.find.all();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = null;
+        node = mapper.convertValue(gameList, JsonNode.class);
+
+        return ok(node);
+    }
+
+    /*
      * PRIVATE METHODS TO HELP
      */
 

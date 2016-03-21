@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.EnumValue;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.media.jfxmedia.events.PlayerStateEvent;
 import play.Logger;
 
@@ -83,12 +84,18 @@ public class Game extends Model {
         this.name = name;
     }
 
+    @JsonIgnore
     public Topic getTopic() {
         return topic;
     }
 
+    @JsonIgnore
     public void setTopic(Topic topic) {
         this.topic = topic;
+    }
+
+    public Long getTopicId() {
+        return topic.getId();
     }
 
     public GameStatus getGameStatus() {
@@ -99,14 +106,17 @@ public class Game extends Model {
         this.gameStatus = gameStatus;
     }
 
+    @JsonIgnore
     public Player getActivePlayer() {
         return activePlayer;
     }
 
+    @JsonIgnore
     public void setActivePlayer(Player activePlayer) {
         this.activePlayer = activePlayer;
     }
 
+    @JsonIgnore
     public Question getActiveQuestion() {
         return activeQuestion;
     }
@@ -123,6 +133,7 @@ public class Game extends Model {
         return whenUpdated;
     }
 
+    @JsonIgnore
     public boolean hasPlayingPlayer() {
 
         List<Player> player = Player.find
@@ -137,6 +148,7 @@ public class Game extends Model {
      * Change the id of the acitve player to the next player with status PLAYING
      * and assign a new random question.
      */
+    @JsonIgnore
     public void nextTurn() {
         List<Player> players = Player.find.where()
                 .eq("game_id", this.getId())
@@ -172,6 +184,7 @@ public class Game extends Model {
      *
      * @return
      */
+    @JsonIgnore
     public List<Player> getPlayers() {
         return players;
     }
@@ -182,6 +195,7 @@ public class Game extends Model {
      * @param user
      * @return
      */
+    @JsonIgnore
     public Player getPlayerForUser(User user) {
         List<Player> players = this.getPlayers();
         for (Player player: players) {
@@ -197,6 +211,8 @@ public class Game extends Model {
      *
      * @return
      */
+
+    @JsonIgnore
     public List<Player> getPlayingPlayer() {
         return Player.find.where()
                 .ieq("playerStatus", "P")
