@@ -33,10 +33,10 @@ public class Chat extends Model {
     @OneToMany(mappedBy = "chat", cascade = CascadeType.ALL)
     private List<Message> messages;
 
-    public static void createChat(User from, List<User> members, String name, String firstMsg) throws CreateMessageException {
+    public static Chat createChat(User from, List<User> members, String name, String firstMsg) throws CreateMessageException {
         Ebean.beginTransaction();
+        Chat chat = new Chat();
         try {
-            Chat chat = new Chat();
             members.add(0,from);
             chat.setUsers(members);
             chat.setName(name);
@@ -55,6 +55,8 @@ public class Chat extends Model {
         } finally {
             Ebean.endTransaction();
         }
+        chat.refresh();
+        return chat;
     }
 
     public Long getId() {
@@ -97,5 +99,19 @@ public class Chat extends Model {
             result += user;
         }
         return result;
+    }
+
+    public void sendMessage(User from, String msg) throws CreateMessageException {
+        if (!getUsers().contains(from)) {
+            throw new CreateMessageException("Der User ist kein Teilnehmer dieses Gespräches.");
+        }
+
+        // Send message
+        Message message = new Message();
+        message.setChat(this);
+        message.setUser(from);
+        message.setText(msg);
+        message.setSeen(false);
+        message.insert();
     }
 }

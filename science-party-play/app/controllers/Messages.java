@@ -99,9 +99,25 @@ public class Messages extends Controller {
                 }
                 name += user.getFirstname();
 
+                //Check if chat already exsists
+                List<Chat> allChats = Chat.find.where()
+                        .eq("users", user)
+                        .findList();
+
+                for (Chat chat: allChats) {
+                    List<User> chatMembers = chat.getUsers();
+                    if(chatMembers.containsAll(members)) {
+                        chatMembers.removeAll(members);
+                        if (chatMembers.size() <= 1) {
+                            chat.sendMessage(user, form.getMessage());
+                            return ok(chat.getId().toString());
+                        }
+                    }
+                }
+
                 // Create chat
-                Chat.createChat(user, members, name, form.getMessage());
-                return ok("Die Nachricht wurde erfolgreich verschickt.");
+                Chat chat = Chat.createChat(user, members, name, form.getMessage());
+                return ok(chat.getId().toString());
 
             } catch (Exception e) {
                 return badRequest(e.getMessage());
@@ -194,13 +210,11 @@ public class Messages extends Controller {
         }
         MessageForm form = requestData.get();
 
-        // Send message
-        Message message = new Message();
-        message.setChat(chat);
-        message.setUser(user);
-        message.setText(form.getMessage());
-        message.setSeen(false);
-        message.insert();
+        try {
+            chat.sendMessage(user, form.getMessage());
+        } catch (CreateMessageException e) {
+            badRequest(e.getMessage());
+        }
 
         return ok("Die Nachricht wurde verschickt.");
     }
