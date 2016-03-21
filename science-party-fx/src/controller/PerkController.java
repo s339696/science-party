@@ -6,7 +6,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
 import javafx.scene.control.cell.TextFieldListCell;
+import model.Perk;
+import model.manager.PerkManager;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -16,20 +19,16 @@ import java.util.ResourceBundle;
 public class PerkController implements Initializable {
 
     @FXML
-    private ListView<String> perkListView;
+    private ListView<Perk> perkListView;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<String> list = FXCollections.observableArrayList();
-        for (int i = 0; i < 30; i++) {
-            list.add("Testeintrag-" + i);
+        try {
+            PerkManager.refreshPerkList();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-
-        perkListView.setItems(list);
-        perkListView.setCellFactory(TextFieldListCell.forListView());
-        perkListView.setEditable(true);
-        perkListView.edit(0);
+        perkListView.setItems(PerkManager.perkList);
     }
 
 }
