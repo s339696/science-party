@@ -8,18 +8,24 @@
     <br>
     <br>
     <div>
-        <div>
+        <div class="tabeleHead">
             <h1>
                 Benachrichtigungen
             </h1>
         </div>
-        <div>
-            <ul>
+        <div class="tabele">
+            <ul class="tabele">
                 @for(noti <- unseenNoti) {
-                    <li>NEU: @noti.getWhenCreated - @noti.getPrivateText</li>
+                    <li class="tabele">
+                        <a class="noFunctionTabele"><b>NEU:</b> @noti.getPrivateText</a>
+                        <a class="noFunctionTabeleFloatRight">@noti.getWhenCreated</a>
+                    </li>
                 }
                 @for(noti <- seenNoti) {
-                    <li>@noti.getWhenCreated - @noti.getPrivateText</li>
+                    <li class="tabele">
+                        <a class="noFunctionTabele">@noti.getPrivateText</a>
+                        <a class="noFunctionTabeleFloatRight">@noti.getWhenCreated</a>
+                    </li>
                 }
             </ul>
         </div>
