@@ -12,7 +12,7 @@
         </div>
         <div class="tabele">
             <br>
-            <h2>@chat.getName()</h2>
+            <h2>@chat.getChatMembersExceptOf(user)</h2>
             <br>
             <div class="messageField">
                 @for(message <- messages) {
@@ -30,7 +30,6 @@
                         <br>
                         }
                 }
-            </ul>
             </div>
             <div class="container">
                 <form id="sendMessage">

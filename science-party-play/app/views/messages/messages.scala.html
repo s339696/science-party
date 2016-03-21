@@ -17,7 +17,7 @@
             <ul class="tabele">
                 @for( chat <- chats) {
                 <li class="tabele">
-                    <a class="tabele" href="/messages/show/@chat.getId">@chat.getName</a>
+                    <a class="tabele" href="/messages/show/@chat.getId">@chat.getChatMembersExceptOf(user)</a>
 
                     <a class="tabeleDelete" href="/messages/leave/@chat.getId">Chat löschen</a>
                 </li>

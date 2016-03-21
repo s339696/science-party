@@ -88,4 +88,14 @@ public class Chat extends Model {
     public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
+
+    public String getChatMembersExceptOf(User exceptUser) {
+        List<User> members = getUsers();
+        members.remove(exceptUser);
+        String result = "";
+        for (User user: members) {
+            result += user;
+        }
+        return result;
+    }
 }
