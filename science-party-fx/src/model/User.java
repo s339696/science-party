@@ -1,16 +1,7 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.StringProperty;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Richard on 22.02.2016.
@@ -130,6 +121,11 @@ public class User {
         this.points = points;
         this.locked = locked;
         this.birthday = birthday;
+    }
+
+    @Override
+    public String toString() {
+        return firstname + " " + lastname;
     }
 
     public static void main(String[] args){

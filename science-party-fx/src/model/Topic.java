@@ -40,4 +40,8 @@ public class Topic {
         this.name = name;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

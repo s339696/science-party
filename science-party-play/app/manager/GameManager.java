@@ -5,6 +5,7 @@ import models.ebean.*;
 import models.enums.PerkType;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -60,6 +61,9 @@ public class GameManager {
                 perkPerPlayer.setUsed(false);
                 perkPerPlayer.insert();
             }
+
+            // Send notification
+            Notification.createNotification(user, "Du wurdest zum Spiel mit der Nummer #" + game.getId() + " eingeladen.","");
         }
 
         //Try to start game directly if it is a one player game
@@ -165,6 +169,24 @@ public class GameManager {
         game.setActiveQuestion(Question.getRandomQuestion(game.getTopic()));
         game.setGameStatus(Game.GameStatus.ACTIVE);
         game.update();
+
+        // Send a notification to the player that the game has started
+        String playerString = "";
+        for (Player player : activePlayers) {
+            if (activePlayers.get(activePlayers.size() - 1).equals(player)) {
+                // Last player
+                playerString += player.getUser();
+                Notification.createNotification(player.getUser(),
+                        "Das Spiel mit der Nummer #" + game.getId() + " hat begonnen.",
+                        playerString + " haben begonnen ein Spiel zu spielen.");
+            } else {
+                // Any player
+                playerString += player.getUser() + ", ";
+                Notification.createNotification(player.getUser(),
+                        "Das Spiel mit der Nummer #" + game.getId() + " hat begonnen.",
+                        "");
+            }
+        }
     }
 
     /**
@@ -173,28 +195,44 @@ public class GameManager {
      * @param game
      */
     public static boolean stopGame(Game game) throws GameException {
-        List<Player> players = game.getPlayers();
+        List<Player> activePlayers = game.getPlayingPlayer();
 
         // Set game and player to state FINISHED
         if (game.getGameStatus() == Game.GameStatus.ACTIVE) {
-
+            Player winner = game.getActivePlayer();
             game.setGameStatus(Game.GameStatus.FINISHED);
             game.setActivePlayer(null);
             game.setActiveQuestion(null);
             game.update();
 
-            for (Player player : players) {
-                if (player.getPlayerStatus() == Player.PlayerStatus.PLAYING) {
-                    // Change player status for playing players
-                    player.setPlayerStatus(Player.PlayerStatus.FINISHED);
-                    player.update();
-                    // Update global ranking
-                    User userOfPlayer = player.getUser();
-                    userOfPlayer.setPoints(userOfPlayer.getPoints() + player.getFieldPosition());
-                    userOfPlayer.update();
+            // Send a notification to the player that the game has started
+            String playerString = "";
+            for (Player player : activePlayers) {
+                // Change player status for playing players
+                player.setPlayerStatus(Player.PlayerStatus.FINISHED);
+                player.update();
+
+                // Update global ranking
+                User userOfPlayer = player.getUser();
+                userOfPlayer.setPoints(userOfPlayer.getPoints() + player.getFieldPosition());
+                userOfPlayer.update();
+
+                // Send notification
+                if (activePlayers.get(activePlayers.size() - 1).equals(player)) {
+                    // Last player
+                    playerString += player.getUser();
+                    Notification.createNotification(player.getUser(),
+                            winner.getUser() + " hat das Spiel mit der Nummer #" + game.getId() + " gewonnen. " +
+                                    "Du hast in diesem Spiel " + player.getFieldPosition() + " Punkte erreicht.",
+                            playerString + " haben ein spiel beendet. Gewonnen hat " + winner.getUser() + ".");
+                } else {
+                    // Any player
+                    playerString += player.getUser() + ", ";
+                    Notification.createNotification(player.getUser(),
+                            winner.getUser() + " hat das Spiel mit der Nummer #" + game.getId() + " gewonnen. " +
+                                    "Du hast in diesem Spiel " + player.getFieldPosition() + " Punkte erreicht.",
+                            "");
                 }
-
-
             }
         } else {
             throw new GameException("Das Spiel kann nicht gestoppt werden.");

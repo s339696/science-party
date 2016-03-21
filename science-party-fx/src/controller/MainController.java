@@ -27,7 +27,7 @@ public class MainController implements Initializable {
     private TextField LoginEmail;
 
     @FXML
-    private TextField LoginPassword;
+    private PasswordField LoginPassword;
 
     @FXML
     private TextField LoginServer;
@@ -41,8 +41,10 @@ public class MainController implements Initializable {
     @FXML
     private SplitPane UserSplitPane;
 
+    @FXML
     private SplitPane QuizSplitPane;
 
+    @FXML
     private SplitPane QrSplitPane;
 
     @FXML
@@ -69,8 +71,10 @@ public class MainController implements Initializable {
 
         String email = LoginEmail.getText();
         String password = LoginPassword.getText();
+        String server = LoginServer.getText();
 
         DatabaseConnect.setRecentUser(email, password);
+        DatabaseConnect.setServerAddress(server);
 
         if(DatabaseConnect.connectedToDatabase()){
             LoadMainWindow();
@@ -101,7 +105,7 @@ public class MainController implements Initializable {
         UserTab.setContent(UserSplitPane);
         QuizTab = new Tab("Quiz-Editor");
         QuizTab.setContent(QuizSplitPane);
-        QrTab = new Tab("QR-Editor");
+        QrTab = new Tab("Perk-Editor");
         QrTab.setContent(QrSplitPane);
 
 
@@ -113,7 +117,7 @@ public class MainController implements Initializable {
 
         System.out.println(UserTab.getContent());
 
-        standard.Main.loginStage.setScene(new Scene(mainTabPane));
+        standard.Main.mainStage.setScene(new Scene(mainTabPane));
     }
 
 

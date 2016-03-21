@@ -13,6 +13,7 @@ import java.net.URL;
  */
 public class DatabaseConnect {
     public static ObjectNode recentUser = JsonNodeFactory.instance.objectNode();
+    public static String serverAddress = "http://localhost:9000";
 
     public static void setRecentUser(String email, String password) {
         recentUser.put("email", email);
@@ -20,8 +21,12 @@ public class DatabaseConnect {
 
     }
 
+    public static void setServerAddress(String s){
+        serverAddress =s;
+    }
+
     public static boolean connectedToDatabase() throws IOException {
-        String urlPath = "http://localhost:9000/login";
+        String urlPath = (serverAddress + "/login");
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -37,7 +42,7 @@ public class DatabaseConnect {
 
 
     public static String getLoginCookie() throws IOException {
-        URL url = new URL("http://localhost:9000/login");
+        URL url = new URL(serverAddress + "/login");
 
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -61,6 +66,7 @@ public class DatabaseConnect {
     public static void main(String[] args) throws IOException {
 
         DatabaseConnect.setRecentUser("bastian95@live.de","araluen");
+        DatabaseConnect.setServerAddress("http://localhost:9000");
 
         //DatabaseConnect.sendPost("user/list");
 

@@ -63,14 +63,6 @@ public class Question extends Model {
         this.topic = topic;
     }
 
-    public Long getTopicId() {
-        return topic.getId();
-    }
-
-    public void setTopicId(Long id) {
-        this.topic = topic.find.byId(id);
-    }
-
     @JsonIgnore
     public List<Answer> getAnswers() {
         return answers;
@@ -89,6 +81,22 @@ public class Question extends Model {
     }
 
     /**
+     * Get Id of topic
+     * @return
+     */
+    public Long getTopicId() {
+        return topic.getId();
+    }
+
+    /**
+     * Set topic by Id
+     * @param id
+     */
+    public void setTopicId(Long id) {
+        this.topic = topic.find.byId(id);
+    }
+
+    /**
      * Returns the corret answer of the question.
      *
      * @return
@@ -98,5 +106,21 @@ public class Question extends Model {
         return Answer.find.where()
                 .ieq("question_id", this.getId().toString())
                 .ieq("correct", "1").findUnique();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Question question = (Question) o;
+
+        return id != null ? id.equals(question.id) : question.id == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
     }
 }
