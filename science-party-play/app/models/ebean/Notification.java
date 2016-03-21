@@ -50,7 +50,7 @@ public class Notification extends Model {
             not.setPublicText("");
             not.setPublicAvailable(false);
         } else {
-            not.setPrivateText(publicText);
+            not.setPublicText(publicText);
             not.setPublicAvailable(true);
         }
 
@@ -79,6 +79,21 @@ public class Notification extends Model {
         return find.where()
                 .ieq("user_id", user.getId().toString())
                 .eq("privateSeen", false)
+                .orderBy().desc("whenCreated")
+                .findList();
+    }
+
+    /**
+     * Returns a list of unseen notifications for a user
+     *
+     * @param user
+     * @return
+     */
+    public static List<Notification> getSeenNotifications(User user) {
+        return find.where()
+                .ieq("user_id", user.getId().toString())
+                .eq("privateSeen", true)
+                .orderBy().desc("whenCreated")
                 .findList();
     }
 
@@ -91,6 +106,19 @@ public class Notification extends Model {
     public static List<Notification> getNotifications(User user) {
         return find.where()
                 .ieq("user_id", user.getId().toString())
+                .orderBy().desc("whenCreated")
+                .findList();
+    }
+
+    /**
+     * Returns all public notifications ordered by time
+     *
+     * @return
+     */
+    public static List<Notification> getPublicNotifications() {
+        return find.where()
+                .eq("publicAvailable", true)
+                .orderBy().desc("whenCreated")
                 .findList();
     }
 

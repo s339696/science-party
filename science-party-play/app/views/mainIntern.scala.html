@@ -17,13 +17,13 @@
                 <li class="Navigator"><a class="Navigator" href="/friends">Freunde</a></li>
                 <li class="Navigator"><a class="Navigator" href="/games">Spielen</a></li>
                 <li class="Navigator"><a class="Navigator" href="/ranking">Ranking</a></li>
-                <li class="Navigator"><a class="Navigator" href="/#">News</a></li>
+                <li class="Navigator"><a class="Navigator" href="/notifications/public">News</a></li>
                 <ul class="topLoginSignin">
                     @if(user.getUnseenNotificationsCount != 0) {
-                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">
+                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/notifications/private">
                             Benachrichtigungen (@user.getUnseenNotificationsCount)</a></li>
                     } else {
-                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/messages">
+                        <li class="topLoginSignin"><a id="notifications" class="topLoginSignin" href="/notifications/private">
                             Benachrichtigungen</a></li>
                     }
                     @if(user.getUnseenMessageCount != 0) {

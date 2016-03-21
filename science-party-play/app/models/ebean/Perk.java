@@ -19,7 +19,7 @@ public class Perk extends Model {
     @GeneratedValue
     private Long id;
 
-    @Column(name="name")
+    @Column(unique = true)
     private String name;
 
     @OneToMany(mappedBy="perk", cascade= CascadeType.ALL)

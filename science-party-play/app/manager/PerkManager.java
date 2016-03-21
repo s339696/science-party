@@ -52,23 +52,6 @@ public class PerkManager {
                 }
             }
 
-            //Now lets delete all unnecessary entrys
-            // FIXME: Maybe not necessary because of cascades...
-/*        List<PerkPerTopic> perksPerTopic = PerkPerTopic.find.all();
-        for (PerkPerTopic perkPerTopic: perksPerTopic) {
-            //Check if the entry is still necessary
-            boolean perkIsOk = false;
-            for (String md5hash: md5hashs) {
-                if (perkPerTopic.getQrCode().equals(md5hash)) {
-                   perkIsOk = true;
-                }
-            }
-            // Remove if it is not ok
-            if (!perkIsOk) {
-                perkPerTopic.delete();
-            }
-        }*/
-
             Ebean.commitTransaction();
         } finally {
             Ebean.endTransaction();
