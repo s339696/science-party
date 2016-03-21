@@ -6,6 +6,7 @@
         <br>
         <br>
         <br>
+        <br>
         <div class="tabeleHead">
             <h1>
                 Freunde
@@ -39,11 +40,13 @@
                         <li class="tabele">
                             <a class="tabele" href="/profile/@friend.getId">@friend.toString</a>
                             <a class="tabeleDelete" href="/friends/delete/@friend.getId">Freund entfernen</a>
-                            <a class="tabeleFloatRight" href="/message/send/@friend.getId">Nachricht senden</a>
+                            <a class="tabeleFloatRight" href="/messages/new">Nachricht senden</a>
                         </li>
                     }
                 } else {
-                    Du hast noch keine Freunde.
+                    <li class="tabele">
+                        <a class="noFunctionTabele">Du hast noch keine Freunde.</a>
+                    </li>
                 }
                 </ul>
             </div>
