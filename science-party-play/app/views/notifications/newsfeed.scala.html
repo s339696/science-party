@@ -15,7 +15,7 @@
         <div>
             <ul>
                 @for(noti <- notis) {
-                    <li>@noti.getWhenCreated - @noti.getPublicText</li>
+                    <li>@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'") - @noti.getPublicText</li>
                 }
             </ul>
         </div>

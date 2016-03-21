@@ -16,10 +16,10 @@
         <div>
             <ul>
                 @for(noti <- unseenNoti) {
-                    <li>NEU: @noti.getWhenCreated - @noti.getPrivateText</li>
+                    <li>NEU: @noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'") - @noti.getPrivateText</li>
                 }
                 @for(noti <- seenNoti) {
-                    <li>@noti.getWhenCreated - @noti.getPrivateText</li>
+                    <li>@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'") - @noti.getPrivateText</li>
                 }
             </ul>
         </div>

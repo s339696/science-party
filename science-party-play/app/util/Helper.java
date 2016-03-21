@@ -14,6 +14,11 @@ import java.time.format.DateTimeFormatter;
  */
 public class Helper {
 
+    /**
+     * Generates a MD5 Hash from a string.
+     * @param string
+     * @return
+     */
     public static String getMD5fromString(String string) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
@@ -23,10 +28,17 @@ public class Helper {
         }
     }
 
+    /**
+     * Generates a date/time string using the given pattern.
+     *
+     * @param timestamp
+     * @param pattern
+     * @return
+     */
     public static String getStringFromTimestamp(Timestamp timestamp, String pattern) {
 
         LocalDateTime ldt = timestamp.toLocalDateTime();
-        return ldt.toLocalDate().format(DateTimeFormatter.ofPattern(pattern));
+        return ldt.format(DateTimeFormatter.ofPattern(pattern));
     }
 
     /**

@@ -2,6 +2,7 @@ package models.ebean;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
+import util.Helper;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -122,12 +123,8 @@ public class Notification extends Model {
                 .findList();
     }
 
-    public Timestamp getWhenCreated() {
-        return whenCreated;
-    }
-
-    public void setWhenCreated(Timestamp whenCreated) {
-        this.whenCreated = whenCreated;
+    public String getTimeFormatted(String pattern) {
+        return Helper.getStringFromTimestamp(whenCreated, pattern);
     }
 
     public User getUser() {
