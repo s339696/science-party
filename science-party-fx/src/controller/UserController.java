@@ -1,11 +1,5 @@
 package controller;
 
-import javafx.beans.*;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.MapBinding;
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -26,7 +20,7 @@ public class UserController implements Initializable{
     private TextField search;
 
     @FXML
-    private ListView<String> lv;
+    private ListView<User> lv;
 
     @FXML
     private Label idLabel;
@@ -52,6 +46,9 @@ public class UserController implements Initializable{
     @FXML
     private Button deleteButton;
 
+    @FXML
+    private CheckBox authorCheckBox;
+
 
    @FXML
    public void handleUpdate(){
@@ -61,22 +58,13 @@ public class UserController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle rb){
         try {
-            UserManager.refreshUserMap();
+            UserManager.refreshUserList();
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("klappt");
 
-        UserManager.userMap.addListener(new MapChangeListener<Integer, User>() {
-            @Override
-            public void onChanged(Change<? extends Integer, ? extends User> change) {
-                try {
-                    showList();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+
 
 
         try {
@@ -89,31 +77,12 @@ public class UserController implements Initializable{
 
 
 
-    static ObservableList<String> presentationList = FXCollections.observableArrayList();
+
+
     @FXML
     private void showList() throws IOException {
 
-        if(presentationList.size()>0){
-            for(String s : presentationList){
-                presentationList.remove(s);
-            }
-            presentationList.clear();
-        }
-
-
-
-        System.out.println(UserManager.userMap.get(1).getFirstname());
-
-
-        for(User u : UserManager.userMap.values()){
-            int i=0;
-            presentationList.add(i,u.getId() + ": " +u.getFirstname() + " " + u.getLastname());
-            i++;
-        }
-
-        Collections.sort(presentationList);
-
-        lv.setItems(presentationList);
+        lv.setItems(UserManager.userList);
 
 
    }
@@ -122,13 +91,7 @@ public class UserController implements Initializable{
 
     @FXML
     private void handleUserInSelect(){
-        ObservableList<String> selectedItems = lv.getSelectionModel().getSelectedItems();
-        String idString = selectedItems.get(0);
-        String[] s = idString.split(":");
-        int id = Integer.parseInt(s[0]);
-
-
-        presentedUser = UserManager.userMap.get(id);
+        presentedUser = lv.getSelectionModel().getSelectedItem();
 
         idLabel.textProperty().set(String.valueOf(presentedUser.getId()));
         firstNameLabel.textProperty().set(presentedUser.getFirstname());
@@ -136,15 +99,19 @@ public class UserController implements Initializable{
         emailLabel.textProperty().set(presentedUser.getEmail());
         birthdateLabel.textProperty().set(presentedUser.getBirthday());
         checkBox.setSelected(presentedUser.isLocked());
+        authorCheckBox.setSelected(presentedUser.isAuthor());
 
     }
 
     @FXML
     private void handleCheckBox() throws IOException {
         int id = presentedUser.getId();
+
         if(checkBox.isSelected()){
+            System.out.println(id);
             UserManager.lockUser(id, true);
         }else{
+            System.out.println(id);
             UserManager.lockUser(id, false);
         }
     }
@@ -155,6 +122,20 @@ public class UserController implements Initializable{
         UserManager.deleteUser(id);
         showList();
 
+    }
+
+    @FXML
+    private void handleAuthorCheckBox() throws IOException {
+        int id = presentedUser.getId();
+
+        if(authorCheckBox.isSelected()){
+            System.out.println(id);
+            UserManager.makeAuthor(id, true);
+        }else{
+            System.out.println(id);
+            UserManager.makeAuthor(id, false);
+            System.out.println("Nutzer ist kein Autor");
+        }
     }
 
 

@@ -63,4 +63,9 @@ public class Question {
         this.difficulty = difficulty;
         this.topicId = topicId;
     }
+
+    @Override
+    public String toString() {
+        return text;
+    }
 }

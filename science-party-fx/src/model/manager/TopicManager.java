@@ -2,29 +2,30 @@ package model.manager;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import model.Topic;
 import model.database.DatabaseConnect;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Richard on 13.03.2016.
  */
 public class TopicManager {
 
-    public static Map<Integer, Topic> topicMap = new HashMap<>();
+    public static ObservableList<Topic> topicList = FXCollections.observableArrayList();
 
     public static String getAllTopicsJson() throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
-        String urlPath = "http://localhost:9000/ac/get/topic/list";
+        String urlPath = DatabaseConnect.serverAddress + "/ac/get/topic/list";
         URL url = new URL(urlPath);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
@@ -47,23 +48,90 @@ public class TopicManager {
         return jsonString;
     }
 
-    public static void refreshTopicMap() throws IOException {
+    public static void refreshTopicList() throws IOException {
+        ObservableList<Topic> list = FXCollections.observableArrayList();
         String allTopicsJson = TopicManager.getAllTopicsJson();
         ObjectMapper mapper = new ObjectMapper();
         List<Topic> topicList = mapper.readValue(allTopicsJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Topic.class));
 
         for(Topic topic : topicList){
-            topicMap.put(topic.getId(), topic);
+            list.add(topic);
         }
+        TopicManager.topicList =list;
 
     }
 
+    public static void insertTopic(Topic topic) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(topic);
+
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = DatabaseConnect.serverAddress + "/ac/insert/topic";
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+
+        connection.setRequestMethod("PUT");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
+        outWriter.write(jsonString);
+        outWriter.flush();
+
+        connection.getResponseMessage();
+    }
+
+    public static void updateTopic(Topic topic) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(topic);
+
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = DatabaseConnect.serverAddress + "/ac/update/topic";
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+
+        connection.setRequestMethod("POST");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
+        outWriter.write(jsonString);
+        outWriter.flush();
+
+        connection.getResponseMessage();
+    }
+
+    public static void deleteTopic(Topic topic) throws IOException {
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = DatabaseConnect.serverAddress + "/ac/delete/topic/" + topic.getId();
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("DELETE");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        System.out.println(connection.getResponseMessage());
+    }
+
+
+
     public static void main(String[] args) throws IOException {
         DatabaseConnect.setRecentUser("bastian95@live.de", "araluen");
+        DatabaseConnect.setServerAddress("http://localhost:9000");
 
-        System.out.println(TopicManager.getAllTopicsJson());
-        TopicManager.refreshTopicMap();
-        System.out.println(topicMap.get(1).getName());
+        Topic t =  new Topic();
+        t.setId(3);
+
+        deleteTopic(t);
+
     }
 
 }

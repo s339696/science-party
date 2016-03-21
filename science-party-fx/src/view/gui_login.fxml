@@ -17,12 +17,8 @@
             <Font size="15.0" />
          </font>
       </TextField>
-      <TextField fx:id="LoginPassword" layoutX="403.0" layoutY="286.0" prefHeight="31.0" prefWidth="204.0">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="LoginServer" layoutX="403.0" layoutY="356.0" prefHeight="31.0" prefWidth="204.0">
+      <PasswordField fx:id="LoginPassword" layoutX="403.0" layoutY="285.0" prefHeight="31.0" prefWidth="204.0" />
+      <TextField fx:id="LoginServer" layoutX="403.0" layoutY="356.0" prefHeight="31.0" prefWidth="204.0" text="http://localhost:9000">
          <font>
             <Font size="15.0" />
          </font>
