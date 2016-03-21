@@ -75,27 +75,34 @@ GET           /ac/get/user/:id                  controllers.AuthorConnect.serveU
 POST          /ac/update/user                   controllers.AuthorConnect.handleUserUpdate()
 PUT           /ac/insert/user                   controllers.AuthorConnect.handleUserInsert()
 DELETE        /ac/delete/user/:id               controllers.AuthorConnect.handleUserDelete(id: Long)
+
 #AC-Topic
 GET           /ac/get/topic/list                controllers.AuthorConnect.serveTopicList()
 GET           /ac/get/topic/:id                 controllers.AuthorConnect.serveTopic(id: Long)
 POST          /ac/update/topic                  controllers.AuthorConnect.handleTopicUpdate()
 PUT           /ac/insert/topic                  controllers.AuthorConnect.handleTopicInsert()
 DELETE        /ac/delete/topic/:id              controllers.AuthorConnect.handleTopicDelete(id: Long)
+
 #AC-Question
 GET           /ac/get/question/list/:tid        controllers.AuthorConnect.serveQuestionList(tid: Long)
 GET           /ac/get/question/:id              controllers.AuthorConnect.serveQuestion(id: Long)
 POST          /ac/update/question               controllers.AuthorConnect.handleQuestionUpdate()
 PUT           /ac/insert/question               controllers.AuthorConnect.handleQuestionInsert()
 DELETE        /ac/delete/question/:id           controllers.AuthorConnect.handleQuestionDelete(id: Long)
+
 #AC-Answer
 GET           /ac/get/answer/list/:qid          controllers.AuthorConnect.serveAnswerList(qid: Long)
 GET           /ac/get/answer/:id                controllers.AuthorConnect.serveAnswer(id: Long)
 POST          /ac/update/answer                 controllers.AuthorConnect.handleAnswerUpdate()
 PUT           /ac/insert/answer                 controllers.AuthorConnect.handleAnswerInsert()
 DELETE        /ac/delete/answer/:id             controllers.AuthorConnect.handleAnswerDelete(id: Long)
+
 #AC-Perk
 GET           /ac/get/perk/list                 controllers.AuthorConnect.servePerkList()
 GET           /ac/get/perk/list/:topicId        controllers.AuthorConnect.servePerkListByTopic(topicId: Long)
+
+#AC-Games
+GET          /ac/get/games/list                 controllers.AuthorConnect.serveGamesList()
 
 # Map static resources from the /publ folder to the /assets URL path
 GET           /assets/*file                     controllers.Assets.versioned(path="/public", file: Asset)

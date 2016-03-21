@@ -37,7 +37,7 @@ public class ModelUnitTest {
         // Load test config  with testserver
         Map<String, String> settings = new HashMap<String, String>();
         settings.put("db.default.driver", "com.mysql.jdbc.Driver");
-        settings.put("db.default.url", "jdbc:mysql://127.0.0.1:3306/sopra-ws1516-team10-test?autoReconnect=true&useSSL=false");
+        settings.put("db.default.url", "jdbc:mysql://win9188.informatik.uni-wuerzburg.de:3306/sopra-ws1516-team10-test?autoReconnect=true&useSSL=false");
         settings.put("db.default.username", "root");
         settings.put("db.default.password", "root");
         settings.put("play.evolutions.autoApply", "true");
