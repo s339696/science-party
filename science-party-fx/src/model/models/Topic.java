@@ -1,23 +1,24 @@
-package model;
+package model.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import javafx.scene.image.Image;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
+
 
 /**
  * Created by Richard on 22.02.2016.
+ *
+ * Blueprint for mapping JsonStrings to an Topic-Object.
  */
-public class Perk {
-    public Perk(){
+public class Topic {
+
+    public Topic(){
 
     }
 
-   @JsonProperty
+    @JsonProperty("id")
     int id;
 
-    @JsonProperty
+    @JsonProperty("name")
     String name;
 
     public int getId() {
@@ -36,8 +37,13 @@ public class Perk {
         this.name = name;
     }
 
-    public Perk(int id, String name) {
+    public Topic(int id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 }

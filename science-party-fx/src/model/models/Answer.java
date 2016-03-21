@@ -1,15 +1,15 @@
-package model;
+package model.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import javafx.scene.control.Label;
 
 /**
  * Created by Richard on 22.02.2016.
+ *
+ * Blueprint for mapping JsonStrings to an Answer-Object.
  */
 public class Answer {
 
     public Answer(){
-
     }
 
     @JsonProperty("id")

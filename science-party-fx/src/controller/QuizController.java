@@ -3,9 +3,9 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import model.Answer;
-import model.Question;
-import model.Topic;
+import model.models.Answer;
+import model.models.Question;
+import model.models.Topic;
 import model.manager.AnswerManager;
 import model.manager.QuestionManager;
 import model.manager.TopicManager;
@@ -24,40 +24,40 @@ import static controller.TopicButtonPressed.*;
 public class QuizController implements Initializable {
 
     @FXML
-    ListView<Topic> topicsListView;
+    private ListView<Topic> topicsListView;
 
     @FXML
-    ListView<Question> questionsListView;
+    private ListView<Question> questionsListView;
 
     @FXML
-    TextArea questionBox;
+    private TextArea questionBox;
 
     @FXML
-    TextField difficultyField;
+    private TextField difficultyField;
 
     @FXML
-    TextField answerA;
+    private TextField answerA;
 
     @FXML
-    TextField answerB;
+    private TextField answerB;
 
     @FXML
-    TextField answerC;
+    private TextField answerC;
 
     @FXML
-    TextField answerD;
+    private TextField answerD;
 
     @FXML
-    RadioButton radioA;
+    private RadioButton radioA;
 
     @FXML
-    RadioButton radioB;
+    private RadioButton radioB;
 
     @FXML
-    RadioButton radioC;
+    private RadioButton radioC;
 
     @FXML
-    RadioButton radioD;
+    private RadioButton radioD;
 
     @FXML
     Button addTopicButton;
@@ -69,16 +69,16 @@ public class QuizController implements Initializable {
     Button deleteTopicButton;
 
     @FXML
-    TextField TopicTextField;
+    private TextField TopicTextField;
 
     @FXML
-    Button addQuestionButton;
+    private Button addQuestionButton;
 
     @FXML
-    TextField addQuestionField;
+    private TextField addQuestionField;
 
     @FXML
-    Button actionButton;
+    private Button actionButton;
 
     @FXML
     Button deleteQuestionButton;
@@ -87,6 +87,12 @@ public class QuizController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         showTopics();
+
+        ToggleGroup group = new ToggleGroup();
+        radioA.setToggleGroup(group);
+        radioB.setToggleGroup(group);
+        radioC.setToggleGroup(group);
+        radioD.setToggleGroup(group);
     }
 
 
@@ -134,12 +140,6 @@ public class QuizController implements Initializable {
         questionBox.setDisable(false);
         difficultyField.setDisable(false);
 
-        ToggleGroup group = new ToggleGroup();
-        radioA.setToggleGroup(group);
-        radioB.setToggleGroup(group);
-        radioC.setToggleGroup(group);
-        radioD.setToggleGroup(group);
-
         int qid = questionsListView.getSelectionModel().getSelectedItem().getId();
 
         for(Question question : QuestionManager.questionList){
@@ -167,12 +167,6 @@ public class QuizController implements Initializable {
         radioD.setDisable(true);
 
         int size = AnswerManager.answerList.size();
-        System.out.println("Länge der AnswerList: " + size);
-
-        for (Answer a :
-                AnswerManager.answerList) {
-            System.out.println(a.getText());
-        }
 
        switch(size){
            case 4:
@@ -453,7 +447,4 @@ public class QuizController implements Initializable {
             AnswerManager.refreshAnswerListPerQuestion(questionsListView.getSelectionModel().getSelectedItem().getId());
         }
     }
-
-
-
 }

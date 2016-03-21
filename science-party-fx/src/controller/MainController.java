@@ -6,9 +6,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Popup;
 import model.database.DatabaseConnect;
-import standard.Main;
+import main.Main;
 
 import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.io.IOException;
@@ -22,6 +21,9 @@ import java.util.ResourceBundle;
  */
 public class MainController implements Initializable {
 
+    /**
+     * Declaration of the FXML elements.
+     */
     @FXML
     private AnchorPane LoginMainPage;
 
@@ -65,10 +67,15 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-
     }
 
+    /**
+     * Triggered if LoginButton gets pressed.
+     * Checking of the typed in user data if it's valid.
+     * If an error occurs a popup with a suitable message will be shown.
+     *
+     * @throws IOException
+     */
     public void checkLogin() throws IOException {
         String email = LoginEmail.getText();
         String password = LoginPassword.getText();
@@ -85,8 +92,8 @@ public class MainController implements Initializable {
                     "\n" +
                     "Bitte überprüfen Sie die Verbindung und die angegebene Adresse."
             );
-
         }
+
         String loginCookie = DatabaseConnect.getLoginCookie();
         System.out.println(loginCookie);
         if(connected && loginCookie!=null){
@@ -94,22 +101,19 @@ public class MainController implements Initializable {
                 LoadMainWindow();
             } catch (Exception e) {
                 e.printStackTrace();
-
             }
         } else{
             Main.showPopup("Die Anmeldedaten sind ungültig!");
         }
-
-
     }
 
 
-
+    /**
+     * Adding the tabs to the mainPane and Loading the content of the tabs.
+     *
+     * @throws IOException
+     */
     public void LoadMainWindow() throws IOException {
-
-        MainController mc = new MainController();
-
-
         mainTabPane = FXMLLoader.load(getClass().getResource("../view/gui_main.fxml"));
 
         //alle Loader für die einzelnen Tabs
@@ -127,19 +131,21 @@ public class MainController implements Initializable {
         QrTab = new Tab("Perk-Editor");
         QrTab.setContent(QrSplitPane);
 
-
-
         mainTabPane.getTabs().add(0,UserTab);
         mainTabPane.getTabs().add(1,QuizTab);
         mainTabPane.getTabs().add(3,QrTab);
 
-
         System.out.println(UserTab.getContent());
 
-        standard.Main.mainStage.setScene(new Scene(mainTabPane));
+        main.Main.mainStage.setScene(new Scene(mainTabPane));
     }
 
-
+    /**
+     * Generates a MD5-String of an input string.
+     *
+     * @param string            string is the base for generating the MD5-String
+     * @return                  MD5-String
+     */
     public static String getMD5fromString(String string) {
 
         try {

@@ -1,12 +1,9 @@
 package controller;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import javafx.scene.control.cell.TextFieldListCell;
-import model.Perk;
+import model.models.Perk;
 import model.manager.PerkManager;
 
 import java.io.IOException;

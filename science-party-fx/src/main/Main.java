@@ -1,4 +1,4 @@
-package standard;
+package main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -6,8 +6,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Modality;
-import javafx.stage.Popup;
-import javafx.stage.PopupWindow;
 import javafx.stage.Stage;
 
 
@@ -17,9 +15,16 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
     /**
-     * Declaration of the mainStage so that it is possible to change the stage from anywhere else
+     * Declaration of the mainStage so that it is possible to change the stage from anywhere else.
      */
     public static Stage mainStage;
+
+    /**
+     * Starting the application.
+     *
+     * @param primaryStage
+     * @throws Exception        if an error occurs while loading the FXML-file
+     */
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -32,6 +37,11 @@ public class Main extends Application {
 
     }
 
+    /**
+     * Declaration of an simple PopupWindow on the mainStage.
+     *
+     * @param text              the text which will be presented
+     */
     public static void showPopup(String text){
         Stage popup = new Stage();
         popup.initModality(Modality.NONE);
@@ -43,7 +53,10 @@ public class Main extends Application {
 
     }
 
-
+    /**
+     * Launch of the application.
+     * @param args
+     */
     public static void main(String[] args) {
       launch(args);
     }
