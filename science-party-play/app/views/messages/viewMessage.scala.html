@@ -24,7 +24,7 @@
                         <br>
                     } else {
                         <p class="receivedMessage">
-                            @message.getWhenCreated <br> <br>
+                            @message.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")<br> <br>
                             <b>@message.getText</b> <br>
                         </p>
                         <br>
