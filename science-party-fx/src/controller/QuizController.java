@@ -1,8 +1,5 @@
 package controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
-import com.sun.xml.internal.bind.v2.model.annotation.AnnotationSource;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -16,7 +13,6 @@ import model.manager.TopicManager;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -332,8 +328,10 @@ public class QuizController implements Initializable {
         Question question = questionsListView.getSelectionModel().getSelectedItem();
         question.setDifficulty(Integer.parseInt(difficultyField.textProperty().get()));
         question.setText(questionBox.textProperty().get());
+        QuestionManager.updateQuestion(question);
 
-        //BUG!!! Wenn mittendrin eine Frage gelöscht wird, erhält diese den Text der nachfolgenden Frage, wird aber nicht gelöscht
+
+
         handleAnswerA();
         handleAnswerB();
         handleAnswerC();
