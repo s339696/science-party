@@ -93,9 +93,9 @@ public class QuizController implements Initializable {
         radioB.setToggleGroup(group);
         radioC.setToggleGroup(group);
         radioD.setToggleGroup(group);
+
+        questionBox.setWrapText(true);
     }
-
-
 
 
     public void showTopics(){

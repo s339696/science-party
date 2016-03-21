@@ -1,24 +1,26 @@
 package model.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import javafx.scene.image.Image;
-
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 
 /**
- * Created by Richard on 22.02.2016.
+ * Created by Richard on 21.03.2016.
  */
 public class Perk {
     public Perk(){
 
     }
 
-   @JsonProperty("id")
+    @JsonProperty("id")
     int id;
 
+    @JsonProperty("qrCode")
+    String qrCode;
+
     @JsonProperty("name")
-    String name;
+    String perkName;
+
+    @JsonProperty("topicName")
+    String topicName;
 
     public int getId() {
         return id;
@@ -28,16 +30,27 @@ public class Perk {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getQrCode() {
+        return qrCode;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
     }
 
-    public Perk(int id, String name) {
-        this.id = id;
-        this.name = name;
+    public String getPerkName() {
+        return perkName;
+    }
+
+    public void setPerkName(String perkName) {
+        this.perkName = perkName;
+    }
+
+    public String getTopicName() {
+        return topicName;
+    }
+
+    public void setTopicName(String topicName) {
+        this.topicName = topicName;
     }
 }

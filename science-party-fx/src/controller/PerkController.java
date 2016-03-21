@@ -3,8 +3,8 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
-import model.models.Perk;
 import model.manager.PerkManager;
+import model.models.Perk;
 
 import java.io.IOException;
 import java.net.URL;
