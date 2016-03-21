@@ -46,6 +46,9 @@ public class UserController implements Initializable{
     @FXML
     private Button deleteButton;
 
+    @FXML
+    private CheckBox authorCheckBox;
+
 
    @FXML
    public void handleUpdate(){
@@ -96,6 +99,7 @@ public class UserController implements Initializable{
         emailLabel.textProperty().set(presentedUser.getEmail());
         birthdateLabel.textProperty().set(presentedUser.getBirthday());
         checkBox.setSelected(presentedUser.isLocked());
+        authorCheckBox.setSelected(presentedUser.isAuthor());
 
     }
 
@@ -118,6 +122,20 @@ public class UserController implements Initializable{
         UserManager.deleteUser(id);
         showList();
 
+    }
+
+    @FXML
+    private void handleAuthorCheckBox() throws IOException {
+        int id = presentedUser.getId();
+
+        if(authorCheckBox.isSelected()){
+            System.out.println(id);
+            UserManager.makeAuthor(id, true);
+        }else{
+            System.out.println(id);
+            UserManager.makeAuthor(id, false);
+            System.out.println("Nutzer ist kein Autor");
+        }
     }
 
 

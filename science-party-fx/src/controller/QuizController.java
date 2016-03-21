@@ -412,7 +412,7 @@ public class QuizController implements Initializable {
                 //deleteAnswer
                 answer = AnswerManager.answerList.get(0);
                 AnswerManager.deleteAnswer(answer);
-                
+
             } else {
                 //updateAnswer
                 System.out.println("Antwort A wird geupdatet");

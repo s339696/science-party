@@ -102,6 +102,41 @@ public class UserManager {
         connection.getResponseMessage();
     }
 
+    public static void makeAuthor(int id, boolean isAuthor) throws IOException {
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = DatabaseConnect.serverAddress + "/ac/update/user";
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+
+        connection.setRequestMethod("POST");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        //hier muss der user mit der ID geholt werden!!!!
+        User updateUser = new User();
+        for (User u : userList) {
+            if(u.getId()==id){
+                updateUser=u;
+            }
+        }
+
+
+        updateUser.setAuthor(isAuthor);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(updateUser);
+
+        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
+        outWriter.write(jsonString);
+        outWriter.flush();
+
+        connection.getResponseMessage();
+    }
+
     public static void deleteUser(int id) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 

@@ -98,6 +98,11 @@
                   <Font size="15.0" />
                </font>
             </Text>
+            <CheckBox fx:id="authorCheckBox" layoutX="59.0" layoutY="525.0" mnemonicParsing="false" onAction="#handleAuthorCheckBox" text="Autor">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </CheckBox>
          </children></AnchorPane>
   </items>
 </SplitPane>
