@@ -1,6 +1,7 @@
 package models.ebean;
 
 import com.avaje.ebean.Model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -59,20 +60,33 @@ public class PerkPerTopic extends Model {
         this.qrCode = qrCode;
     }
 
+    @JsonIgnore
     public Perk getPerk() {
         return perk;
     }
 
+    @JsonIgnore
     public void setPerk(Perk perk) {
         this.perk = perk;
     }
 
+    @JsonIgnore
     public Topic getTopic() {
         return topic;
     }
 
+    @JsonIgnore
     public void setTopic(Topic topic) {
         this.topic = topic;
+    }
+
+    public String getPerkName() {
+       return perk.getName();
+    }
+
+
+    public String getTopicName() {
+        return topic.getName();
     }
 
 }
