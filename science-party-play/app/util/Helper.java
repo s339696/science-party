@@ -46,7 +46,6 @@ public class Helper {
      *
      * @param date
      * @return
-     * @throws UserException
      */
     public static Timestamp getTimestampFromString(String date) {
         int day;

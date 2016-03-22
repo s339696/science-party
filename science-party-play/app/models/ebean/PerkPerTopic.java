@@ -52,7 +52,7 @@ public class PerkPerTopic extends Model {
     /**
      * Sets the QR Code of a perk related to a topic.
      * The QR Code is greated in following way:
-     * --> md5hash(name_from_perk + " " + name_from_topic)
+     * md5hash(name_from_perk + " " + name_from_topic)
      *
      * @param qrCode
      */

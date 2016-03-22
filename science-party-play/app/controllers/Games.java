@@ -1,7 +1,5 @@
 package controllers;
 
-import controllers.*;
-import controllers.routes;
 import exception.games.GameException;
 import exception.games.StartGameException;
 import exception.games.StopGameException;
@@ -10,7 +8,6 @@ import manager.LoginManager;
 import models.ebean.*;
 import models.form.AnswerForm;
 import models.form.CreateGameForm;
-import play.Logger;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.*;
@@ -180,8 +177,8 @@ public class Games extends Controller {
 
     /**
      * Handle the response to a game invitation.
-     * action = 1 --> accept invite
-     * action = 0 --> decline invite
+     * action = 1 accept invite
+     * action = 0 decline invite
      *
      * @param id
      * @param action

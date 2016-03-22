@@ -13,7 +13,6 @@ import java.util.List;
 
 /**
  * Handle general Application requests.
- * @return
  */
 public class Application extends Controller {
 
@@ -32,7 +31,7 @@ public class Application extends Controller {
 
     /**
      * Time to play a bit and this doesn't mean to play a game...
-     * --> Development in process.
+     * Development in process.
      *
      * @return
      */

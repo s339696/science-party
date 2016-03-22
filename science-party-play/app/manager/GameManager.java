@@ -293,7 +293,6 @@ public class GameManager {
      *
      * @param game
      * @param perk
-     * @return
      */
     public static void usePerk(Game game, PerkPerPlayer perk) throws Exception {
         if (perk.isUsed()) {
