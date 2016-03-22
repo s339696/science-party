@@ -17,16 +17,20 @@
     <div class="tabele">
         <div class="list">
             <ul class="tabele">
-                @for(game <- user.getPendingGames) {
-                    <li class="tabele">
-                        <a class="tabele" href="#gameInfo">ID: @game.getId Thema: @game.getTopic</a>
-                        @if(game.getPlayerForUser(user).getPlayerStatus() == Player.PlayerStatus.INVITED) {
-                            <a class="tabele" href="/games/accept/@game.getId">Annehmen</a>
-                            <a class="tabele" href="/games/decline/@game.getId">Ignorieren</a>
-                        } else {
-                            ...warte auf Mitspieler.
-                        }
-                    </li>
+                @if(user.getPendingGames.isEmpty) {
+                    <p>Es gibt momentan keine Spiele, zu denen du eingeladen bist oder die noch nicht gestartet sind.</p>
+                } else {
+                    @for(game <- user.getPendingGames) {
+                        <li class="tabele">
+                            <a class="tabele" href="#gameInfo">ID: @game.getId Thema: @game.getTopic</a>
+                            @if(game.getPlayerForUser(user).getPlayerStatus() == Player.PlayerStatus.INVITED) {
+                                <a class="tabele" href="/games/accept/@game.getId">Annehmen</a>
+                                <a class="tabele" href="/games/decline/@game.getId">Ignorieren</a>
+                            } else {
+                                ...warte auf Mitspieler.
+                            }
+                        </li>
+                    }
                 }
             </ul>
             </div>

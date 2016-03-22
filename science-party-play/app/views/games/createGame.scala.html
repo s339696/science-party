@@ -1,13 +1,13 @@
 @import models.ebean.User
-@(user : User, topics: List[models.ebean.Topic], users: List[User])
+@(user: User, topics: List[models.ebean.Topic], users: List[User])
 
-    @mainIntern("Spiel erstellen", user) {
+@mainIntern("Spiel erstellen", user) {
     <br>
     <br>
     <br>
     <br>
 
-    <div  class="formularHead">
+    <div class="formularHead">
         <h1>
             Spiel erstellen
         </h1>
@@ -128,13 +128,20 @@
                         playerIds: playerIds,
                     }),
                     success: function(data,status,xhr) {
-                        alert(xhr.responseText);
-                        window.open("/games/pending","_self")
+                        if(playerIds.length === 0) {
+                            alert("Das Spiel mit der Id #" + xhr.responseText +
+                                    " wurde erfolgreich erzeugt und gestartet.");
+                            window.open("/games/play/" + xhr.responseText,"_self")
+                        } else {
+                            alert("Das Spiel mit der Id #" + xhr.responseText + " wurde erfolgreich erzeugt, " +
+                            "konnte aber noch nicht gestartet werden.");
+                            window.open("/games/pending","_self")
+                        }
                     },
                     error: function(xhr,status,error) {
                         alert(xhr.responseText);
                     }
                 });
             }
-        </script>
-    }
+    </script>
+}

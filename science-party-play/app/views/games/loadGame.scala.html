@@ -13,14 +13,18 @@
         </h1>
     </div>
     <div class="tabele">
-        <div class="list"
+        <div class="list">
             <ul class="tabele">
-            @for(game <- games) {
-                <li class="tabele">
-                    <a class="noFunctionTabele">Spiel @game.getId() mit Thema: @game.getTopic.getName()</a>
-                    <a class="tabeleAdd" href="/games/play/@game.getId()">Laden</a>
-                </li>
-            }
+                @if(games.isEmpty) {
+                    <p>Du hast noch keine laufenden Spiele.</p>
+                } else {
+                    @for(game <- games) {
+                        <li class="tabele">
+                            <a class="noFunctionTabele">Spiel @game.getId() mit Thema: @game.getTopic.getName()</a>
+                            <a class="tabeleAdd" href="/games/play/@game.getId()">Laden</a>
+                        </li>
+                    }
+                }
             </ul>
         </div>
     </div>

@@ -151,6 +151,9 @@ public class Games extends Controller {
                 if (player == null) {
                     return badRequest("Spieler " + (i + 2) + " konnte dem Spiel nicht hinzugefügt werden.");
                 } else {
+                    if (playerList.contains(player)) {
+                        return badRequest("Ein Spieler kann nicht doppelt an einem Spiel teilnehmen.");
+                    }
                     playerList.add(player);
                 }
             }
@@ -161,15 +164,14 @@ public class Games extends Controller {
         try {
             game = GameManager.createGame(topic, topic.getName() + " von " + player1.getFirstname(), playerList);
         } catch (StartGameException e) {
-            return ok("Das Spiel mit der Id #" + e.getGame().getId() + " wurde erfolgreich erzeugt, " +
-                    "konnte aber noch nicht gestartet werden.");
+            return ok(e.getGame().getId().toString());
         } catch (Exception e) {
             return badRequest(e.getMessage());
         }
         if (game == null) {
             return badRequest("Das Spiel konnte nicht erzeugt werden.");
         }
-        return ok("Das Spiel mit der Id #" + game.getId() + " wurde erfolgreich erzeugt und gestartet.");
+        return ok(game.getId().toString());
     }
 
     public Result deleteGame(Long id) {
@@ -189,7 +191,7 @@ public class Games extends Controller {
         Game game = Game.getGameById(id);
         User user = LoginManager.getLoggedInUser();
 
-        Boolean accept = (action == 1) ? true : false;
+        Boolean accept = (action == 1);
 
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
