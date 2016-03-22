@@ -14,11 +14,15 @@
         </div>
         <div class="tabele">
             <ul class="tabele">
-                @for(noti <- notis) {
-                    <li class="tabele">
-                        <a class="noFunctionTabele">@noti.getPublicText</a>
-                        <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
-                    </li>
+                @if(notis.isEmpty) {
+                    <p>Es ist noch nichts passiert.</p>
+                } else {
+                    @for(noti <- notis) {
+                        <li class="tabele">
+                            <a class="noFunctionTabele">@noti.getPublicText</a>
+                            <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
+                        </li>
+                    }
                 }
             </ul>
         </div>

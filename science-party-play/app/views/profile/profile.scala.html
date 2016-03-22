@@ -76,16 +76,17 @@
 
             @if(ownProfile) {
                 <div class="formularHead">
-                    <a href="/profile/scan" class="bigButton">+Fähigkeit</a>
+                    <a href="/profile/scan" class="bigButton">Fähigkeit hinzufügen</a>
                 </div>
             }
         </div>
-
-        <div class="formular">
-            <a class="deleteButton" href="/profile/delete">
-                Account löschen!
-            </a>
-        </div>
+        @if(ownProfile) {
+            <div class="formular">
+                <a class="deleteButton" href="/profile/delete">
+                    Account löschen!
+                </a>
+            </div>
+        }
     </div>
     <script>
         @if(feedback != "") {
