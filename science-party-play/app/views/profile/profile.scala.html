@@ -15,35 +15,35 @@
             <p id="getFirstname">
                 <b>Vorname:</b> @(user.getFirstname)
             </p>
-            <p id="setFirstname" style="display: none;">
+            <p id="setFirstname" style="display: none ;">
                 <b>Vorname:</b> <input id="firstname" type="text" name="firstname" value="@(user.getFirstname)" required>
             </p>
             <p id="getLastname">
                 <b>Nachname:</b> @(user.getLastname)
             </p>
-            <p id="setLastname" style="display: none;">
+            <p id="setLastname" style="display: none ;">
                 <b>Nachname:</b> <input id="lastname" type="text" name="lastname" value="@(user.getLastname)" required>
             </p>
             <p id="getBirthday">
                 <b>Geburtsdatum:</b> @(user.getBirthdayAsString)
             </p>
-            <p id="setBirthday" style="display: none;">
+            <p id="setBirthday" style="display: none ;">
                 <b>Geburtsdatum:</b> <input id="birthday" type="text" name="birthday" value="@(user.getBirthdayAsString)" required>
             </p>
             <p id="getEmail">
                 <b>E-Mail:</b> @(user.getEmail)
             </p>
-            <p id="setEmail" style="display: none;">
+            <p id="setEmail" style="display: none ;">
                 <b>E-Mail:</b> <input id="email" type="email" name="email" value="@(user.getEmail)" required>
             </p>
-            <p id="setPassword" style="display: none;">
+            <p id="setPassword" style="display: none ;">
                 <b>E-Mail:</b> <input id="password" type="password" name="password" placeholder="Passwort" required>
             </p>
             @if(ownProfile) {
                 <button id="updateProfil" >
                     Profil bearbeiten
                 </button>
-                <button id="setUpdate" style="display: none;">
+                <button id="setUpdate" style="display: none ;">
                     Speichern
                 </button>
 
@@ -69,8 +69,12 @@
         <div class="userPerks">
             <h3>Fähigkeiten</h3>
             <ul>
-            @for(perk <- user.getPerks) {
-                <li>Fähigkeit "@perk.getPerkPerTopic.getPerk.getName" für @perk.getPerkPerTopic.getTopic.getName</li>
+            @if(user.getPerks.isEmpty) {
+                <p>Es wurden noch keine Fähigkeiten erlangt.</p>
+            } else {
+                @for(perk <- user.getPerks) {
+                    <li>Fähigkeit "@perk.getPerkPerTopic.getPerk.getName" für @perk.getPerkPerTopic.getTopic.getName</li>
+                }
             }
             </ul>
 
@@ -89,60 +93,60 @@
         }
     </div>
     <script>
-        @if(feedback != "") {
-            window.onload = (function() {
-                window.alert("@feedback");
-            });
-        }
+    @if(feedback != "") {
+    window.onload = (function() {
+        window.alert("@feedback");
+    });
+    }
 
-        var numberOfPoints = @user.getPoints;
-        var numberOfGames = @user.getNumberOfPlayedGames;
-        var pointsPerGame = numberOfPoints/numberOfGames;
+    var numberOfPoints = @user.getPoints;
+    var numberOfGames = @user.getNumberOfPlayedGames;
+    var pointsPerGame = numberOfPoints/numberOfGames;
 
-        document.getElementById("pointsPerGame").innerHTML = pointsPerGame;
+    document.getElementById("pointsPerGame").innerHTML = pointsPerGame;
 
-        $("#updateProfil").click(function(){
-            $("#getFirstname").hide();
-            $("#getLastname").hide();
-            $("#getBirthday").hide();
-            $("#getEmail").hide();
-            $("#updateProfil").hide();
-            $("#setFirstname").fadeIn("slow");
-            $("#setLastname").fadeIn("slow");
-            $("#setBirthday").fadeIn("slow");
-            $("#setEmail").fadeIn("slow");
-            $("#setPassword").fadeIn("slow");
-            $("#setUpdate").fadeIn("slow");
-        })
+    $("#updateProfil").click(function(){
+        $("#getFirstname").hide();
+        $("#getLastname").hide();
+        $("#getBirthday").hide();
+        $("#getEmail").hide();
+        $("#updateProfil").hide();
+        $("#setFirstname").fadeIn("slow");
+        $("#setLastname").fadeIn("slow");
+        $("#setBirthday").fadeIn("slow");
+        $("#setEmail").fadeIn("slow");
+        $("#setPassword").fadeIn("slow");
+        $("#setUpdate").fadeIn("slow");
+    })
 
-        $("#setUpdate").click(function (e) {
-            e.preventDefault();
-            var firstname = $("#firstname").val();
-            var lastname = $("#lastname").val();
-            var birthday = $("#birthday").val();
-            var email = $("#email").val();
-            var password = $("#password").val();
-            $.ajax({
-                url: "/profile/update",
-                method: "POST",
-                contentType: "application/json",
-                dataType: "text",
-                data: JSON.stringify({
-                    firstname: firstname,
-                    lastname: lastname,
-                    birthday: birthday,
-                    email: email,
-                    password: password,
-                }),
-                success: function(data,status,xhr) {
-                    location.reload();
-                },
-                error: function(xhr,status,error) {
-                    alert(xhr.responseText);
-                }
-            });
-
+    $("#setUpdate").click(function (e) {
+        e.preventDefault();
+        var firstname = $("#firstname").val();
+        var lastname = $("#lastname").val();
+        var birthday = $("#birthday").val();
+        var email = $("#email").val();
+        var password = $("#password").val();
+        $.ajax({
+            url: "/profile/update",
+            method: "POST",
+            contentType: "application/json",
+            dataType: "text",
+            data: JSON.stringify({
+                firstname: firstname,
+                lastname: lastname,
+                birthday: birthday,
+                email: email,
+                password: password,
+            }),
+            success: function(data,status,xhr) {
+                location.reload();
+            },
+            error: function(xhr,status,error) {
+                alert(xhr.responseText);
+            }
         });
+
+    });
 
     </script>
 }

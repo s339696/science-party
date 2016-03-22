@@ -6,6 +6,8 @@ import exception.messages.CreateMessageException;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -26,6 +28,8 @@ public class Chat extends Model {
     @Size(max = 50)
     private String name;
 
+    Timestamp lastMessage;
+
     @JoinTable(name = "user_has_chats")
     @ManyToMany(cascade = CascadeType.ALL)
     private List<User> users;
@@ -42,12 +46,7 @@ public class Chat extends Model {
             chat.setName(name);
             chat.save();
 
-            Message newMsg = new Message();
-            newMsg.setUser(from);
-            newMsg.setText(firstMsg);
-            newMsg.setChat(chat);
-            newMsg.setSeen(false);
-            newMsg.save();
+            chat.sendMessage(from, firstMsg);
 
             Ebean.commitTransaction();
         } catch (Exception e){
@@ -91,6 +90,34 @@ public class Chat extends Model {
         this.messages = messages;
     }
 
+    public Timestamp getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(Timestamp lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    /**
+     * Returns the number of unread messages.
+     *
+     * @return
+     */
+    public int getUnreadMessagesCountFor(User user) {
+        return Message.find.where()
+                .eq("chat", this)
+                .eq("seen", false)
+                .ne("user", user)
+                .findRowCount();
+
+    }
+
+    /**
+     * Returns a string with all members except of the given user.
+     *
+     * @param exceptUser
+     * @return
+     */
     public String getChatMembersExceptOf(User exceptUser) {
         List<User> members = getUsers();
         members.remove(exceptUser);
@@ -101,6 +128,13 @@ public class Chat extends Model {
         return result;
     }
 
+    /**
+     * Sends a message to a chat by a user.
+     *
+     * @param from
+     * @param msg
+     * @throws CreateMessageException
+     */
     public void sendMessage(User from, String msg) throws CreateMessageException {
         if (!getUsers().contains(from)) {
             throw new CreateMessageException("Der User ist kein Teilnehmer dieses Gespräches.");
@@ -113,5 +147,9 @@ public class Chat extends Model {
         message.setText(msg);
         message.setSeen(false);
         message.insert();
+
+        // Update last message
+        this.setLastMessage(Timestamp.valueOf(LocalDateTime.now()));
+        this.update();
     }
 }

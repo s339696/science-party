@@ -14,6 +14,7 @@ create table answers (
 create table chats (
   id                            bigint auto_increment not null,
   name                          varchar(50),
+  last_message                  datetime(6),
   constraint pk_chats primary key (id)
 );
 

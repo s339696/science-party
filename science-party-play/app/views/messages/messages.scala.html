@@ -21,8 +21,11 @@
                 } else {
                     @for(chat <- chats) {
                         <li class="tabele">
-                            <a class="tabele" href="/messages/show/@chat.getId">@chat.getChatMembersExceptOf(user)</a>
-
+                            @if(chat.getUnreadMessagesCountFor(user) == 0) {
+                                <a class="tabele" href="/messages/show/@chat.getId">@chat.getChatMembersExceptOf(user)</a>
+                            } else {
+                                <a class="tabele" href="/messages/show/@chat.getId">@chat.getChatMembersExceptOf(user) (@chat.getUnreadMessagesCountFor(user))</a>
+                            }
                             <a class="tabeleDelete" href="/messages/leave/@chat.getId">Chat löschen</a>
                         </li>
                     }
