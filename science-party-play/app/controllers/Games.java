@@ -162,7 +162,7 @@ public class Games extends Controller {
         //Create Game
         Game game = null;
         try {
-            game = GameManager.createGame(topic, topic.getName() + " von " + player1.getFirstname(), playerList);
+            game = GameManager.createGame(topic, topic.getName() + " von " + player1.getFirstname(), playerList, player1);
         } catch (StartGameException e) {
             return ok(e.getGame().getId().toString());
         } catch (Exception e) {
@@ -209,7 +209,7 @@ public class Games extends Controller {
             return renderPendingGames("Fehler: " + e.getMessage());
         }
 
-        return redirect(controllers.routes.Games.renderGame(game.getId(),""));
+        return redirect(controllers.routes.Games.renderGame(game.getId(), ""));
     }
 
     /**
