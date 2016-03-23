@@ -2,9 +2,10 @@
 @(user: User, messages: List[models.ebean.Message], chat: models.ebean.Chat)
 
     @mainIntern("Nachrichten", user) {
-        <br>
-        <br>
-        <br>
+    <br>
+    <br>
+    <br>
+    <br>
         <div class="tabeleHead">
             <h1>
                 Nachrichten
@@ -12,25 +13,24 @@
         </div>
         <div class="tabele">
             <br>
-            <h2>@chat.getName()</h2>
+            <h2>@chat.getChatMembersExceptOf(user)</h2>
             <br>
             <div class="messageField">
                 @for(message <- messages) {
                     @if(message.getUser.getId == user.getId) {
                         <p class="sentMessage">
-                            @message.getWhenCreated <br> <br>
+                            @message.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")<br> <br>
                             <b>@message.getText</b> <br>
                         </p>
                         <br>
                     } else {
                         <p class="receivedMessage">
-                            @message.getWhenCreated <br> <br>
+                            @message.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")<br> <br>
                             <b>@message.getText</b> <br>
                         </p>
                         <br>
                         }
                 }
-            </ul>
             </div>
             <div class="container">
                 <form id="sendMessage">

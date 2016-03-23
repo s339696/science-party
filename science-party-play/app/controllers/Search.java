@@ -38,30 +38,30 @@ public class Search extends Controller {
      * @param sstring
      * @return
      */
-//    public List<User> searchUser(String sstring) {
-//        String[] sstrings = sstring.split(" ");
-//        if (sstrings.length > 0) {
-//            sstring = "";
-//            for (int i = 0; i < sstrings.length; i++) {
-//                sstrings[i] += "* ";
-//                sstring += sstrings[i];
-//            }
-//        } else {
-//            sstring += "*";
-//        }
-//
-//        String query = "WHERE MATCH (firstname,lastname,email) AGAINST ('" + sstring + "' IN BOOLEAN MODE)";
-//        List<User> resultUsers = User.find
-//                //.where().contains("firstname", sstring)
-//                .setQuery(query)
-//                .findList();
-//
-//        System.out.println(resultUsers.size());
-//
-//        return resultUsers;
-//    }
-
     public List<User> searchUser(String sstring) {
+        String[] sstrings = sstring.split(" ");
+        if (sstrings.length > 0) {
+            sstring = "";
+            for (int i = 0; i < sstrings.length; i++) {
+                sstrings[i] += "* ";
+                sstring += sstrings[i];
+            }
+        } else {
+            sstring += "*";
+        }
+
+        String query = "WHERE MATCH (firstname,lastname,email) AGAINST ('" + sstring + "' IN BOOLEAN MODE)";
+        List<User> resultUsers = User.find
+                //.where().contains("firstname", sstring)
+                .setQuery(query)
+                .findList();
+
+        System.out.println(resultUsers.size());
+
+        return resultUsers;
+    }
+
+/*    public List<User> searchUser(String sstring) {
         //String query = "WHERE MATCH (firstname,lastname,email) AGAINST ('" + sstring + "' IN BOOLEAN MODE)";
         List<User> resultUsers = User.find
                 .where().contains("firstname", sstring)
@@ -69,7 +69,7 @@ public class Search extends Controller {
                 .findList();
 
         return resultUsers;
-    }
+    }*/
 
 }
 

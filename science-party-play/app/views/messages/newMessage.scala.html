@@ -36,8 +36,8 @@
                             message: message,
                         }),
                         success: function(data,status,xhr) {
-                            alert(xhr.responseText);
-                            window.open("/messages","_self");
+
+                            window.open("/messages/show/" + data,"_self");
                         },
                         error: function(xhr,status,error) {
                             alert(xhr.responseText);

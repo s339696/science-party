@@ -512,10 +512,9 @@ public class User extends Model {
     @JsonIgnore
     public List<Chat> getChats() {
         return Chat.find
-                .fetch("messages")
                 .where()
                 .ieq("users.id", this.getId().toString())
-                .orderBy().asc("messages.whenCreated")
+                .orderBy().desc("lastMessage")
                 .findList();
     }
 

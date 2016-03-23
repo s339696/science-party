@@ -8,18 +8,28 @@
     <br>
     <br>
     <div>
-        <div>
+        <div class="tabeleHead">
             <h1>
                 Benachrichtigungen
             </h1>
         </div>
-        <div>
-            <ul>
-                @for(noti <- unseenNoti) {
-                    <li>NEU: @noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'") - @noti.getPrivateText</li>
-                }
-                @for(noti <- seenNoti) {
-                    <li>@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'") - @noti.getPrivateText</li>
+        <div class="tabele">
+            <ul class="tabele">
+                @if(unseenNoti.isEmpty && seenNoti.isEmpty) {
+                    <p>Es ist noch nichts passiert.</p>
+                } else {
+                    @for(noti <- unseenNoti) {
+                        <li class="tabele">
+                            <a class="noFunctionTabele"><b>NEU:</b> @noti.getPrivateText</a>
+                            <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
+                        </li>
+                    }
+                    @for(noti <- seenNoti) {
+                        <li class="tabele">
+                            <a class="noFunctionTabele">@noti.getPrivateText</a>
+                            <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
+                        </li>
+                    }
                 }
             </ul>
         </div>

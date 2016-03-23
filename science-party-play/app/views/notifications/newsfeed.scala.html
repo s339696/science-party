@@ -7,15 +7,22 @@
     <br>
     <br>
     <div>
-        <div>
+        <div class="tabeleHead">
             <h1>
                 Newsfeed
             </h1>
         </div>
-        <div>
-            <ul>
-                @for(noti <- notis) {
-                    <li>@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'") - @noti.getPublicText</li>
+        <div class="tabele">
+            <ul class="tabele">
+                @if(notis.isEmpty) {
+                    <p>Es ist noch nichts passiert.</p>
+                } else {
+                    @for(noti <- notis) {
+                        <li class="tabele">
+                            <a class="noFunctionTabele">@noti.getPublicText</a>
+                            <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
+                        </li>
+                    }
                 }
             </ul>
         </div>

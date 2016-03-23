@@ -1,34 +1,41 @@
 @import models.ebean.User
-@(user:User, chats: List[models.ebean.Chat])
+@(user: User, chats: List[models.ebean.Chat])
 
-@mainIntern("Nachrichten", user) {
-    <br>
-    <br>
-    <br>
-    <div class="tabeleHead">
-        <h1>
-            Nachrichten
-        </h1>
-    </div>
-    <br>
-    <div class="tabele">
-        <a class="newMessage" href="/messages/new">+Neue Nachricht</a>
-        <div class="list">
-            <ul class="tabele">
-                @for( chat <- chats) {
-                <li class="tabele">
-                    <a class="tabele" href="/messages/show/@chat.getId">@chat.getName</a>
-
-                    <a class="tabeleDelete" href="/messages/leave/@chat.getId">Chat löschen</a>
-                </li>
-                }
-            </ul>
+    @mainIntern("Nachrichten", user) {
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="tabeleHead">
+            <h1>
+                Nachrichten
+            </h1>
         </div>
-    </div>
-    <script>
+        <br>
+        <div class="tabele">
+            <a class="newMessage" href="/messages/new">Neue Nachricht</a>
+            <div class="list">
+                <ul class="tabele">
+                @if(chats.isEmpty) {
+                    <p>Du hast noch keine Nachrichten.</p>
+                } else {
+                    @for(chat <- chats) {
+                        <li class="tabele">
+                            @if(chat.getUnreadMessagesCountFor(user) == 0) {
+                                <a class="tabele" href="/messages/show/@chat.getId">@chat.getChatMembersExceptOf(user)</a>
+                            } else {
+                                <a class="tabele" href="/messages/show/@chat.getId">@chat.getChatMembersExceptOf(user) (@chat.getUnreadMessagesCountFor(user))</a>
+                            }
+                            <a class="tabeleDelete" href="/messages/leave/@chat.getId">Chat löschen</a>
+                        </li>
+                    }
+                }
+                </ul>
+            </div>
+        </div>
+        <script>
 
 
+        </script>
 
-    </script>
-
-}
+    }

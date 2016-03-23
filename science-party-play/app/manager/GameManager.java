@@ -21,7 +21,7 @@ public class GameManager {
      * @param users
      * @return
      */
-    public static Game createGame(Topic topic, String name, List<User> users) throws GameException {
+    public static Game createGame(Topic topic, String name, List<User> users, User createdBy) throws GameException {
         if (topic == null) {
             throw new CreateGameException("Das ausgewählte Thema ist ungültig.");
         }
@@ -63,7 +63,9 @@ public class GameManager {
             }
 
             // Send notification
-            Notification.createNotification(user, "Du wurdest zum Spiel mit der Nummer #" + game.getId() + " eingeladen.","");
+            if (!player.getUser().equals(createdBy)) {
+                Notification.createNotification(user, "Du wurdest zum Spiel mit der Nummer #" + game.getId() + " eingeladen.", "");
+            }
         }
 
         //Try to start game directly if it is a one player game
@@ -291,7 +293,6 @@ public class GameManager {
      *
      * @param game
      * @param perk
-     * @return
      */
     public static void usePerk(Game game, PerkPerPlayer perk) throws Exception {
         if (perk.isUsed()) {

@@ -1,3 +1,5 @@
+package test;
+
 import org.junit.*;
 import play.libs.F;
 import play.test.TestBrowser;

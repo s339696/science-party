@@ -2,6 +2,7 @@ package models.ebean;
 
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.CreatedTimestamp;
+import util.Helper;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -43,6 +44,10 @@ public class Message extends Model {
                 .ieq("chat.id", chat.getId().toString())
                 .orderBy().asc("whenCreated")
                 .findList();
+    }
+
+    public String getTimeFormatted(String pattern) {
+        return Helper.getStringFromTimestamp(whenCreated, pattern);
     }
 
     public Long getId() {

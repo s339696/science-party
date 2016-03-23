@@ -68,7 +68,6 @@ public class AuthorConnect extends Controller {
     /**
      * Updates the data of a user in the database.
      *
-     * @param
      * @return
      */
     public Result handleUserUpdate() {
@@ -496,7 +495,6 @@ public class AuthorConnect extends Controller {
     /**
      * Retuns a list of all perks for all topics
      *
-     * @param
      * @return
      */
     public Result servePerkList() {
@@ -518,8 +516,6 @@ public class AuthorConnect extends Controller {
     /**
      * Retuns a list of all perks for a given topic id.
      *
-     * @param
-     * @return
      */
     public Result servePerkListByTopic(Long topicId) {
         User user;
@@ -546,7 +542,6 @@ public class AuthorConnect extends Controller {
     /**
      * Retuns a list of all games.
      *
-     * @param
      * @return
      */
     public Result serveGamesList() {
