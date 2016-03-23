@@ -1,5 +1,5 @@
 @import models.ebean.User
-@(user: User, chats: List[models.ebean.Chat])
+@(user: User, chats: List[models.ebean.Chat], feedback: String)
 
     @mainIntern("Nachrichten", user) {
         <br>
@@ -34,8 +34,11 @@
             </div>
         </div>
         <script>
-
-
+        @if(feedback != "") {
+            window.onload = function() {
+                window.alert("@feedback")
+            };
+        }
         </script>
 
     }

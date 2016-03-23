@@ -46,7 +46,7 @@ GET           /friends/accept/:id               controllers.Friends.responseFrie
 GET           /friends/decline/:id              controllers.Friends.responseFriendRequest(id: Long, action: Integer = 0)
 
 #Messages
-GET           /messages                         controllers.Messages.renderMessages()
+GET           /messages                         controllers.Messages.renderMessages(feedback: String = "")
 GET           /messages/new                     controllers.Messages.renderNewMessage()
 POST          /messages/new                     controllers.Messages.handleNewMessage()
 GET           /messages/leave/:chatId           controllers.Messages.handleLeaveChat(chatId: Long)

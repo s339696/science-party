@@ -27,15 +27,26 @@ public class Messages extends Controller {
      *
      * @return
      */
-    public Result renderMessages() {
+    public Result renderMessages(String feedback) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
+        // Remove chat of users are no friends at the moment.
+        List<Chat> chatsWithFriends = new ArrayList<Chat>();
         List<Chat> chats = user.getChats();
+        for (Chat chat : chats) {
+            System.out.println("Chat " + chat.getId());
+            List<User> chatMembers = chat.getUsers();
+            chatMembers.remove(user);
+            List<User> friends = user.getFriends();
+            if (friends.containsAll(chatMembers)) {
+                chatsWithFriends.add(chat);
+            }
+        }
 
-        return ok(views.html.messages.messages.render(user, chats));
+        return ok(views.html.messages.messages.render(user, chatsWithFriends, feedback));
     }
 
     /**
@@ -52,7 +63,7 @@ public class Messages extends Controller {
         List<User> users = User.find.all();
         users.remove(user);
 
-        return ok(views.html.messages.newMessage.render(user, users));
+        return ok(views.html.messages.newMessage.render(user));
     }
 
     /**
@@ -163,7 +174,17 @@ public class Messages extends Controller {
 
         Chat chat = Chat.find.byId(chatId);
         if (chat == null) {
-            return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
+            return renderMessages("Es gibt kein Gespräch mit der Id #" + chatId + ".");
+        }
+
+        if (!chat.getUsers().contains(user)) {
+            return renderMessages("Du bist kein Teilnehmer an diesem Gespräch.");
+        }
+
+        List<User> chatMembers = chat.getUsers();
+        chatMembers.remove(user);
+        if(!user.getFriends().containsAll(chatMembers)) {
+            return renderMessages("Du bist mit dem Gesprächsteilnehmer nicht befreundet.");
         }
 
         List<Message> messages = Message.getMessagesOfChat(chat);
