@@ -63,8 +63,8 @@
       <file leaf-file-name="QuizController.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/controller/QuizController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.438326">
-              <caret line="231" column="9" selection-start-line="231" selection-start-column="9" selection-end-line="231" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.48678413">
+              <caret line="390" column="41" selection-start-line="390" selection-start-column="41" selection-end-line="390" selection-end-column="41" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -1389,8 +1389,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/controller/QuizController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.438326">
-          <caret line="231" column="9" selection-start-line="231" selection-start-column="9" selection-end-line="231" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.48678413">
+          <caret line="390" column="41" selection-start-line="390" selection-start-column="41" selection-end-line="390" selection-end-column="41" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

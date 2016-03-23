@@ -13,8 +13,6 @@ import model.manager.TopicManager;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import static controller.TopicButtonPressed.*;
@@ -87,6 +85,12 @@ public class QuizController implements Initializable {
     @FXML
     Button cancelButton;
 
+    @FXML
+    Button saveQuestionButton;
+
+    @FXML
+    Button cancelNewQuestionButton;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -103,18 +107,7 @@ public class QuizController implements Initializable {
 
 
     public void showTopics(){
-        questionBox.setDisable(true);
-        answerA.setDisable(true);
-        answerB.setDisable(true);
-        answerC.setDisable(true);
-        answerD.setDisable(true);
-        difficultyField.setDisable(true);
-        radioA.setDisable(true);
-        radioB.setDisable(true);
-        radioC.setDisable(true);
-        radioD.setDisable(true);
-
-
+        disableQuestionView();
 
         try {
             TopicManager.refreshTopicList();
@@ -125,9 +118,39 @@ public class QuizController implements Initializable {
         topicsListView.setItems(TopicManager.topicList);
     }
 
+    /**
+     * Sets the elements in the question editor to disabled und cleared
+     */
+    public void disableQuestionView(){
+        questionBox.setDisable(true);
+        answerA.setDisable(true);
+        answerB.setDisable(true);
+        answerC.setDisable(true);
+        answerD.setDisable(true);
+        difficultyField.setDisable(true);
+        radioA.setDisable(true);
+        radioB.setDisable(true);
+        radioC.setDisable(true);
+        radioD.setDisable(true);
+        deleteQuestionButton.setDisable(true);
+        saveQuestionButton.setDisable(true);
+    }
+
+    public void resetQuestionView(){
+        questionBox.clear();
+        answerA.clear();
+        answerB.clear();
+        answerC.clear();
+        answerD.clear();
+        difficultyField.clear();
+    }
+
+
 
     @FXML
     public void handleTopicsInSelect() throws IOException {
+        disableQuestionView();
+        resetQuestionView();
       int id = topicsListView.getSelectionModel().getSelectedItem().getId();
 
         QuestionManager.refreshQuestionListPerTopic(id);
@@ -141,6 +164,8 @@ public class QuizController implements Initializable {
     public void handleQuestionsInSelect() throws IOException {
         questionBox.setDisable(false);
         difficultyField.setDisable(false);
+        deleteQuestionButton.setDisable(false);
+        saveQuestionButton.setDisable(false);
 
         int qid = questionsListView.getSelectionModel().getSelectedItem().getId();
 
@@ -266,21 +291,48 @@ public class QuizController implements Initializable {
     @FXML
     public void createNewQuestion() throws IOException {
 
-        if(!addQuestionField.isVisible()) {
-            addQuestionField.setVisible(true);
-            addQuestionButton.textProperty().set("Hinzufügen");
+        if(topicsListView.getSelectionModel().getSelectedItem()==null){
+            Main.showPopup("Es muss zuerst ein Thema ausgewählt werden");
         } else {
-            Question q = new Question();
-            q.setText(addQuestionField.textProperty().get());
-            q.setTopicId(topicsListView.getSelectionModel().getSelectedItem().getId());
-            QuestionManager.insertQuestion(q);
-            QuestionManager.refreshQuestionListPerTopic(q.getTopicId());
-            questionsListView.setItems(QuestionManager.questionList);
+            disableQuestionView();
 
-            addQuestionField.textProperty().set("");
-            addQuestionField.setVisible(false);
-            addQuestionButton.textProperty().set("+Neue Frage");
+            if(!addQuestionField.isVisible()) {
+                addQuestionField.setVisible(true);
+                cancelNewQuestionButton.setVisible(true);
+                addQuestionButton.textProperty().set("Hinzufügen");
+            } else {
+                Question q = new Question();
+                q.setText(addQuestionField.textProperty().get());
+                q.setTopicId(topicsListView.getSelectionModel().getSelectedItem().getId());
+                QuestionManager.insertQuestion(q);
+                QuestionManager.refreshQuestionListPerTopic(q.getTopicId());
+                questionsListView.setItems(QuestionManager.questionList);
+
+                addQuestionField.textProperty().set("");
+                addQuestionField.setVisible(false);
+                cancelNewQuestionButton.setVisible(false);
+                addQuestionButton.textProperty().set("+Neue Frage");
         }
+
+        }
+    }
+
+    @FXML
+    public void cancelNewQuestion(){
+        addQuestionButton.textProperty().set("+Neue Frage");
+        addQuestionField.setVisible(false);
+        cancelNewQuestionButton.setVisible(false);
+
+        questionBox.setDisable(false);
+        difficultyField.setDisable(false);
+        answerA.setDisable(false);
+        answerB.setDisable(false);
+        answerC.setDisable(false);
+        answerD.setDisable(false);
+        radioA.setDisable(false);
+        radioB.setDisable(false);
+        radioC.setDisable(false);
+        radioD.setDisable(false);
     }
 
     @FXML
@@ -335,6 +387,8 @@ public class QuizController implements Initializable {
         handleAnswerB();
         handleAnswerC();
         handleAnswerD();
+
+        Main.showPopup("Speichern beendet");
     }
 
     public void handleAnswerA() throws IOException {
