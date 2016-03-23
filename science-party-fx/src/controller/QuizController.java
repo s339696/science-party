@@ -3,6 +3,7 @@ package controller;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import main.Main;
 import model.models.Answer;
 import model.models.Question;
 import model.models.Topic;
@@ -82,6 +83,9 @@ public class QuizController implements Initializable {
 
     @FXML
     Button deleteQuestionButton;
+
+    @FXML
+    Button cancelButton;
 
 
     @Override
@@ -196,6 +200,7 @@ public class QuizController implements Initializable {
 
     public void openTopicEditorMode(TopicButtonPressed tbp, String text){
         TopicTextField.setVisible(true);
+        cancelButton.setVisible(true);
         actionButton.setVisible(true);
         actionButton.textProperty().set(text);
         bttn = tbp;
@@ -206,6 +211,7 @@ public class QuizController implements Initializable {
         topicsListView.setItems(TopicManager.topicList);
         TopicTextField.textProperty().set("");
         TopicTextField.setVisible(false);
+        cancelButton.setVisible(false);
         actionButton.setVisible(false);
         bttn=DEFAULT;
     }
@@ -218,8 +224,12 @@ public class QuizController implements Initializable {
     @FXML
     public void editTopic(){
         Topic t = topicsListView.getSelectionModel().getSelectedItem();
-        TopicTextField.textProperty().set(t.getName());
-        openTopicEditorMode(EDIT, "Bearbeiten");
+        if(t==null){
+            Main.showPopup("Zum Bearbeiten muss zunächst ein Eintrag ausgewält werden");
+        } else {
+            TopicTextField.textProperty().set(t.getName());
+            openTopicEditorMode(EDIT, "Bearbeiten");
+        }
     }
 
     @FXML
