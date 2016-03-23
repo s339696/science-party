@@ -16,7 +16,7 @@ public class Perk {
     @JsonProperty("qrCode")
     String qrCode;
 
-    @JsonProperty("name")
+    @JsonProperty("perkName")
     String perkName;
 
     @JsonProperty("topicName")

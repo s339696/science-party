@@ -49,9 +49,9 @@ public class PerkManager {
 
     public static void refreshPerkList() throws IOException {
         ObservableList<Perk> list = FXCollections.observableArrayList();
-        String allTopicsJson = TopicManager.getAllTopicsJson();
+        String allPerksJson = PerkManager.getAllPerksJson();
         ObjectMapper mapper = new ObjectMapper();
-        List<Perk> perkList = mapper.readValue(allTopicsJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Perk.class));
+        List<Perk> perkList = mapper.readValue(allPerksJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Perk.class));
 
         for(Perk perk : perkList){
             list.add(perk);

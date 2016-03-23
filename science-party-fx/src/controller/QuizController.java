@@ -132,8 +132,6 @@ public class QuizController implements Initializable {
 
     }
 
-    List<Integer> idList = new ArrayList<>();
-
 
     @FXML
     public void handleQuestionsInSelect() throws IOException {
@@ -285,7 +283,7 @@ public class QuizController implements Initializable {
 
     @FXML
     public void activateRadioButtonA(){
-        if(!answerA.textProperty().get().equals(null)){
+        if(answerA.getText().length()!=0){
             radioA.setDisable(false);
         } else{
             radioA.setDisable(true);
@@ -293,7 +291,7 @@ public class QuizController implements Initializable {
     }
     @FXML
     public void activateRadioButtonB(){
-        if(!answerB.textProperty().get().equals(null)){
+        if(answerB.getText().length()!=0){
             radioB.setDisable(false);
         }else{
             radioB.setDisable(true);
@@ -301,7 +299,7 @@ public class QuizController implements Initializable {
     }
     @FXML
     public void activateRadioButtonC(){
-        if(!answerC.textProperty().get().equals(null)){
+        if(answerC.getText().length()!=0){
             radioC.setDisable(false);
         }else{
             radioC.setDisable(true);
@@ -309,13 +307,12 @@ public class QuizController implements Initializable {
     }
     @FXML
     public void activateRadioButtonD(){
-        if(!answerD.textProperty().get().equals(null)){
+        if(answerD.getText().length()!=0){
             radioD.setDisable(false);
         }else if(answerD.textProperty().get().equals(null) || answerD.textProperty().get().equals("")){
             radioD.setDisable(true);
         }
     }
-
 
     @FXML
     public void saveQuestion() throws IOException {
