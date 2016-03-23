@@ -1,5 +1,5 @@
 @import models.ebean.User
-@(user: User, users: List[User])
+@(user: User)
 
 @mainIntern("Neue Nachricht", user) {
     <br>
@@ -9,16 +9,21 @@
 
     <div class="tabele">
         <div class="container">
+            @if(!user.getFriends.isEmpty){
             <form id="newMessage">
                 <select id="toIds" class="message">
-                    @for( user <- users) {
-                    <option value="@user.getId">@user.toString</option>
+
+                    @for(friend <- user.getFriends) {
+                    <option value="@friend.getId">@friend.toString</option>
                     }
                 </select>
                 <br>
                 <textarea id="message" rows="10" cols="70"></textarea>
                 <input class="newMessage" name="Senden" type="submit">
             </form>
+            } else {
+                <p>Du hast leider noch keine Freunde, welchen du eine Nachricht senden kannst.</p>
+            }
         </div>
     </div>
     <script>
