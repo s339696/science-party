@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.database.DatabaseConnect;
-import model.User;
+import model.models.User;
 
 
 import java.io.BufferedReader;

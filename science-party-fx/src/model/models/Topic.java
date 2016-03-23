@@ -1,4 +1,4 @@
-package model;
+package model.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -6,17 +6,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by Richard on 22.02.2016.
+ *
+ * Blueprint for mapping JsonStrings to an Topic-Object.
  */
 public class Topic {
+
+    public Topic(){
+
+    }
+
     @JsonProperty("id")
     int id;
 
     @JsonProperty("name")
     String name;
-
-    public Topic(){
-
-    }
 
     public int getId() {
         return id;
@@ -35,7 +38,6 @@ public class Topic {
     }
 
     public Topic(int id, String name) {
-
         this.id = id;
         this.name = name;
     }

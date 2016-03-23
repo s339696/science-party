@@ -1,10 +1,12 @@
-package model;
+package model.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 /**
  * Created by Richard on 22.02.2016.
+ *
+ * Blueprint for mapping JsonStrings to an User-Object.
  */
 public class User {
     public User(){
@@ -126,10 +128,5 @@ public class User {
     @Override
     public String toString() {
         return firstname + " " + lastname;
-    }
-
-    public static void main(String[] args){
-
-
     }
 }

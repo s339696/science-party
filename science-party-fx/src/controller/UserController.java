@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import model.User;
+import model.models.User;
 import model.manager.UserManager;
 
 import java.io.IOException;
