@@ -143,21 +143,22 @@ public class Messages extends Controller {
      * @return
      */
     public Result handleLeaveChat(Long chatId) {
-        User user = LoginManager.getLoggedInUser();
+/*        User user = LoginManager.getLoggedInUser();
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         // Get chat
         Chat chat = Chat.find.byId(chatId);
         if (chat == null) {
-            return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
+            return renderMessages("Es gibt kein Gespräch mit der Id #" + chatId + ".");
         }
 
         chat.getUsers().remove(user);
         chat.update();
 
-        return ok("Das Gespräch wurde verlassen.");
+        return renderMessages("Das Gespräch wurde verlassen.");*/
+        return badRequest("Das ist keine erlaubte Aktion.");
     }
 
     /**
@@ -181,6 +182,7 @@ public class Messages extends Controller {
             return renderMessages("Du bist kein Teilnehmer an diesem Gespräch.");
         }
 
+        // Prüfen ob man mit dem Gesprächsteilnehmer befreundet ist.
         List<User> chatMembers = chat.getUsers();
         chatMembers.remove(user);
         if(!user.getFriends().containsAll(chatMembers)) {
@@ -189,6 +191,7 @@ public class Messages extends Controller {
 
         List<Message> messages = Message.getMessagesOfChat(chat);
 
+        // Abfrage der Nachrichten
         Ebean.beginTransaction();
         try {
             for (Message message : messages) {
