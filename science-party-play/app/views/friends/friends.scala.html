@@ -15,8 +15,10 @@
         <br>
         <div class="tabele">
             <h2>Suche neue Freunde</h2>
-            <input type="text" size="30" onkeyup="showResult(this.value)">
-            <div id="livesearch"></div>
+            <div class="list">
+                <input type="text" size="30" onkeyup="showResult(this.value)">
+                <div id="livesearch"></div>
+            </div>
             @if(friendRequests.nonEmpty) {
                 <h2>Offene Freundschaftsanfragen</h2>
                 <div class="list">
