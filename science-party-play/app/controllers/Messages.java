@@ -119,9 +119,8 @@ public class Messages extends Controller {
             return renderMessages("Du bist mit dem Gesprächsteilnehmer nicht befreundet.");
         }
 
-        List<Message> messages = Message.getMessagesOfChat(chat);
-
         // Abfrage der Nachrichten
+        List<Message> messages = Message.getMessagesOfChat(chat);
         Ebean.beginTransaction();
         try {
             for (Message message : messages) {
@@ -295,7 +294,7 @@ public class Messages extends Controller {
             return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
         }
 
-        return ok("chat.getUnreadMessagesCountFor(user)");
+        return ok(String.valueOf(chat.getUnreadMessagesCountFor(user)));
     }
 
 }
