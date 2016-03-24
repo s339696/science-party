@@ -53,6 +53,8 @@ GET           /messages/leave/:chatId           controllers.Messages.handleLeave
 GET           /messages/show/:chatId            controllers.Messages.renderShowChat(chatId: Long)
 POST          /messages/send/:chatId            controllers.Messages.handleSendMessage(chatId: Long)
 GET           /messages/new/count               controllers.Messages.handleNewMessageCount()
+GET           /messages/new/count/:chatId       controllers.Messages.handleNewMessageCountPerChat(chatId: Long)
+GET           /messages/get/dialog              controllers.Messages.renderChatDialog(chatId: Long, messages: Integer)
 
 # Ranking
 GET           /ranking                          controllers.Ranking.renderRanking()

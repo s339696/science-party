@@ -1,0 +1,18 @@
+@import models.ebean.User
+@(user: User, messages: List[models.ebean.Message])
+
+@for(message <- messages) {
+    @if(message.getUser.getId == user.getId) {
+        <p class="sentMessage">
+            @message.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'") <br> <br>
+            <b>@message.getText</b> <br>
+        </p>
+        <br>
+    } else {
+        <p class="receivedMessage">
+            @message.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'") <br> <br>
+            <b>@message.getText</b> <br>
+        </p>
+        <br>
+    }
+}
