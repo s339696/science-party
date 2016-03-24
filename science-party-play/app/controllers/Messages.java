@@ -37,7 +37,6 @@ public class Messages extends Controller {
         List<Chat> chatsWithFriends = new ArrayList<Chat>();
         List<Chat> chats = user.getChats();
         for (Chat chat : chats) {
-            System.out.println("Chat " + chat.getId());
             List<User> chatMembers = chat.getUsers();
             chatMembers.remove(user);
             List<User> friends = user.getFriends();
@@ -190,9 +189,7 @@ public class Messages extends Controller {
                     List<User> chatMembers = chat.getUsers();
                     if(chatMembers.containsAll(members)) {
                         chatMembers.removeAll(members);
-                        System.out.println(chatMembers.size());
                         if (chatMembers.size() <= 1) {
-                            System.out.println("Es gibt schon einen Chat mit dne Teilnehmern, sende Nachricht an diesen.");
                             chat.sendMessage(user, form.getMessage());
                             return ok(chat.getId().toString());
                         }

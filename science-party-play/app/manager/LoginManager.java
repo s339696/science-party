@@ -2,14 +2,10 @@ package manager;
 
 import exception.LoginException;
 import models.ebean.User;
-import play.Logger;
 import util.Helper;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static play.mvc.Controller.session;
 
@@ -26,7 +22,6 @@ public class LoginManager {
      */
     public static User login(String email, String password) throws LoginException {
         password = Helper.getMD5fromString(password);
-        Logger.info(password);
         User user = User.find.where().ilike("email",email).findUnique();
         if (user != null) {
             if (user.getPassword().equals(password)) {

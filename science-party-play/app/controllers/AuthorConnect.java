@@ -524,7 +524,6 @@ public class AuthorConnect extends Controller {
         } catch (AuthenticationException e) {
             return badRequest(e.getMessage());
         }
-        System.out.println(topicId);
         List<PerkPerTopic> perkList = PerkPerTopic.find.where()
                 .ieq("topic_id", topicId.toString())
                 .findList();
