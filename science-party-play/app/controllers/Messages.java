@@ -105,18 +105,18 @@ public class Messages extends Controller {
 
         Chat chat = Chat.find.byId(chatId);
         if (chat == null) {
-            return renderMessages("Es gibt kein Gespräch mit der Id #" + chatId + ".");
+            return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
         }
 
         if (!chat.getUsers().contains(user)) {
-            return renderMessages("Du bist kein Teilnehmer an diesem Gespräch.");
+            return badRequest("Du bist kein Teilnehmer an diesem Gespräch.");
         }
 
         // Prüfen ob man mit dem Gesprächsteilnehmer befreundet ist.
         List<User> chatMembers = chat.getUsers();
         chatMembers.remove(user);
         if(!user.getFriends().containsAll(chatMembers)) {
-            return renderMessages("Du bist mit dem Gesprächsteilnehmer nicht befreundet.");
+            return badRequest("Du bist mit dem Gesprächsteilnehmer nicht befreundet.");
         }
 
         // Abfrage der Nachrichten
@@ -190,7 +190,9 @@ public class Messages extends Controller {
                     List<User> chatMembers = chat.getUsers();
                     if(chatMembers.containsAll(members)) {
                         chatMembers.removeAll(members);
+                        System.out.println(chatMembers.size());
                         if (chatMembers.size() <= 1) {
+                            System.out.println("Es gibt schon einen Chat mit dne Teilnehmern, sende Nachricht an diesen.");
                             chat.sendMessage(user, form.getMessage());
                             return ok(chat.getId().toString());
                         }

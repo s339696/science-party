@@ -149,6 +149,7 @@ public class Chat extends Model {
         message.insert();
 
         // Update last message
+        this.refresh();
         this.setLastMessage(Timestamp.valueOf(LocalDateTime.now()));
         this.update();
     }

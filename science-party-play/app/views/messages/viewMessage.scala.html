@@ -1,7 +1,7 @@
 @import models.ebean.User
 @(user: User, chat: models.ebean.Chat)
 
-@mainIntern("Nachrichten", user) {
+@mainIntern("Chat mit " + chat.getChatMembersExceptOf(user), user) {
     <br>
     <br>
     <br>
