@@ -17,10 +17,22 @@ import java.util.List;
 
 /**
  * Created by Richard on 13.03.2016.
+ *
+ * Contains the data requests to the play server und the mapping to answer objects.
  */
 public class AnswerManager {
+    /**
+     * List for managing all answer objects.
+     */
     public static ObservableList<Answer> answerList = FXCollections.observableArrayList();
 
+    /**
+     * Request for all answers.
+     *
+     * @param qid               the id of the question to which the answers belong
+     * @return                  all answers as JSON string
+     * @throws IOException      if an error occurs while communicating with the play server
+     */
     public static String getAllAnswersJson(int qid) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -47,6 +59,11 @@ public class AnswerManager {
         return jsonString;
     }
 
+    /**
+     *
+     * @param qid
+     * @throws IOException
+     */
     public static void refreshAnswerListPerQuestion(int qid) throws IOException {
         ObservableList<Answer> list = FXCollections.observableArrayList();
         String allAnswersJson = AnswerManager.getAllAnswersJson(qid);

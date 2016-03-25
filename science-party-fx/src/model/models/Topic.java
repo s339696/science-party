@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by Richard on 22.02.2016.
  *
- * Blueprint for mapping JsonStrings to an Topic-Object.
+ * Blueprint for mapping JsonStrings to a Topic-Object.
  */
 public class Topic {
 

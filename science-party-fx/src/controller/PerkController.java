@@ -16,7 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.print.Printer;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import model.database.DatabaseConnect;
@@ -45,6 +45,9 @@ public class PerkController implements Initializable {
     @FXML
     private ListView<Perk> perkListView;
 
+    @FXML
+    private javafx.scene.control.Label topicLabel;
+
     ObservableMap<Integer, Image> qrMap = FXCollections.observableHashMap();
 
     @Override
@@ -65,10 +68,12 @@ public class PerkController implements Initializable {
 
         perkListView.setItems(PerkManager.perkList);
 
+
     }
 
     public void handlePerksInSelect(){
         qrImageView.setImage(qrMap.get(perkListView.getSelectionModel().getSelectedItem().getId()));
+        topicLabel.setText("Thema: " + perkListView.getSelectionModel().getSelectedItem().getTopicName());
     }
 
 
@@ -126,6 +131,7 @@ public class PerkController implements Initializable {
                 PerkManager.perkList) {
             System.out.println("name: " + p.getPerkName());
             System.out.println("qr:   " + p.getQrCode());
+
         }
 
 

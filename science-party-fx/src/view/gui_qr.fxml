@@ -33,6 +33,7 @@
                   <Font size="15.0" />
                </font>
             </Button>
+            <Label fx:id="topicLabel" layoutX="96.0" layoutY="454.0" text="Thema:" />
          </children></AnchorPane>
   </items>
 </SplitPane>

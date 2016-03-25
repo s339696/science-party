@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * Created by Richard on 22.02.2016.
  *
- * Blueprint for mapping JsonStrings to an Question-Object.
+ * Blueprint for mapping JsonStrings to a Question-Object.
  */
 public class Question {
 
