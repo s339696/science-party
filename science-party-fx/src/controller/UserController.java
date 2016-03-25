@@ -1,5 +1,9 @@
 package controller;
 
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -49,6 +53,9 @@ public class UserController implements Initializable{
     @FXML
     private CheckBox authorCheckBox;
 
+    @FXML
+    private Button cancelSearchButton;
+
 
    @FXML
    public void handleUpdate(){
@@ -69,6 +76,11 @@ public class UserController implements Initializable{
 
         try {
             showList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            handleSearch();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -136,6 +148,43 @@ public class UserController implements Initializable{
             UserManager.makeAuthor(id, false);
             System.out.println("Nutzer ist kein Autor");
         }
+    }
+
+    public void handleSearch() throws IOException {
+        FilteredList<User> filteredData = new FilteredList<>(UserManager.userList, p -> true);
+
+        search.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(user -> {
+                if(newValue == null || newValue.isEmpty()){
+                    return true;
+                }
+
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if(user.toString().replaceAll("\\s+","").toLowerCase().contains(lowerCaseFilter)){
+                    return true;
+                }
+                return false;
+
+            });
+        });
+
+        SortedList<User> sortedData = new SortedList<User>(filteredData);
+
+        lv.setItems(sortedData);
+    }
+
+   public void handleInput(){
+       if (search.getText()==null||search.getText().isEmpty()){
+           cancelSearchButton.setVisible(false);
+       } else {
+           cancelSearchButton.setVisible(true);
+       }
+   }
+
+    public void cancelSearch(){
+        cancelSearchButton.setVisible(false);
+        search.setText("");
     }
 
 
