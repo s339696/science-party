@@ -28,7 +28,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button layoutX="427.0" layoutY="462.0" mnemonicParsing="false" text="Print">
+            <Button layoutX="427.0" layoutY="462.0" mnemonicParsing="false" onAction="#printQr" text="Print">
                <font>
                   <Font size="15.0" />
                </font>

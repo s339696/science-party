@@ -15,6 +15,7 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
+import javafx.print.Printer;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,7 +24,12 @@ import model.manager.PerkManager;
 import model.models.Perk;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.print.PageFormat;
+import java.awt.print.Printable;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -83,6 +89,33 @@ public class PerkController implements Initializable {
 
         return image;
     }
+
+    public void printQr(){
+        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(qrImageView.getImage(), null);
+
+        PrinterJob printerJob = PrinterJob.getPrinterJob();
+        printerJob.setPrintable(new Printable() {
+            @Override
+            public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException {
+                // Get the upper left corner that it printable
+                int x = (int) Math.ceil(pageFormat.getImageableX());
+                int y = (int) Math.ceil(pageFormat.getImageableY());
+                if (pageIndex != 0) {
+                    return NO_SUCH_PAGE;
+                }
+                graphics.drawImage(bufferedImage, x, y, bufferedImage.getWidth(), bufferedImage.getHeight(), null);
+                return PAGE_EXISTS;
+            }
+        });
+        try {
+            printerJob.print();
+        } catch (PrinterException e1) {
+            e1.printStackTrace();
+        }
+    }
+    
+
+
 
     public static void main(String[] args) throws IOException {
         DatabaseConnect.setRecentUser("bastian95@live.de", "araluen");
