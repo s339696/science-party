@@ -2,6 +2,7 @@ package controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import main.Main;
 import model.models.Answer;
@@ -119,7 +120,7 @@ public class QuizController implements Initializable {
     }
 
     /**
-     * Sets the elements in the question editor to disabled und cleared
+     * Sets the elements in the question editor to disabled
      */
     public void disableQuestionView(){
         questionBox.setDisable(true);
@@ -156,7 +157,6 @@ public class QuizController implements Initializable {
         QuestionManager.refreshQuestionListPerTopic(id);
 
         questionsListView.setItems(QuestionManager.questionList);
-
     }
 
 
@@ -378,17 +378,23 @@ public class QuizController implements Initializable {
 
     @FXML
     public void saveQuestion() throws IOException {
-        Question question = questionsListView.getSelectionModel().getSelectedItem();
-        question.setDifficulty(Integer.parseInt(difficultyField.textProperty().get()));
-        question.setText(questionBox.textProperty().get());
-        QuestionManager.updateQuestion(question);
 
-        handleAnswerA();
-        handleAnswerB();
-        handleAnswerC();
-        handleAnswerD();
+        if (radioA.isSelected() || radioB.isSelected() || radioC.isSelected() || radioD.isSelected()){
+            Question question = questionsListView.getSelectionModel().getSelectedItem();
+            question.setDifficulty(Integer.parseInt(difficultyField.textProperty().get()));
+            question.setText(questionBox.textProperty().get());
+            QuestionManager.updateQuestion(question);
 
-        Main.showPopup("Speichern beendet");
+            handleAnswerA();
+            handleAnswerB();
+            handleAnswerC();
+            handleAnswerD();
+
+            Main.showPopup("Speichern beendet");
+        } else {
+            Main.showPopup("Es ist keine richtige Antwort vorhanden!");
+        }
+
     }
 
     public void handleAnswerA() throws IOException {
