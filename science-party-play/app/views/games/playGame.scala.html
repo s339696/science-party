@@ -9,10 +9,10 @@
     <div class="Spielinformationen">
         <h2>Science Party</h2>
         <p>
-            Name: @game.getName<br>
-            Thema: @game.getTopic.getName()<br>
-            Spielbeginn: @game.getWhenCreated()<br>
-            Aktiver Spieler: @game.getActivePlayer<br>
+            <b> Name: </b> @game.getName
+            <b> Thema: </b>  @game.getTopic.getName()
+                <b> Spielbeginn: </b>  @game.getWhenCreated()
+                    <b> Aktiver Spieler: </b>  @game.getActivePlayer
         </p>
     </div>
 
@@ -20,6 +20,11 @@
         <h3>Mitspieler</h3>
         @for(player <- game.getPlayingPlayer) {
             <p>
+                <div id="myProgress">
+                    <div id="myBar">
+                        <div id="label">@player</div>
+                </div>
+                </div>
                 Id: @player.getId <br>
                 Name: @player <br>
                 Position: @player.getFieldPosition
@@ -113,6 +118,21 @@
         window.history.pushState("","","/games/play/@game.getId");
     };
     }
+
+    function move() {
+    var elem = document.getElementById("myBar");
+    var width = 1;
+    var id = setInterval(frame, 10);
+    function frame() {
+        if (width >= 40) {
+           // endgame;
+        } else {
+            player.getFieldPosition + ;
+        }
+    }
+}
+
+    game.getActivePLayer = function(){alert(
     </script>
 
 }

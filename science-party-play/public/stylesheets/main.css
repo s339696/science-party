@@ -476,3 +476,22 @@ table, th, td {
 th, td {
     padding: 0px 25px;
 }
+
+#myProgress {
+  position: relative;
+  width: 40;
+  height: 30px;
+  background-color: #ddd;
+}
+
+#myBar {
+  position: absolute;
+  width: 1;
+  height: 100%;
+  background-color: #4CAF50 ;
+}
+#label {
+    text-align: center;
+    line-height: 30px;
+    color: black;
+}
