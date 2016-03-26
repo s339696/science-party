@@ -1,5 +1,5 @@
 @import models.ebean.User
-@(user: User, chats: List[models.ebean.Chat])
+@(user: User, chats: List[models.ebean.Chat], feedback: String)
 
     @mainIntern("Nachrichten", user) {
         <br>
@@ -13,7 +13,9 @@
         </div>
         <br>
         <div class="tabele">
-            <a class="newMessage" href="/messages/new">Neue Nachricht</a>
+            <div class="list">
+                <a class="bigButton" href="/messages/new">Neue Nachricht</a>
+            </div>
             <div class="list">
                 <ul class="tabele">
                 @if(chats.isEmpty) {
@@ -26,7 +28,6 @@
                             } else {
                                 <a class="tabele" href="/messages/show/@chat.getId">@chat.getChatMembersExceptOf(user) (@chat.getUnreadMessagesCountFor(user))</a>
                             }
-                            <a class="tabeleDelete" href="/messages/leave/@chat.getId">Chat löschen</a>
                         </li>
                     }
                 }
@@ -34,8 +35,11 @@
             </div>
         </div>
         <script>
-
-
+        @if(feedback != "") {
+            window.onload = function() {
+                window.alert("@feedback")
+            };
+        }
         </script>
 
     }

@@ -6,7 +6,6 @@ import com.avaje.ebean.annotation.EnumValue;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.media.jfxmedia.events.PlayerStateEvent;
-import play.Logger;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

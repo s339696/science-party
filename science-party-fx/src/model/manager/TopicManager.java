@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Topic;
+import model.models.Topic;
 import model.database.DatabaseConnect;
 
 import java.io.BufferedReader;

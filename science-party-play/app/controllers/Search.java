@@ -56,8 +56,6 @@ public class Search extends Controller {
                 .setQuery(query)
                 .findList();
 
-        System.out.println(resultUsers.size());
-
         return resultUsers;
     }
 

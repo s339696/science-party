@@ -67,7 +67,6 @@ public class Friends extends Controller {
         if (friendship == null) {
             return renderFriends("Die beiden User sind keine Freunde.");
         }
-        System.out.println("Friendship vorhanden.");
         friendship.delete();
 
         return renderFriends("Eure Freundschaft wurde beendet.");

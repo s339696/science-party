@@ -1,11 +1,11 @@
-package model;
+package model.models;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import javafx.scene.control.Label;
 
 /**
  * Created by Richard on 22.02.2016.
+ *
+ * Blueprint for mapping JsonStrings to an Question-Object.
  */
 public class Question {
 

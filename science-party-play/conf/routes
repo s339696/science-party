@@ -46,13 +46,15 @@ GET           /friends/accept/:id               controllers.Friends.responseFrie
 GET           /friends/decline/:id              controllers.Friends.responseFriendRequest(id: Long, action: Integer = 0)
 
 #Messages
-GET           /messages                         controllers.Messages.renderMessages()
+GET           /messages                         controllers.Messages.renderMessages(feedback: String = "")
 GET           /messages/new                     controllers.Messages.renderNewMessage()
 POST          /messages/new                     controllers.Messages.handleNewMessage()
 GET           /messages/leave/:chatId           controllers.Messages.handleLeaveChat(chatId: Long)
 GET           /messages/show/:chatId            controllers.Messages.renderShowChat(chatId: Long)
 POST          /messages/send/:chatId            controllers.Messages.handleSendMessage(chatId: Long)
 GET           /messages/new/count               controllers.Messages.handleNewMessageCount()
+GET           /messages/new/count/:chatId       controllers.Messages.handleNewMessageCountPerChat(chatId: Long)
+GET           /messages/get/dialog              controllers.Messages.renderChatDialog(chatId: Long, messages: Integer)
 
 # Ranking
 GET           /ranking                          controllers.Ranking.renderRanking()

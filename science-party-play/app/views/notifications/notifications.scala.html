@@ -7,32 +7,29 @@
     <br>
     <br>
     <br>
-    <div>
-        <div class="tabeleHead">
-            <h1>
-                Benachrichtigungen
-            </h1>
-        </div>
-        <div class="tabele">
-            <ul class="tabele">
-                @if(unseenNoti.isEmpty && seenNoti.isEmpty) {
-                    <p>Es ist noch nichts passiert.</p>
-                } else {
-                    @for(noti <- unseenNoti) {
-                        <li class="tabele">
-                            <a class="noFunctionTabele"><b>NEU:</b> @noti.getPrivateText</a>
-                            <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
-                        </li>
-                    }
-                    @for(noti <- seenNoti) {
-                        <li class="tabele">
-                            <a class="noFunctionTabele">@noti.getPrivateText</a>
-                            <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
-                        </li>
-                    }
-                }
-            </ul>
-        </div>
+    <div class="tabeleHead">
+        <h1>
+            Benachrichtigungen
+        </h1>
     </div>
-
+    <div class="tabele">
+        <ul class="tabele">
+        @if(unseenNoti.isEmpty && seenNoti.isEmpty) {
+            <p>Es ist noch nichts passiert.</p>
+        } else {
+            @for(noti <- unseenNoti) {
+                <li class="tabele">
+                    <a class="noFunctionTabele"><b style="color: palegreen;">NEU:</b> @noti.getPrivateText</a>
+                    <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
+                </li>
+            }
+            @for(noti <- seenNoti) {
+                <li class="tabele">
+                    <a class="noFunctionTabele">@noti.getPrivateText</a>
+                    <a class="noFunctionTabeleFloatRight">@noti.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")</a>
+                </li>
+            }
+        }
+        </ul>
+    </div>
 }

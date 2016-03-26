@@ -1,11 +1,12 @@
 package model.manager;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import model.Perk;
 import model.database.DatabaseConnect;
+import model.models.Perk;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,9 +49,9 @@ public class PerkManager {
 
     public static void refreshPerkList() throws IOException {
         ObservableList<Perk> list = FXCollections.observableArrayList();
-        String allTopicsJson = TopicManager.getAllTopicsJson();
+        String allPerksJson = PerkManager.getAllPerksJson();
         ObjectMapper mapper = new ObjectMapper();
-        List<Perk> perkList = mapper.readValue(allTopicsJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Perk.class));
+        List<Perk> perkList = mapper.readValue(allPerksJson, TypeFactory.defaultInstance().constructCollectionType(List.class, Perk.class));
 
         for(Perk perk : perkList){
             list.add(perk);
@@ -64,6 +65,12 @@ public class PerkManager {
         DatabaseConnect.setServerAddress("http://localhost:9000");
 
         System.out.println(PerkManager.getAllPerksJson());
+        refreshPerkList();
 
+        for (Perk p :
+                perkList) {
+            System.out.println(p.getPerkName());
+            System.out.println(p.getId());
+        }
     }
 }
