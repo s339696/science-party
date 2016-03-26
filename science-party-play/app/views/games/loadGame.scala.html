@@ -20,7 +20,7 @@
                 } else {
                     @for(game <- games) {
                         <li class="tabele">
-                            <a class="noFunctionTabele">Spiel @game.getId() mit Thema: @game.getTopic.getName()</a>
+                            <a class="noFunctionTabele">@game.getName</a>
                             <a class="tabeleAdd" href="/games/play/@game.getId()">Laden</a>
                         </li>
                     }

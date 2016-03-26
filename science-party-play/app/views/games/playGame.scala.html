@@ -1,4 +1,7 @@
-@import models.ebean._
+@import models.ebean.User
+@import models.ebean.Player
+@import models.ebean.Game
+
 @(user: User, player: Player, game: Game, feedback: String)
 
 @mainIntern("Science Party", user) {
@@ -6,133 +9,139 @@
     <br>
     <br>
     <br>
-    <div class="Spielinformationen">
-        <h2>Science Party</h2>
-        <p>
-            <b> Name: </b> @game.getName
-            <b> Thema: </b>  @game.getTopic.getName()
-                <b> Spielbeginn: </b>  @game.getWhenCreated()
-                    <b> Aktiver Spieler: </b>  @game.getActivePlayer
-        </p>
-    </div>
 
-    <div class="Mitspieler">
-        <h3>Mitspieler</h3>
-        @for(player <- game.getPlayingPlayer) {
-            <p>
-                <div id="myProgress">
-                    <div id="myBar">
-                        <div id="label">@player</div>
-                </div>
-                </div>
-                Id: @player.getId <br>
-                Name: @player <br>
-                Position: @player.getFieldPosition
-            </p>
+    <div class="tabeleHead">
+        <h1>
+            Aktuelles Spiel: @game.getName
+        </h1>
+    </div>
+    <div class="tabele">
+        <h2>Spielinformationen:</h2>
+        <p>
+            <b> Thema: </b>  @game.getTopic.getName<br>
+            <b> Spielbeginn: </b>  @game.getWhenCreatedFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")<br>
+            <b> Gerade an der Reihe: </b>  @game.getActivePlayer<br>
+        </p>
+        <h2>Spielfortschritt:</h2>
+        @for((player, index) <- game.getPlayingPlayer.zipWithIndex) {
+            <div class="playerProgress">
+                <div id="@("p" + (index + 1) + "Bar")" class="playerBar" style="@("width:" + (player.getFieldPosition.toFloat / 40 * 100) + "%;")"></div>
+                <div class="playerLabel">@player (@(player.getFieldPosition) Punkte)</div>
+            </div>
         }
+        <br>
+        @if(game.getActivePlayer.getId == player.getId) {
+            <div class="formularHead">
+                <a href="javascript:openQuestion();" class="bigButton">Frage beantworten</a>
+            </div>
+        }
+        <br>
     </div>
 
     @if(game.getActivePlayer.getId == player.getId) {
-        <div class="Faehigkeiten">
-            <h3>Fähigkeiten für dieses Spiel</h3>
-            <ul>
-            @for(perk <- player.getPerksPerPlayer) {
-                <li>@perk.getPerkPerUser.getPerkPerTopic.getPerk.getName
-                    @if(!perk.isUsed) {
-                        <a href="/games/play/@game.getId/perk/@perk.getId">Fähigkeit einsetzen</a>
-                    }
-                </li>
-            }
-            </ul>
-        </div>
+        <div id="question" class="modal">
+            <div class="modal-content">
+                <span id="closeQuestion" class="close">×</span>
+                Hey @user.getFirstname, du bist an der Reihe! Bitte beantworte die nächste Frage.<br><br>
+                Frage @game.getActiveQuestion.getId(): @game.getActiveQuestion.getText()
+                <br><br>
+                <form id="answerForm">
+                    <ul>
+                    @for((answer, index) <- game.getActiveQuestion.getAnswers.zipWithIndex) {
+                        <input type="radio" id="a@index" name="answer" value="@answer.getId">
+                        <label for="a1">@(index + 1): @answer.getText()</label> <br>
+                        }
+                    </ul>
+                    <br>
+                    <button type="submit">Antworten</button>
+                </form>
+                @for(perk <- player.getPerksPerPlayer) {
+                    <p>Oder setze eine Fähigkeit ein.</p>
+                    <ul>
 
-
-        <div class="Frage">
-            <p> Frage @game.getActiveQuestion.getId(): @game.getActiveQuestion.getText() </p>
-
-            <form id="answerForm">
-                <ul>
-                    <fieldset>
-                        <legend>Antworten</legend>
-                        @for((answer, index) <- game.getActiveQuestion.getAnswers.zipWithIndex) {
-                            <input type="radio" id="a@index" name="answer" value="@answer.getId">
-                            <label for="a1">@(index + 1): @answer.getText()</label> <br>
+                        <li>@perk.getPerkPerUser.getPerkPerTopic.getPerk.getName
+                            @if(!perk.isUsed) {
+                                <a href="/games/play/@game.getId/perk/@perk.getId">Fähigkeit einsetzen</a>
                             }
-                    </fieldset>
-                </ul>
-                <button type="submit">Antworten</button>
-            </form>
+                        </li>
+                    </ul>
+                }
+            </div>
         </div>
     }
 
     <div class="formular">
         <a class="deleteButton" href="/games/leave/@game.getId">
-            Spiel verlassen!
+            Spiel beenden!
         </a>
     </div>
 
     <script>
-    // Set autorefresh
-    @if(game.getActivePlayer.getId != player.getId) {
-    window.onload=autoRefresh(5000);
-    }
+            // Onload functions
+            @if(game.getActivePlayer.getId == player.getId) {
+            window.onload = function () {
+                openQuestion();
+            };
+            }
 
-    // On submit, trasmit answer to server
-    $("#answerForm").on('submit', function (e) {
-        e.preventDefault();
+            // Auto refresh
+            @if(game.getActivePlayer.getId != player.getId) {
+            window.setInterval(function () {
+                location.reload(true);
+            }, 3000);
+            }
 
-        var answerId=$('input[name=answer]:checked').val();
+            // On submit, trasmit answer to server
+            $("#answerForm").on('submit', function (e) {
+                e.preventDefault();
 
-        if(answerId === "undefined") {
-            window.alert("Bitte wähle eine Antwort aus.");
-        } else {
-            $.ajax({
-                url: '/games/answer/@game.getId()',
-                method: 'POST',
-                contentType: "application/json",
-                dataType: "text",
-                data: JSON.stringify({
-                    answerId: answerId,
+                var answerId=$('input[name=answer]:checked').val();
 
-                }),
-                success: function(data,status,xhr) {
-                    alert(xhr.responseText);
-                    location.reload();
-                },
-                error: function(xhr,status,error) {
-                    alert(xhr.responseText);
+                if(answerId === "undefined") {
+                    window.alert("Bitte wähle eine Antwort aus.");
+                } else {
+                    $.ajax({
+                        url: '/games/answer/@game.getId()',
+                        method: 'POST',
+                        contentType: "application/json",
+                        dataType: "text",
+                        data: JSON.stringify({
+                            answerId: answerId,
+
+                        }),
+                        success: function(data,status,xhr) {
+                            alert(xhr.responseText);
+                            location.reload();
+                        },
+                        error: function(xhr,status,error) {
+                            alert(xhr.responseText);
+                        }
+                    });
                 }
             });
-        }
-    });
 
-    // Auto refresh
-    function autoRefresh(t) {
-        setTimeout("location.reload(true);", t);
-    }
+            // Feedback if something happend
+            @if(feedback != "") {
+            window.onload = function() {
+                window.alert("@feedback");
+                window.history.pushState("","","/games/play/@game.getId");
+            };
+            }
 
-    // Feedback if something happend
-    @if(feedback != "") {
-    window.onload = function() {
-        window.alert("@feedback");
-        window.history.pushState("","","/games/play/@game.getId");
-    };
-    }
+            // Open question dialog
+            function openQuestion() {
+                $("#question").css("display", "block");
+            }
 
-    function move() {
-    var elem = document.getElementById("myBar");
-    var width = 1;
-    var id = setInterval(frame, 10);
-    function frame() {
-        if (width >= 40) {
-           // endgame;
-        } else {
-            player.getFieldPosition + ;
-        }
-    }
-}
 
-    game.getActivePLayer = function(){alert(
+
+            // Close the question dialog
+            $("#closeQuestion").click(function(){
+                closeQuestion();
+            });
+
+            function closeQuestion() {
+                $("#question").css("display", "none");
+            }
     </script>
-
 }
