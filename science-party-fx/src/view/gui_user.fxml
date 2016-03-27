@@ -18,16 +18,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<SplitPane fx:id="UserSplitPane" dividerPositions="0.364" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
+<SplitPane fx:id="UserSplitPane" dividerPositions="0.364" minHeight="0" minWidth="0" prefHeight="603.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserController">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="601.0" prefWidth="339.0">
+    <AnchorPane minHeight="0.0" minWidth="100.0" prefHeight="601.0" prefWidth="339.0">
          <children>
             <ListView fx:id="lv" layoutY="52.0" onMouseClicked="#handleUserInSelect" prefHeight="549.0" prefWidth="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0" />
-            <TextField fx:id="search" layoutX="-1.0" layoutY="-1.0" onKeyReleased="#handleInput" prefHeight="52.0" prefWidth="346.0" promptText="Suche..." />
+            <TextField fx:id="search" layoutX="-1.0" layoutY="-1.0" onKeyReleased="#handleInput" prefHeight="52.0" prefWidth="346.0" promptText="Suche..." AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
             <Button fx:id="cancelSearchButton" layoutX="290.0" layoutY="-2.0" mnemonicParsing="false" onAction="#cancelSearch" prefHeight="52.0" prefWidth="52.0" text="abbr" visible="false" />
          </children>
       </AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+    <AnchorPane minHeight="0.0" minWidth="400.0" prefHeight="160.0" prefWidth="100.0">
          <children>
             <ImageView fx:id="imageUrl" fitHeight="200.0" fitWidth="272.0" layoutX="224.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
                <image>
