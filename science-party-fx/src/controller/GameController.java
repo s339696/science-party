@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
 import model.manager.GameManager;
 import model.models.Game;
 
@@ -30,6 +31,9 @@ public class GameController implements Initializable {
     @FXML
     CategoryAxis AxisX;
 
+    @FXML
+    Button reloadButton;
+
     ObservableList<String> dayNames = FXCollections.observableArrayList();
     Integer[][] dataArray = new Integer[7][1];
     @Override
@@ -40,7 +44,8 @@ public class GameController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        dayNames.addAll(Arrays.asList("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"));
+        AxisX.setCategories(dayNames);
         setBarChartData();
     }
 
@@ -51,8 +56,7 @@ public class GameController implements Initializable {
     }
 
     public void setBarChartData(){
-        dayNames.addAll(Arrays.asList("Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"));
-        AxisX.setCategories(dayNames);
+
 
         computeBarChartData();
 
@@ -99,6 +103,18 @@ public class GameController implements Initializable {
         }
     }
 
+    public void reloadStatistic(){
+        initializeDataArray();
+        try {
+            GameManager.refreshGameList();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        computeBarChartData();
+        System.out.println("neuladen fertisch");
+        BarChart.getData().set(0, addBarChartData());
+    }
 
 
 
