@@ -166,7 +166,7 @@ public class Profil extends Controller {
         try {
             user.addPerkFromQr(code);
         } catch (GetPerkException e) {
-            badRequest(e.getMessage());
+            return renderProfile(user.getId(), e.getMessage());
         }
         return renderProfile(user.getId(), "Die Fähigkeit wurde erfolgreich hinzugefügt und kann jetzt verwendet werden.");
     }
