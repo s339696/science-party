@@ -2,6 +2,7 @@ package models.ebean;
 
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import controllers.Games;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -28,6 +29,9 @@ public class Question extends Model {
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
     List<Answer> answers;
+
+    @OneToMany(mappedBy = "activeQuestion", cascade = CascadeType.ALL)
+    List<Game> activeInGame;
 
     public Long getId() {
         return id;

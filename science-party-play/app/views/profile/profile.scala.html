@@ -68,15 +68,19 @@
         </div>
         <div class="userPerks">
             <h3>Fähigkeiten</h3>
-            <ul>
             @if(user.getPerks.isEmpty) {
                 <p>Es wurden noch keine Fähigkeiten erlangt.</p>
             } else {
-                @for(perk <- user.getPerks) {
-                    <li>Fähigkeit "@perk.getPerkPerTopic.getPerk.getName" für @perk.getPerkPerTopic.getTopic.getName</li>
-                }
+                <div style="margin: 8px;">
+                    <ul class="tabele">
+                    @for(perk <- user.getPerks) {
+                        <li class="tabele">
+                            <a class="noFunctionTabele">Fähigkeit "@perk.getPerkPerTopic.getPerk.getName" für @perk.getPerkPerTopic.getTopic.getName</a>
+                        </li>
+                    }
+                    </ul>
+                </div>
             }
-            </ul>
 
             @if(ownProfile) {
                 <div class="formularHead">
@@ -103,6 +107,9 @@
     var numberOfPoints = @user.getPoints;
     var numberOfGames = @user.getNumberOfPlayedGames;
     var pointsPerGame = numberOfPoints/numberOfGames;
+    if (isNaN(pointsPerGame) || isFinite(pointsPerGame)) {
+        pointsPerGame = 0;
+    }
 
     document.getElementById("pointsPerGame").innerHTML = pointsPerGame;
 

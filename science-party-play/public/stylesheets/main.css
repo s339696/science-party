@@ -416,7 +416,7 @@ li.tabele a.tabele {
     display: inline-block;
     color: white;
     text-align: center;
-    padding: 20px 65px;
+    padding: 20px 10px;
     text-decoration: none;
 }
 
@@ -549,6 +549,7 @@ div.playerLabel {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1;
+    margin: auto;
     left: 0;
     top: 0;
     width: 100%; /* Full width */

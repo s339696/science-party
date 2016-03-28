@@ -5,7 +5,6 @@ import com.avaje.ebean.annotation.CreatedTimestamp;
 import com.avaje.ebean.annotation.EnumValue;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.media.jfxmedia.events.PlayerStateEvent;
 import util.Helper;
 
 import javax.persistence.*;
@@ -33,9 +32,7 @@ public class Game extends Model {
 
     private String name;
 
-    @ManyToOne
-    @Column(name="active_player")
-    private Player activePlayer;
+    private Long activePlayerId;
 
     @ManyToOne
     @Column(name="active_question")
@@ -107,13 +104,18 @@ public class Game extends Model {
     }
 
     @JsonIgnore
-    public Player getActivePlayer() {
-        return activePlayer;
+    public Long getActivePlayerId() {
+        return activePlayerId;
     }
 
     @JsonIgnore
-    public void setActivePlayer(Player activePlayer) {
-        this.activePlayer = activePlayer;
+    public void setActivePlayerId(Long activePlayerId) {
+        this.activePlayerId = activePlayerId;
+    }
+
+    @JsonIgnore
+    public Player getActivePlayer() {
+        return Player.find.byId(getActivePlayerId());
     }
 
     @JsonIgnore
@@ -158,7 +160,7 @@ public class Game extends Model {
             int activeIndex = 0;
             int nextIndex = 0;
             for (Player player: players) {
-                if (player.getId() == this.activePlayer.getId()) {
+                if (player.getId() == this.getActivePlayerId()) {
                     activeIndex = players.indexOf(player);
                 }
             }
@@ -170,7 +172,7 @@ public class Game extends Model {
             }
 
             this.setActiveQuestion(Question.getRandomQuestion(this.getTopic()));
-            this.setActivePlayer(players.get(nextIndex));
+            this.setActivePlayerId(players.get(nextIndex).getId());
             this.update();
         }
     }
