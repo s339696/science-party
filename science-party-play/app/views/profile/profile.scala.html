@@ -37,7 +37,7 @@
                 <b>E-Mail:</b> <input id="email" type="email" name="email" value="@(user.getEmail)" required>
             </p>
             <p id="setPassword" style="display: none ;">
-                <b>E-Mail:</b> <input id="password" type="password" name="password" placeholder="Passwort" required>
+                <b>Passwort:</b> <input id="password" type="password" name="password" placeholder="Passwort" required>
             </p>
             @if(ownProfile) {
                 <button id="updateProfil" >
@@ -85,7 +85,8 @@
             }
         </div>
         @if(ownProfile) {
-            <div class="formular">
+            <br>
+            <div class="formularHead">
                 <a class="deleteButton" href="/profile/delete">
                     Account löschen!
                 </a>

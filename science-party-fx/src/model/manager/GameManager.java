@@ -87,6 +87,8 @@ public class GameManager {
                 gameList) {
             System.out.println(game.getName());
             System.out.println(game.getWhenCreated());
+            System.out.println(game.getDay());
+
         }
 
     }

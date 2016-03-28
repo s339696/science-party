@@ -1,87 +1,95 @@
 @import models.ebean.User
-@(user: User, messages: List[models.ebean.Message], chat: models.ebean.Chat)
+@(user: User, chat: models.ebean.Chat)
 
-    @mainIntern("Nachrichten", user) {
+@mainIntern("Chat mit " + chat.getChatMembersExceptOf(user), user) {
     <br>
     <br>
     <br>
     <br>
-        <div class="tabeleHead">
-            <h1>
-                Nachrichten
-            </h1>
+    <div class="tabeleHead">
+        <h1>
+            Nachrichten
+        </h1>
+    </div>
+    <div class="tabele">
+        <br>
+        <h2>@chat.getChatMembersExceptOf(user)</h2>
+        <br>
+        <div id="messageField" class="messageField">
+            <img align="middle" src="@routes.Assets.versioned("images/loading.gif")">
         </div>
-        <div class="tabele">
-            <br>
-            <h2>@chat.getChatMembersExceptOf(user)</h2>
-            <br>
-            <div class="messageField">
-                @for(message <- messages) {
-                    @if(message.getUser.getId == user.getId) {
-                        <p class="sentMessage">
-                            @message.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")<br> <br>
-                            <b>@message.getText</b> <br>
-                        </p>
-                        <br>
-                    } else {
-                        <p class="receivedMessage">
-                            @message.getTimeFormatted("dd.MM.yyyy 'um' HH:mm 'Uhr'")<br> <br>
-                            <b>@message.getText</b> <br>
-                        </p>
-                        <br>
-                        }
-                }
-            </div>
-            <div class="container">
-                <form id="sendMessage">
-                    <textarea id="message" rows="10" cols="70"></textarea>
-                    <input name="Senden" type="submit">
-                </form>
-            </div>
+        <div class="container">
+            <form id="sendMessage">
+                <textarea id="message" rows="4" cols="70"></textarea>
+                <input name="Senden" type="submit">
+            </form>
         </div>
-        <script>
-                $(function() {
-                    $("#message").focus();
-                });
+    </div>
+    <script>
+            window.onload = function () {
+                $("#message").focus();
+                updateDialog(20);
+            };
 
-                $("#message").keydown(function(e){
-                    if (e.keyCode == 13 && !e.shiftKey)
-                    {
-                        sendMsg($("#message").val());
-                        e.preventDefault();
-                    }
-                });
+            // Auto refresh
+            window.setInterval(function () {
+                checkforUpdate();
+            }, 1000);
 
-                $("#sendMessage").on('submit', function (e) {
-                    e.preventDefault();
+            // Send message by enter key
+            $("#message").keydown(function(e){
+                if (e.keyCode == 13 && !e.shiftKey)
+                {
                     sendMsg($("#message").val());
-                });
+                    e.preventDefault();
+                }
+            });
 
-                function sendMsg(msg) {
-                    if (msg) {
-                        $("#message").val("");
-                        $.ajax({
-                            url: "/messages/send/@messages.get(0).getChat.getId",
-                            method: "POST",
-                            contentType: "application/json",
-                            dataType: "text",
-                            data: JSON.stringify({
-                                message: msg,
-                            }),
-                            success: function(data,status,xhr) {
-                                //alert(xhr.responseText);
-                                location.reload();
-                            },
-                            error: function(xhr,status,error) {
-                                alert(xhr.responseText);
+            // Send message by submit button
+            $("#sendMessage").on('submit', function (e) {
+                e.preventDefault();
+                sendMsg($("#message").val());
+            });
+
+            // Send message
+            function sendMsg(msg) {
+                if (msg) {
+                    $("#message").val("");
+                    $.ajax({
+                        url: "/messages/send/@chat.getId",
+                        method: "POST",
+                        contentType: "application/json",
+                        dataType: "text",
+                        data: JSON.stringify({
+                            message: msg,
+                        }),
+                        success: function(data,status,xhr) {
+                            updateDialog(20);
+                        },
+                        error: function(xhr,status,error) {
+                            alert(xhr.responseText);
+                        }
+                    });
+                }
+            }
+
+            // Check for dialog update
+            function checkforUpdate() {
+                $.get( "/messages/new/count/@chat.getId" )
+                        .done(function( data ) {
+                            if (data > 0) {
+                                updateDialog(20);
                             }
                         });
-                    }
-                }
+            }
 
-                // Auto refresh
-                function autoRefresh(t) {
-                    setTimeout("location.reload(true);", t);
-                }
-        </script>
-    }
+            // Update Dialog
+            function updateDialog(messages) {
+                $.get( "/messages/get/dialog", { chatId: "@chat.getId", messages: messages } )
+                        .done(function( data ) {
+                            $("#messageField").html(data);
+                            window.scrollTo(0,document.body.scrollHeight);
+                        });
+            }
+    </script>
+}

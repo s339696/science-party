@@ -3,6 +3,9 @@ package model.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by Richard on 22.02.2016.
@@ -91,10 +94,11 @@ public class Game {
 
     public String getDay(){
         long seconds = Game.this.getWhenCreated();
-        seconds = seconds*1000;
+
         SimpleDateFormat sdf = new SimpleDateFormat("EEE");
         StringBuilder sb = new StringBuilder(sdf.format(seconds));
 
         return sb.toString();
     }
+
 }

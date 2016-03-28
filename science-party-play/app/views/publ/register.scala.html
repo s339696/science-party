@@ -1,20 +1,19 @@
 @()
 
     @mainExtern("Registrierung") {
-        <br>
-        <br>
-        <br>
-        <br>
-
-        <!-- LOGO [class="leftLogo"] -->
-        <div class="formularHead">
-            <h1>
-                Registrieren
-            </h1>
-        </div>
-        <div class="loginContainer">
-            <div class="formular">
-                <form id="registerForm">
+    <br>
+    <br>
+    <br>
+    <br>
+    <img src="/assets/images/SPLogo.png" alt="Science Party Logo" height="20%" width="20%">
+    <div class="formularHead">
+        <h1>
+            Registrieren
+        </h1>
+    </div>
+    <div class="loginContainer">
+        <div class="formular">
+            <form id="registerForm">
                     Vorname:<br>
                     <input id="firstname" type="text" name="firstname" placeholder="Vorname" required>
                     <br>
@@ -36,38 +35,38 @@
                     <br>
                     <br>
                     <input id="registerButton" type="submit" value="Registrieren">
-                </form>
-            </div>
+            </form>
         </div>
-        <script>
-                $("#registerForm").on('submit', function (e) {
-                    e.preventDefault();
-                    var firstname = $("#firstname").val();
-                    var lastname = $("#lastname").val();
-                    var birthday = $("#birthday").val();
-                    var email = $("#email").val();
-                    var password = $("#password").val();
-                    $.ajax({
-                        url: "/register",
-                        method: "POST",
-                        contentType: "application/json",
-                        dataType: "text",
-                        data: JSON.stringify({
-                            firstname: firstname,
-                            lastname: lastname,
-                            birthday: birthday,
-                            email: email,
-                            password: password,
-                        }),
-                        success: function(data,status,xhr) {
-                            location.reload();
-                        },
-                        error: function(xhr,status,error) {
-                            alert(xhr.responseText);
-                        }
-                    });
-
+    </div>
+    <script>
+            $("#registerForm").on('submit', function (e) {
+                e.preventDefault();
+                var firstname = $("#firstname").val();
+                var lastname = $("#lastname").val();
+                var birthday = $("#birthday").val();
+                var email = $("#email").val();
+                var password = $("#password").val();
+                $.ajax({
+                    url: "/register",
+                    method: "POST",
+                    contentType: "application/json",
+                    dataType: "text",
+                    data: JSON.stringify({
+                        firstname: firstname,
+                        lastname: lastname,
+                        birthday: birthday,
+                        email: email,
+                        password: password,
+                    }),
+                    success: function(data,status,xhr) {
+                        location.reload();
+                    },
+                    error: function(xhr,status,error) {
+                        alert(xhr.responseText);
+                    }
                 });
-        </script>
 
-    }
+            });
+    </script>
+
+}

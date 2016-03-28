@@ -6,7 +6,7 @@ import com.avaje.ebean.annotation.EnumValue;
 import com.avaje.ebean.annotation.UpdatedTimestamp;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.media.jfxmedia.events.PlayerStateEvent;
-import play.Logger;
+import util.Helper;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -217,5 +217,10 @@ public class Game extends Model {
         return Player.find.where()
                 .ieq("playerStatus", "P")
                 .ieq("game_id", this.getId().toString()).findList();
+    }
+
+    @JsonIgnore
+    public String getWhenCreatedFormatted(String pattern) {
+        return Helper.getStringFromTimestamp(whenCreated, pattern);
     }
 }

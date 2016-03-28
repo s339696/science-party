@@ -1,471 +1,476 @@
 * {
-	margin: 0;
-	padding: 0;
+    margin: 0;
+    padding: 0;
 }
 
 div {
-	margin: auto;
-	border-style: solid;
-	border-color: none;
-	border-width: 2px
+    margin: auto;
+    border-style: solid;
+    border-color: none;
+    border-width: 2px
 }
 
 div.video {
-	width: 853px;
-	height: 480px;
+    width: 853px;
+    height: 480px;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #333;
+    border-radius: 4px;
 }
 
-div.Navigator{
-	background-color: #333;
-	position: fixed;
-	top: 0;
-	width: 100%;
-	border: none;
+div.Navigator {
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    border: none;
 }
 
 div.formular {
-	width: 340px;
-	padding: 40px;
-	background-color: #D0D0D0;
-	border-radius: 4px;
+    width: 340px;
+    padding: 40px;
+    background-color: #D0D0D0;
+    border-radius: 4px;
 }
 
 div.formularHead {
-	border: none;
-	width: 420px;
+    border: none;
+    width: 420px;
 }
 
 div.startLoginButton {
-	width: 340px;
-	padding: 0px;
-	border: none;
+    width: 340px;
+    padding: 0px;
+    border: none;
 }
 
 div.loginContainer {
-	width: 423px;
-	background-color: #D0D0D0;
-	border-radius: 4px;
-	border: none;
+    width: 423px;
+    background-color: #D0D0D0;
+    border-radius: 4px;
+    border: none;
 }
 
 div.topLoginSignin {
-	float: right;
+    float: right;
 }
 
 div.tabele {
-	width: 69%;
-	background-color: #D0D0D0;
-	border-radius: 4px;
+    width: 69%;
+    background-color: #D0D0D0;
+    border-radius: 4px;
 }
 
 div.tabeleHead {
-	width: 69%;
-	border: none;
+    width: 69%;
+    border: none;
 }
 
 div.rank {
-	width: 33%;
-	background-color: #D0D0D0;
-	border-radius: 4px;
+    width: 33%;
+    background-color: #D0D0D0;
+    border-radius: 4px;
 }
 
 div.rankHead {
-	width: 33%;
-	border: none;
+    width: 33%;
+    border: none;
 }
 
 div.list {
-	margin: 8px;
-	border-style: solid;
-	border-color: #333;
-	border-width: 2px
+    margin: 8px;
+    border-style: solid;
+    border-color: #333;
+    border-width: 2px;
+    border: none;
 }
 
 div.Profilbild {
-	height: 250px;
-	width: 250px;
-	float:left;
-	margin: 8px;
-	border-color: #333;
-	border-radius: 4px;
+    height: 250px;
+    width: 250px;
+    float: left;
+    margin: 8px;
+    border-color: #333;
+    border-radius: 4px;
 }
 
 div.user {
-	margin: 8px;
-	border-color: #333;
-	border-radius: 4px;
-	background-color: white;
+    margin: 8px;
+    border-color: #333;
+    border-radius: 4px;
+    background-color: white;
 }
 
 div.userPerks {
-	margin: 8px;
-	border-color: #333;
-	border-radius: 4px;
-	background-color: white;
+    margin: 8px;
+    border-color: #333;
+    border-radius: 4px;
+    background-color: white;
 }
 
 div#displayPerks {
-	margin: 8px;
-	background-color: white;
-	overflow: scroll;
+    margin: 8px;
+    background-color: white;
+    overflow: scroll;
 }
 
 div.messageField {
-	padding: 10px;
-	margin: 8px;
-	border: none;
-	border-radius: 4px;
-	background-color: #d9d9d9;
+    padding: 10px;
+    margin: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: #d9d9d9;
+    text-align: center
 }
 
 div.container {
-	margin: 8px;
-	border: none;
+    margin: 8px;
+    border: none;
+}
+
+div#livesearch {
+    border: none;
 }
 
 h1, h2, h3 {
-	margin: 8px;
+    margin: 8px;
 }
 
 p {
-	margin: 24px;
-	displa: inline-block;
+    margin: 12px;
 }
 
 p.sentMessage {
-	max-width: 400px;
-	background-color: #bbff99;
-	border-radius: 4px;
-	padding: 25px;
-	margin-left: auto;
-	margin-right: 8px;
-	margin-top: 8px;
-	margin-bottom: 8px;
+    max-width: 400px;
+    background-color: #bbff99;
+    border-radius: 4px;
+    padding: 25px;
+    margin-left: auto;
+    margin-right: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    text-align: left;
 }
 
 p.receivedMessage {
-	max-width: 400px;
-	background-color: #f2f2f2;
-	border-radius: 4px;
-	padding: 25px;
-	margin: 8px;
+    max-width: 400px;
+    background-color: #f2f2f2;
+    border-radius: 4px;
+    padding: 25px;
+    margin: 8px;
+    text-align: left;
 }
 
 form {
-	margin: auto;
+    margin: auto;
 }
 
 select {
-	width: 100%;
-	padding: 12px;
-	margin: 8px 0;
-	display: inline-block;
-	border: 1px solid #CCC;
-	border-radius: 4px;
-	box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 select.search {
-	float: left;
-	width: 68%;
-	padding: 20px 0;
-	margin: 8px;
-	display: inline-block;
-	border: 1px solid #CCC;
-	border-radius: 4px;
-	box-sizing: border-box;
+    float: left;
+    width: 68%;
+    padding: 20px 0;
+    margin: 8px;
+    display: inline-block;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 select.message {
-	width: 100%;
-	padding: 20px 0;
-	margin: 8px 0;
-	display: inline-block;
-	border: 1px solid #CCC;
-	border-radius: 4px;
-	box-sizing: border-box;
+    width: 100%;
+    padding: 20px 0;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 textarea {
-   	resize: vertical;
-	width: 99%
+    resize: vertical;
+    width: 99%
 }
 
 a.bigButton {
-	width: 100%;
-	display: inline-block;
-	text-align: center;
-	text-decoration: none;
-	background-color: #4CAF50;
-	color: white;
-	padding: 25px 0;
-	margin: 8px 0;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 25px 0;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 a.squareButton {
-	float: right;
-	width: 12%;
-	display: inline-block;
-	text-align: center;
-	text-decoration: none;
-	background-color: #4CAF50;
-	color: white;
-	padding: 20px 10px;
-	margin: 6px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	text-align: center;
-	text-decoration: none;
+    float: right;
+    width: 12%;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px 10px;
+    margin: 6px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
 }
 
 a.deleteButton {
-	width: 100%;
-	display: inline-block;
-	text-align: center;
-	text-decoration: none;
-	background-color: rgb(200,0,0);
-	color: white;
-	padding: 25px 0;
-	margin: 8px 0;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
+    width: 100%;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background-color: rgb(200, 0, 0);
+    color: white;
+    padding: 25px 0;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 a.addPerkButton {
-	display: inline-block;
-	text-align: center;
-	text-decoration: none;
-	background-color: #4CAF50;
-	color: white;
-	padding: 35px 20px;
-	margin: 8px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 35px 20px;
+    margin: 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 a.tabeleDelete {
-	float: right;
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 20px 10px;
-	text-decoration: none;
+    float: right;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    text-decoration: none;
 }
 
 a.tabeleAdd {
-	float: right;
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 20px 10px;
-	text-decoration: none;
-}
-
-a.newMessage {
-	display: inline-block;
-	text-align: center;
-	text-decoration: none;
-	background-color: #4CAF50;
-	color: white;
-	padding: 25px 44%;
-	margin: 8px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
+    float: right;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    text-decoration: none;
 }
 
 a.tabeleFloatRight {
-	float: right;
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 20px 10px;
-	text-decoration: none;
+    float: right;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    text-decoration: none;
 }
 
 a.ranking {
-	display: inline-block;
-	color: black;
-	cursor: pointer;
-	text-decoration: none;
-	padding: 20px 10px;
+    display: inline-block;
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 20px 10px;
 }
 
 a.noFunctionTabele {
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 20px 10px;
-	text-decoration: none;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    text-decoration: none;
 }
 
 a.noFunctionTabeleFloatRight {
-	float: right;
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 20px 10px;
-	text-decoration: none;
+    float: right;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 20px 10px;
+    text-decoration: none;
 }
 
 button {
-	margin: 1px 24px 24px 24px;
-	padding: 5px;
+    margin: 1px 24px 24px 24px;
+    padding: 5px;
 }
 
 input[type=text], input[type=password], input[type=date], input[type=email] {
-	width: 100%;
-	padding: 12px;
-	margin: 8px 0;
-	display: inline-block;
-	border: 1px solid #CCC;
-	border-radius: 4px;
-	box-sizing: border-box;
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
 input[type=submit] {
-	width: 100%;
-	background-color: #4CAF50;
-	color: white;
-	padding: 25px;
-	margin: 8px 0;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
+    width: 100%;
+    background-color: #4CAF50;
+    font-family: serif;
+    font-size: 18px;
+    color: white;
+    padding: 25px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 input[type=submit]:hover {
-	background-color: #45a049;
+    background-color: #45a049;
+}
+
+textarea {
+    font-family: serif;
+    font-size: 18px;
 }
 
 ul.Navigator {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: #333;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
 }
 
 ul.topLoginSignin {
-	float:right;
-	list-style-type:none;
-	margin: 0;
-	padding: 0;
-	overflow: hidden;
-	background-color: #333;
+    float: right;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
 }
 
 ul.tabele {
-	
-	list-style-type:none;
-	margin: auto;
-	padding: 0;
-	overflow: hidden;
-	background-color: #888;
+
+    list-style-type: none;
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    background-color: #888;
 }
 
 li.Navigator {
-	float: left;
+    float: left;
 }
 
 li.topLoginSignin {
-	float: left;
+    float: left;
 }
 
 li.tabele {
-	border-style: solid;
-	border-color: #333;
-	border-width: 2px
+    border-style: solid;
+    border-color: #333;
+    border-width: 2px
 }
 
 li.messageBox {
-	border-style: solid;
-	border-color: #333;
-	border-width: 2px
+    border-style: solid;
+    border-color: #333;
+    border-width: 2px
 
 }
 
 li.Navigator a.Navigator {
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 20px 65px;
-	text-decoration: none;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 20px 65px;
+    text-decoration: none;
 }
 
 li.topLoginSignin a.topLoginSignin {
-	padding: 20px 10px;
-	display: block;
-	color: white;
-	text-align: center;
-	text-decoration: none;
+    padding: 20px 10px;
+    display: block;
+    color: white;
+    text-align: center;
+    text-decoration: none;
 }
 
 li.tabele a.tabele {
-	display: inline-block;
-	color: white;
-	text-align: center;
-	padding: 20px 65px;
-	text-decoration: none;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 20px 65px;
+    text-decoration: none;
 }
 
 li.Navigator a.Navigator:hover:not(.active) {
-	background-color: #111;
+    background-color: #111;
 }
 
 li.topLoginSignin a.topLoginSignin:hover:not(.active) {
-	background-color: #111;
+    background-color: #111;
 }
 
 li.tabele a.tabele:hover:not(.active) {
-	background-color: #111;
+    background-color: #111;
 }
 
 a.squareButton:hover {
-	background-color: #45a049;
+    background-color: #45a049;
 }
 
 a.addPerkButton:hover {
-	background-color: #45a049;
+    background-color: #45a049;
 }
 
 a.bigButton:hover {
-	background-color: #45a049;
+    background-color: #45a049;
 }
 
 a.tabeleDelete:hover {
-	background-color: rgb(200,0,0);
+    background-color: rgb(200, 0, 0);
 }
 
 a.tabeleAdd:hover {
-	background-color: #4CAF50;
+    background-color: #4CAF50;
 }
 
 a.deleteButton:hover {
-	background-color: rgb(170,0,0);
+    background-color: rgb(170, 0, 0);
 }
 
 a.newMessage:hover {
-	background-color: #45a049;
+    background-color: #45a049;
 }
 
 a.tabeleFloatRight:hover {
-	background-color: #111;
+    background-color: #111;
 }
 
 a.ranking:hover {
-	background-color: #111;
-	color: white;
+    background-color: #111;
+    color: white;
 }
 
 table {
-	width: 100%;
+    width: 100%;
 }
 
 table, th, td {
@@ -476,3 +481,106 @@ table, th, td {
 th, td {
     padding: 0px 25px;
 }
+
+video {
+    display: inline-block;
+    border-style: solid;
+    border-width: 8px;
+    border-color: palegreen;
+    border-radius: 4px;
+    width: 900px;
+    height: auto;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Spielfeld */
+div.playerProgress  {
+    border-style: none;
+    margin-left:5px;
+    margin-right:5px;
+    position: relative;
+    width: 98%;
+    height: 30px;
+    background-color: grey;
+}
+
+div.playerBar {
+    border-style: none;
+    position: absolute;
+    width: 0%;
+    height: 100%;
+}
+
+div.playerLabel {
+    border-style: none;
+    text-align: center;
+    line-height: 30px;
+    color: black;
+}
+
+#p1Bar {
+    background-color: darkred;
+}
+
+#p2Bar {
+    background-color: #ffd24d;
+}
+
+#p3Bar {
+    background-color: darkblue;
+}
+
+#p4Bar {
+    background-color: darkgreen;
+}
+
+#playerLabel {
+
+}
+
+/* MODEL DIALOG FOR QUESTION */
+/* Background */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Box */
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* Close button */
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+

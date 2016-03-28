@@ -27,15 +27,25 @@ public class Messages extends Controller {
      *
      * @return
      */
-    public Result renderMessages() {
+    public Result renderMessages(String feedback) {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
             return redirect(controllers.routes.Public.renderLoginPage());
         }
 
+        // Remove chat of users are no friends at the moment.
+        List<Chat> chatsWithFriends = new ArrayList<Chat>();
         List<Chat> chats = user.getChats();
+        for (Chat chat : chats) {
+            List<User> chatMembers = chat.getUsers();
+            chatMembers.remove(user);
+            List<User> friends = user.getFriends();
+            if (friends.containsAll(chatMembers)) {
+                chatsWithFriends.add(chat);
+            }
+        }
 
-        return ok(views.html.messages.messages.render(user, chats));
+        return ok(views.html.messages.messages.render(user, chatsWithFriends, feedback));
     }
 
     /**
@@ -52,7 +62,78 @@ public class Messages extends Controller {
         List<User> users = User.find.all();
         users.remove(user);
 
-        return ok(views.html.messages.newMessage.render(user, users));
+        return ok(views.html.messages.newMessage.render(user));
+    }
+
+    /**
+     * Renders the page to show a chat.
+     *
+     * @param chatId
+     * @return
+     */
+    public Result renderShowChat(Long chatId) {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
+
+        Chat chat = Chat.find.byId(chatId);
+        if (chat == null) {
+            return renderMessages("Es gibt kein Gespräch mit der Id #" + chatId + ".");
+        }
+
+        if (!chat.getUsers().contains(user)) {
+            return renderMessages("Du bist kein Teilnehmer an diesem Gespräch.");
+        }
+
+        // Prüfen ob man mit dem Gesprächsteilnehmer befreundet ist.
+        List<User> chatMembers = chat.getUsers();
+        chatMembers.remove(user);
+        if(!user.getFriends().containsAll(chatMembers)) {
+            return renderMessages("Du bist mit dem Gesprächsteilnehmer nicht befreundet.");
+        }
+
+        return ok(views.html.messages.viewMessage.render(user, chat));
+    }
+
+    public Result renderChatDialog(Long chatId, int amountOfMessages) {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return redirect(controllers.routes.Public.renderLoginPage());
+        }
+
+        Chat chat = Chat.find.byId(chatId);
+        if (chat == null) {
+            return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
+        }
+
+        if (!chat.getUsers().contains(user)) {
+            return badRequest("Du bist kein Teilnehmer an diesem Gespräch.");
+        }
+
+        // Prüfen ob man mit dem Gesprächsteilnehmer befreundet ist.
+        List<User> chatMembers = chat.getUsers();
+        chatMembers.remove(user);
+        if(!user.getFriends().containsAll(chatMembers)) {
+            return badRequest("Du bist mit dem Gesprächsteilnehmer nicht befreundet.");
+        }
+
+        // Abfrage der Nachrichten
+        List<Message> messages = Message.getMessagesOfChat(chat);
+        Ebean.beginTransaction();
+        try {
+            for (Message message : messages) {
+                if (!message.getUser().equals(user) && !message.isSeen()) {
+                    message.setSeen(true);
+                    message.save();
+                }
+            }
+            Ebean.commitTransaction();
+        } finally {
+            Ebean.endTransaction();
+        }
+
+        return ok(views.html.messages.viewMessageDialog.render(user, messages));
     }
 
     /**
@@ -132,58 +213,24 @@ public class Messages extends Controller {
      * @return
      */
     public Result handleLeaveChat(Long chatId) {
-        User user = LoginManager.getLoggedInUser();
+/*        User user = LoginManager.getLoggedInUser();
         if (user == null) {
-            return badRequest("Es ist kein User eingeloggt.");
+            return redirect(controllers.routes.Public.renderLoginPage());
         }
 
         // Get chat
         Chat chat = Chat.find.byId(chatId);
         if (chat == null) {
-            return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
+            return renderMessages("Es gibt kein Gespräch mit der Id #" + chatId + ".");
         }
 
         chat.getUsers().remove(user);
         chat.update();
 
-        return ok("Das Gespräch wurde verlassen.");
+        return renderMessages("Das Gespräch wurde verlassen.");*/
+        return badRequest("Das ist keine erlaubte Aktion.");
     }
 
-    /**
-     * Renders the page to show a chat.
-     *
-     * @param chatId
-     * @return
-     */
-    public Result renderShowChat(Long chatId) {
-        User user = LoginManager.getLoggedInUser();
-        if (user == null) {
-            return redirect(controllers.routes.Public.renderLoginPage());
-        }
-
-        Chat chat = Chat.find.byId(chatId);
-        if (chat == null) {
-            return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
-        }
-
-        List<Message> messages = Message.getMessagesOfChat(chat);
-
-        Ebean.beginTransaction();
-        try {
-            for (Message message : messages) {
-                if (!message.getUser().equals(user) && !message.isSeen()) {
-                    message.setSeen(true);
-                    System.out.println("set to seen");
-                    message.save();
-                }
-            }
-            Ebean.commitTransaction();
-        } finally {
-            Ebean.endTransaction();
-        }
-
-        return ok(views.html.messages.viewMessage.render(user, messages, chat));
-    }
 
     /**
      * Handle the request to send a message.
@@ -227,12 +274,26 @@ public class Messages extends Controller {
     public Result handleNewMessageCount() {
         User user = LoginManager.getLoggedInUser();
         if (user == null) {
-            return badRequest("");
+            return badRequest("Es ist kein User eingeloggt.");
         }
 
         int count = user.getUnseenMessageCount();
 
         return ok(String.valueOf(count));
+    }
+
+    public Result handleNewMessageCountPerChat(Long chatId) {
+        User user = LoginManager.getLoggedInUser();
+        if (user == null) {
+            return badRequest("Es ist kein User eingeloggt.");
+        }
+
+        Chat chat = Chat.find.byId(chatId);
+        if (chat == null) {
+            return badRequest("Es gibt kein Gespräch mit der Id #" + chatId + ".");
+        }
+
+        return ok(String.valueOf(chat.getUnreadMessagesCountFor(user)));
     }
 
 }

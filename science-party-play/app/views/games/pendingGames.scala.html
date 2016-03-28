@@ -7,7 +7,7 @@
     <br>
     <br>
     <br>
-
+    <!--<img src="/assets/images/SPLogo.png" alt="Science Party Logo" height="20%" width="20%">-->
     <div class="tabeleHead">
         <h1>
             Spieleinladungen
@@ -22,7 +22,7 @@
                 } else {
                     @for(game <- user.getPendingGames) {
                         <li class="tabele">
-                            <a class="tabele" href="#gameInfo">ID: @game.getId Thema: @game.getTopic</a>
+                            <a class="tabele" href="#gameInfo">@game.getName</a>
                             @if(game.getPlayerForUser(user).getPlayerStatus() == Player.PlayerStatus.INVITED) {
                                 <a class="tabele" href="/games/accept/@game.getId">Annehmen</a>
                                 <a class="tabele" href="/games/decline/@game.getId">Ignorieren</a>
