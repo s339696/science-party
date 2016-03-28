@@ -30,7 +30,7 @@
             </div>
         }
         <br>
-        @if(game.getActivePlayer.getId == player.getId) {
+        @if(game.getActivePlayerId == player.getId) {
             <div class="formularHead">
                 <a href="javascript:openQuestion();" class="bigButton">Frage beantworten</a>
             </div>
@@ -38,7 +38,7 @@
         <br>
     </div>
 
-    @if(game.getActivePlayer.getId == player.getId) {
+    @if(game.getActivePlayerId == player.getId) {
         <div id="question" class="modal">
             <div class="modal-content">
                 <span id="closeQuestion" class="close">×</span>
@@ -57,11 +57,11 @@
                 </form>
                 @for(perk <- player.getPerksPerPlayer) {
                     <p>Oder setze eine Fähigkeit ein.</p>
-                    <ul>
-
-                        <li>@perk.getPerkPerUser.getPerkPerTopic.getPerk.getName
+                    <ul class="tabele">
+                        <li class="tabele">
+                            <a class="noFunctionTabele">@perk.getPerkPerUser.getPerkPerTopic.getPerk.getName</a>
                             @if(!perk.isUsed) {
-                                <a href="/games/play/@game.getId/perk/@perk.getId">Fähigkeit einsetzen</a>
+                                <a class="tabeleAdd" href="/games/play/@game.getId/perk/@perk.getId">Fähigkeit einsetzen</a>
                             }
                         </li>
                     </ul>
@@ -78,14 +78,14 @@
 
     <script>
             // Onload functions
-            @if(game.getActivePlayer.getId == player.getId) {
+            @if(game.getActivePlayerId == player.getId) {
             window.onload = function () {
                 openQuestion();
             };
             }
 
             // Auto refresh
-            @if(game.getActivePlayer.getId != player.getId) {
+            @if(game.getActivePlayerId != player.getId) {
             window.setInterval(function () {
                 location.reload(true);
             }, 3000);

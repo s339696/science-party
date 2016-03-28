@@ -31,7 +31,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         mainStage =primaryStage;
-        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("../view/SPLogo.png")));
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("../view/SPIcon.png")));
         Parent root = FXMLLoader.load(getClass().getResource("../view/gui_login.fxml"));
         primaryStage.setTitle("Sciene Party Author Tool");
 

@@ -155,9 +155,6 @@ create index ix_friends_user_send_req_id on friends (user_send_req_id);
 alter table friends add constraint fk_friends_user_get_req_id foreign key (user_get_req_id) references users (id) on delete restrict on update restrict;
 create index ix_friends_user_get_req_id on friends (user_get_req_id);
 
-alter table games add constraint fk_games_active_player_id foreign key (active_player_id) references players (id) on delete restrict on update restrict;
-create index ix_games_active_player_id on games (active_player_id);
-
 alter table games add constraint fk_games_active_question_id foreign key (active_question_id) references questions (id) on delete restrict on update restrict;
 create index ix_games_active_question_id on games (active_question_id);
 
@@ -217,9 +214,6 @@ drop index ix_friends_user_send_req_id on friends;
 
 alter table friends drop foreign key fk_friends_user_get_req_id;
 drop index ix_friends_user_get_req_id on friends;
-
-alter table games drop foreign key fk_games_active_player_id;
-drop index ix_games_active_player_id on games;
 
 alter table games drop foreign key fk_games_active_question_id;
 drop index ix_games_active_question_id on games;

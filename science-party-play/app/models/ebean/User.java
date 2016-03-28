@@ -494,15 +494,22 @@ public class User extends Model {
      * @throws GetPerkException
      */
     @JsonIgnore
-    public void addPerkFromQr(String qrCode) throws GetPerkException {
+    public synchronized void addPerkFromQr(String qrCode) throws GetPerkException {
         PerkPerTopic perk = PerkPerTopic.getPerkPerTopicByQrCode(qrCode);
         if (perk == null) {
             throw new GetPerkException("Es wurde keine gültige Fähigkeit übergeben.");
         } else {
-            PerkPerUser perkPerUser = new PerkPerUser();
-            perkPerUser.setPerkPerTopic(perk);
-            perkPerUser.setUser(this);
-            perkPerUser.insert();
+            PerkPerUser perkPerUser = PerkPerUser.find.where()
+                    .eq("user", this)
+                    .eq("perkPerTopic", perk)
+                    .findUnique();
+
+            if (perkPerUser == null) {
+                perkPerUser = new PerkPerUser();
+                perkPerUser.setPerkPerTopic(perk);
+                perkPerUser.setUser(this);
+                perkPerUser.insert();
+            }
         }
     }
 
