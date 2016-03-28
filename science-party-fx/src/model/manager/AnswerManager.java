@@ -60,9 +60,10 @@ public class AnswerManager {
     }
 
     /**
+     * (Re-)fill the answerList with answer objects from the requested JSON string
      *
-     * @param qid
-     * @throws IOException
+     * @param qid                   the id of the question to which the answers belong
+     * @throws IOException          thrown if an error occurs while mapping the string to objects
      */
     public static void refreshAnswerListPerQuestion(int qid) throws IOException {
         ObservableList<Answer> list = FXCollections.observableArrayList();
@@ -77,7 +78,12 @@ public class AnswerManager {
 
     }
 
-
+    /**
+     * updates an answer objects in the database
+     *
+     * @param answer                the answer to update
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void updateAnswer(Answer answer) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(answer);
@@ -102,6 +108,12 @@ public class AnswerManager {
         connection.getResponseMessage();
     }
 
+    /**
+     * deletes an answer object in the database
+     *
+     * @param answer            the answer to delete
+     * @throws IOException      thrown if an error occurs while communicating with the play server
+     */
     public static void deleteAnswer(Answer answer) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -116,6 +128,12 @@ public class AnswerManager {
         refreshAnswerListPerQuestion(answer.getQuesteionId());
     }
 
+    /**
+     * inserts a new answer object to the database
+     *
+     * @param answer                answer object to add
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void insertAnswer(Answer answer) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(answer);

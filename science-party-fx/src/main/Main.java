@@ -6,6 +6,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -30,6 +31,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
         mainStage =primaryStage;
+        primaryStage.getIcons().add(new Image(Main.class.getResourceAsStream("../view/SPLogo.png")));
         Parent root = FXMLLoader.load(getClass().getResource("../view/gui_login.fxml"));
         primaryStage.setTitle("Sciene Party Author Tool");
 

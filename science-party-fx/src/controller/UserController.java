@@ -42,9 +42,6 @@ public class UserController implements Initializable{
     private Label birthdateLabel;
 
     @FXML
-    private ImageView imageUrl;
-
-    @FXML
     private CheckBox checkBox;
 
     @FXML

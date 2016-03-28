@@ -323,6 +323,7 @@ public class QuizController implements Initializable {
         addQuestionField.setVisible(false);
         cancelNewQuestionButton.setVisible(false);
 
+        /*
         questionBox.setDisable(false);
         difficultyField.setDisable(false);
         answerA.setDisable(false);
@@ -333,6 +334,7 @@ public class QuizController implements Initializable {
         radioB.setDisable(false);
         radioC.setDisable(false);
         radioD.setDisable(false);
+        */
     }
 
     @FXML

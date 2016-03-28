@@ -19,12 +19,21 @@ import java.util.List;
 
 /**
  * Created by Bastian on 29.02.2016.
+ *
+ * Contains the data requests to the play server und the mapping to user objects.
  */
 public class UserManager {
-
+    /**
+     * List for managing all answer objects.
+     */
     public static ObservableList<User> userList = FXCollections.observableArrayList();
 
-
+    /**
+     * Request for all users.
+     *
+     * @return                  all users as JSON string
+     * @throws IOException      if an error occurs while communicating with the play server
+     */
     public static String getAllUserJson() throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -51,7 +60,11 @@ public class UserManager {
         return jsonString;
     }
 
-
+    /**
+     * (Re-)fill the userList with answer objects from the requested JSON string
+     *
+     * @throws IOException          thrown if an error occurs while mapping the string to objects
+     */
     public static void refreshUserList() throws IOException {
         ObservableList<User> list = FXCollections.observableArrayList();
         String allUserJson = UserManager.getAllUserJson();
@@ -66,7 +79,13 @@ public class UserManager {
     }
 
 
-
+    /**
+     * sets the lock state of an user in the database
+     *
+     * @param id                    the id of the handeled user
+     * @param lock                  true fot lock, false fot unlock
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void lockUser(int id, boolean lock) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -102,6 +121,13 @@ public class UserManager {
         connection.getResponseMessage();
     }
 
+    /**
+     * sets the author state of an user in the database
+     *
+     * @param id                    the id of the handled user
+     * @param isAuthor              true or author, false for normal user
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void makeAuthor(int id, boolean isAuthor) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -137,6 +163,12 @@ public class UserManager {
         connection.getResponseMessage();
     }
 
+    /**
+     * deletes an user object from the database
+     *
+     * @param id                    id of the user
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void deleteUser(int id) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 

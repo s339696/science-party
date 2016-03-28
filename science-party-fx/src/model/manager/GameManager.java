@@ -16,10 +16,21 @@ import java.util.List;
 
 /**
  * Created by Richard on 24.03.2016.
+ *
+ * Contains the data requests to the play server und the mapping to game objects.
  */
 public class GameManager {
+    /**
+     * List for managing all game objects.
+     */
     public static ObservableList<Game> gameList = FXCollections.observableArrayList();
 
+    /**
+     * Request for all games.
+     *
+     * @return                  all games as JSON string
+     * @throws IOException      if an error occurs while communicating with the play server
+     */
     public static String getAllGamesJson() throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -46,6 +57,11 @@ public class GameManager {
         return jsonString;
     }
 
+    /**
+     * (Re-)fill the gameList with game objects from the requested JSON string
+     *
+     * @throws IOException          thrown if an error occurs while mapping the string to objects
+     */
     public static void refreshGameList() throws IOException {
         ObservableList<Game> list = FXCollections.observableArrayList();
         String allGamessJson = GameManager.getAllGamesJson();

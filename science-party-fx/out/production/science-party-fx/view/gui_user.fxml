@@ -24,62 +24,57 @@
          <children>
             <ListView fx:id="lv" layoutY="52.0" onMouseClicked="#handleUserInSelect" prefHeight="549.0" prefWidth="342.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0" />
             <TextField fx:id="search" layoutX="-1.0" layoutY="-1.0" onKeyReleased="#handleInput" prefHeight="52.0" prefWidth="346.0" promptText="Suche..." AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
-            <Button fx:id="cancelSearchButton" layoutX="290.0" layoutY="-2.0" mnemonicParsing="false" onAction="#cancelSearch" prefHeight="52.0" prefWidth="52.0" text="abbr" visible="false" />
+            <Button fx:id="cancelSearchButton" layoutX="290.0" layoutY="-2.0" mnemonicParsing="false" onAction="#cancelSearch" prefHeight="52.0" prefWidth="52.0" text="abbr" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
       </AnchorPane>
     <AnchorPane minHeight="0.0" minWidth="400.0" prefHeight="160.0" prefWidth="100.0">
          <children>
-            <ImageView fx:id="imageUrl" fitHeight="200.0" fitWidth="272.0" layoutX="224.0" layoutY="85.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../Pictures/b640x600.jpg" />
-               </image>
-            </ImageView>
-            <Text layoutX="60.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+            <Text layoutX="60.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" AnchorPane.leftAnchor="60.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text layoutX="357.0" layoutY="386.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vorname:">
+            <Text layoutX="60.0" layoutY="170.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vorname:" AnchorPane.leftAnchor="60.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text layoutX="59.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-mail:">
+            <Text layoutX="69.0" layoutY="310.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E-mail:" AnchorPane.leftAnchor="60.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text layoutX="351.0" layoutY="435.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Geburtstag:">
+            <Text layoutX="64.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Geburtstag:" AnchorPane.leftAnchor="60.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Text layoutX="238.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID">
+            <Text layoutX="60.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" AnchorPane.leftAnchor="60.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Text>
-            <Label fx:id="idLabel" layoutX="267.0" layoutY="319.0" prefHeight="17.0" prefWidth="76.0">
+            <Label fx:id="idLabel" layoutX="170.0" layoutY="83.0" prefHeight="17.0" prefWidth="76.0" AnchorPane.leftAnchor="170.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label fx:id="lastNameLabel" layoutX="115.0" layoutY="370.0">
+            <Label fx:id="lastNameLabel" layoutX="151.0" layoutY="223.0" AnchorPane.leftAnchor="170.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label fx:id="firstNameLabel" layoutX="494.0" layoutY="370.0">
+            <Label fx:id="firstNameLabel" layoutX="160.0" layoutY="153.0" prefHeight="21.0" prefWidth="63.0" AnchorPane.leftAnchor="170.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label fx:id="emailLabel" layoutX="115.0" layoutY="419.0">
+            <Label fx:id="emailLabel" layoutX="157.0" layoutY="293.0" AnchorPane.leftAnchor="170.0">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label fx:id="birthdateLabel" layoutX="494.0" layoutY="419.0">
+            <Label fx:id="birthdateLabel" layoutX="169.0" layoutY="363.0" AnchorPane.leftAnchor="170.0">
                <font>
                   <Font size="15.0" />
                </font>
