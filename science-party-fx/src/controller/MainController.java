@@ -52,6 +52,9 @@ public class MainController implements Initializable {
     private SplitPane QrSplitPane;
 
     @FXML
+    private SplitPane StatisticSplitPane;
+
+    @FXML
     private Tab UserTab;
 
     @FXML
@@ -120,6 +123,7 @@ public class MainController implements Initializable {
 
         UserSplitPane = FXMLLoader.load(getClass().getResource("../view/gui_user.fxml"));
         QuizSplitPane = FXMLLoader.load(getClass().getResource("../view/gui_quiz.fxml"));
+        StatisticSplitPane = FXMLLoader.load(getClass().getResource("../view/gui_statistic.fxml"));
         QrSplitPane = FXMLLoader.load(getClass().getResource("../view/gui_qr.fxml"));
 
         //FXML-Files als Inhalt der Tabs
@@ -128,14 +132,15 @@ public class MainController implements Initializable {
         UserTab.setContent(UserSplitPane);
         QuizTab = new Tab("Quiz-Editor");
         QuizTab.setContent(QuizSplitPane);
+        StatisticsTab = new Tab("Statistik");
+        StatisticsTab.setContent(StatisticSplitPane);
         QrTab = new Tab("Perk-Editor");
         QrTab.setContent(QrSplitPane);
 
         mainTabPane.getTabs().add(0,UserTab);
         mainTabPane.getTabs().add(1,QuizTab);
+        mainTabPane.getTabs().add(2,StatisticsTab);
         mainTabPane.getTabs().add(3,QrTab);
-
-        System.out.println(UserTab.getContent());
 
         main.Main.mainStage.setScene(new Scene(mainTabPane));
     }

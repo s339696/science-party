@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Created by Richard on 21.03.2016.
+ *
+ * Blueprint for mapping JsonStrings to a Perk-Object.
  */
 public class Perk {
     public Perk(){

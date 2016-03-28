@@ -14,13 +14,13 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<SplitPane dividerPositions="0.36" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="603.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PerkController">
+<SplitPane dividerPositions="0.36" minHeight="0" minWidth="0" prefHeight="603.0" prefWidth="949.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.PerkController">
   <items>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+    <AnchorPane minHeight="0.0" minWidth="100.0" prefHeight="160.0" prefWidth="400.0">
          <children>
             <ListView fx:id="perkListView" layoutY="7.0" onMouseClicked="#handlePerksInSelect" prefHeight="601.0" prefWidth="338.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children></AnchorPane>
-    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+    <AnchorPane minHeight="0.0" minWidth="400.0" prefHeight="160.0" prefWidth="100.0">
          <children>
             <ImageView fx:id="qrImageView" fitHeight="290.0" fitWidth="317.0" layoutX="135.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true" />
             <Label layoutX="262.0" layoutY="41.0" prefHeight="25.0" prefWidth="62.0" text="QR-Code">
@@ -28,11 +28,12 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Button layoutX="427.0" layoutY="462.0" mnemonicParsing="false" text="Print">
+            <Button layoutX="427.0" layoutY="462.0" mnemonicParsing="false" onAction="#printQr" text="Print">
                <font>
                   <Font size="15.0" />
                </font>
             </Button>
+            <Label fx:id="topicLabel" layoutX="96.0" layoutY="454.0" text="Thema:" />
          </children></AnchorPane>
   </items>
 </SplitPane>

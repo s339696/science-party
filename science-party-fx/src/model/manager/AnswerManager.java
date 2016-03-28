@@ -17,10 +17,22 @@ import java.util.List;
 
 /**
  * Created by Richard on 13.03.2016.
+ *
+ * Contains the data requests to the play server und the mapping to answer objects.
  */
 public class AnswerManager {
+    /**
+     * List for managing all answer objects.
+     */
     public static ObservableList<Answer> answerList = FXCollections.observableArrayList();
 
+    /**
+     * Request for all answers.
+     *
+     * @param qid               the id of the question to which the answers belong
+     * @return                  all answers as JSON string
+     * @throws IOException      if an error occurs while communicating with the play server
+     */
     public static String getAllAnswersJson(int qid) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -47,6 +59,12 @@ public class AnswerManager {
         return jsonString;
     }
 
+    /**
+     * (Re-)fill the answerList with answer objects from the requested JSON string
+     *
+     * @param qid                   the id of the question to which the answers belong
+     * @throws IOException          thrown if an error occurs while mapping the string to objects
+     */
     public static void refreshAnswerListPerQuestion(int qid) throws IOException {
         ObservableList<Answer> list = FXCollections.observableArrayList();
         String allAnswersJson = AnswerManager.getAllAnswersJson(qid);
@@ -60,7 +78,12 @@ public class AnswerManager {
 
     }
 
-
+    /**
+     * updates an answer objects in the database
+     *
+     * @param answer                the answer to update
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void updateAnswer(Answer answer) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(answer);
@@ -85,6 +108,12 @@ public class AnswerManager {
         connection.getResponseMessage();
     }
 
+    /**
+     * deletes an answer object in the database
+     *
+     * @param answer            the answer to delete
+     * @throws IOException      thrown if an error occurs while communicating with the play server
+     */
     public static void deleteAnswer(Answer answer) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -99,6 +128,12 @@ public class AnswerManager {
         refreshAnswerListPerQuestion(answer.getQuesteionId());
     }
 
+    /**
+     * inserts a new answer object to the database
+     *
+     * @param answer                answer object to add
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void insertAnswer(Answer answer) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(answer);
