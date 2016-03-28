@@ -5,7 +5,6 @@ import models.ebean.*;
 import models.enums.PerkType;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -164,7 +163,7 @@ public class GameManager {
         int startNumb = random.nextInt(activePlayers.size());
 
         // Set starting player, starting question and start game
-        game.setActivePlayer(activePlayers.get(startNumb));
+        game.setActivePlayerId(activePlayers.get(startNumb).getId());
         game.setActiveQuestion(Question.getRandomQuestion(game.getTopic()));
         game.setGameStatus(Game.GameStatus.ACTIVE);
         game.update();
@@ -200,7 +199,7 @@ public class GameManager {
         if (game.getGameStatus() == Game.GameStatus.ACTIVE) {
             Player winner = game.getActivePlayer();
             game.setGameStatus(Game.GameStatus.FINISHED);
-            game.setActivePlayer(null);
+            game.setActivePlayerId(null);
             game.setActiveQuestion(null);
             game.update();
 

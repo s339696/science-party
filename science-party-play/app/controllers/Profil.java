@@ -113,7 +113,7 @@ public class Profil extends Controller {
             List<Game> runningGames = user.getRunningGames();
             for (Game game : runningGames) {
                 Player player = game.getPlayerForUser(user);
-                if (game.getActivePlayer().equals(player)) {
+                if (game.getActivePlayerId() == player.getId()) {
                     game.nextTurn();
                 }
             }
