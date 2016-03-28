@@ -17,10 +17,21 @@ import java.util.List;
 
 /**
  * Created by Richard on 14.03.2016.
+ *
+ * Contains the data requests to the play server und the mapping to perk objects.
  */
 public class PerkManager {
+    /**
+     * List for managing all perk objects.
+     */
     public static ObservableList<Perk> perkList = FXCollections.observableArrayList();
 
+    /**
+     * Request for all perks.
+     *
+     * @return                          all perks as JSON string
+     * @throws IOException              if an error occurs while communicating with the play server
+     */
     public static String getAllPerksJson() throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -47,6 +58,11 @@ public class PerkManager {
         return jsonString;
     }
 
+    /**
+     * (Re-)fill the perkList with perk objects from the requested JSON string
+     *
+     * @throws IOException          thrown if an error occurs while mapping the string to objects
+     */
     public static void refreshPerkList() throws IOException {
         ObservableList<Perk> list = FXCollections.observableArrayList();
         String allPerksJson = PerkManager.getAllPerksJson();

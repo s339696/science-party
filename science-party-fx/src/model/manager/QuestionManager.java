@@ -17,10 +17,21 @@ import java.util.List;
 
 /**
  * Created by Richard on 13.03.2016.
+ *
+ * Contains the data requests to the play server und the mapping to question objects.
  */
 public class QuestionManager {
+    /**
+     * List for managing all question objects.
+     */
     public static ObservableList<Question> questionList = FXCollections.observableArrayList();
 
+    /**
+     * Request for all question.
+     *
+     * @return                          all questions as JSON string
+     * @throws IOException              if an error occurs while communicating with the play server
+     */
     public static String getAllQuestionsJson(int tid) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -47,6 +58,11 @@ public class QuestionManager {
         return jsonString;
     }
 
+    /**
+     * (Re-)fill the perkList with perk objects from the requested JSON string
+     *
+     * @throws IOException          thrown if an error occurs while mapping the string to objects
+     */
     public static void refreshQuestionListPerTopic(int tid) throws IOException {
         ObservableList<Question> list = FXCollections.observableArrayList();
         String allQuestionsJson = QuestionManager.getAllQuestionsJson(tid);
@@ -57,11 +73,13 @@ public class QuestionManager {
             list.add(question);
         }
         QuestionManager.questionList = list;
-
-
-
     }
 
+    /**
+     * updates a question objects in the database
+     *
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void updateQuestion(Question question) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(question);
@@ -86,6 +104,11 @@ public class QuestionManager {
         connection.getResponseMessage();
     }
 
+    /**
+     * deletes a question object in the database
+     *
+     * @throws IOException      thrown if an error occurs while communicating with the play server
+     */
     public static void deleteQuestion(Question question) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -100,6 +123,11 @@ public class QuestionManager {
         refreshQuestionListPerTopic(question.getTopicId());
     }
 
+    /**
+     * inserts a new question object to the database
+     *
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void insertQuestion(Question question) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(question);

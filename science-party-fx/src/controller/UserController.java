@@ -54,11 +54,6 @@ public class UserController implements Initializable{
     private Button cancelSearchButton;
 
 
-   @FXML
-   public void handleUpdate(){
-       System.out.println(search.getText());
-    }
-
     @Override
     public void initialize(URL url, ResourceBundle rb){
         try {
@@ -67,8 +62,6 @@ public class UserController implements Initializable{
             e.printStackTrace();
         }
         System.out.println("klappt");
-
-
 
 
         try {
@@ -85,15 +78,9 @@ public class UserController implements Initializable{
     }
 
 
-
-
-
     @FXML
     private void showList() throws IOException {
-
         lv.setItems(UserManager.userList);
-
-
    }
 
     User presentedUser = new User();
