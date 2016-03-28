@@ -56,10 +56,7 @@ public class GameController implements Initializable {
     }
 
     public void setBarChartData(){
-
-
         computeBarChartData();
-
 
         BarChart.getData().add(addBarChartData());
     }
