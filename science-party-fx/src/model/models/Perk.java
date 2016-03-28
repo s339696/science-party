@@ -58,6 +58,6 @@ public class Perk {
 
     @Override
     public String toString() {
-        return perkName;
+        return topicName + ": " + perkName;
     }
 }
