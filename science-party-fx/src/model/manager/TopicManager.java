@@ -17,11 +17,21 @@ import java.util.List;
 
 /**
  * Created by Richard on 13.03.2016.
+ *
+ * Contains the data requests to the play server und the mapping to topic objects.
  */
 public class TopicManager {
-
+    /**
+     * List for managing all topic objects.
+     */
     public static ObservableList<Topic> topicList = FXCollections.observableArrayList();
 
+    /**
+     * Request for all topic.
+     *
+     * @return                          all topics as JSON string
+     * @throws IOException              if an error occurs while communicating with the play server
+     */
     public static String getAllTopicsJson() throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -48,6 +58,11 @@ public class TopicManager {
         return jsonString;
     }
 
+    /**
+     * (Re-)fill the perkList with perk objects from the requested JSON string
+     *
+     * @throws IOException          thrown if an error occurs while mapping the string to objects
+     */
     public static void refreshTopicList() throws IOException {
         ObservableList<Topic> list = FXCollections.observableArrayList();
         String allTopicsJson = TopicManager.getAllTopicsJson();
@@ -61,30 +76,11 @@ public class TopicManager {
 
     }
 
-    public static void insertTopic(Topic topic) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        String jsonString = mapper.writeValueAsString(topic);
-
-        String loginCookie = DatabaseConnect.getLoginCookie();
-
-        String urlPath = DatabaseConnect.serverAddress + "/ac/insert/topic";
-        URL url = new URL(urlPath);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setDoOutput(true);
-
-        connection.setRequestMethod("PUT");
-
-        connection.setRequestProperty("Cookie", loginCookie);
-        connection.setRequestProperty("Content-Type", "application/json");
-
-        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
-        outWriter.write(jsonString);
-        outWriter.flush();
-
-        connection.getResponseMessage();
-    }
-
+    /**
+     * updates a topic objects in the database
+     *
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
     public static void updateTopic(Topic topic) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String jsonString = mapper.writeValueAsString(topic);
@@ -109,6 +105,11 @@ public class TopicManager {
         connection.getResponseMessage();
     }
 
+    /**
+     * deletes a topic object in the database
+     *
+     * @throws IOException      thrown if an error occurs while communicating with the play server
+     */
     public static void deleteTopic(Topic topic) throws IOException {
         String loginCookie = DatabaseConnect.getLoginCookie();
 
@@ -121,6 +122,35 @@ public class TopicManager {
         System.out.println(connection.getResponseMessage());
     }
 
+    /**
+     * inserts a new topic object to the database
+     *
+     * @throws IOException          thrown if an error occurs while communicating with the play server
+     */
+    public static void insertTopic(Topic topic) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonString = mapper.writeValueAsString(topic);
+
+        String loginCookie = DatabaseConnect.getLoginCookie();
+
+        String urlPath = DatabaseConnect.serverAddress + "/ac/insert/topic";
+        URL url = new URL(urlPath);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+
+        connection.setDoOutput(true);
+
+        connection.setRequestMethod("PUT");
+
+        connection.setRequestProperty("Cookie", loginCookie);
+        connection.setRequestProperty("Content-Type", "application/json");
+
+        OutputStreamWriter outWriter = new OutputStreamWriter(connection.getOutputStream());
+        outWriter.write(jsonString);
+        outWriter.flush();
+
+        connection.getResponseMessage();
+    }
+
 
 
     public static void main(String[] args) throws IOException {
@@ -128,7 +158,7 @@ public class TopicManager {
         DatabaseConnect.setServerAddress("http://localhost:9000");
 
         Topic t =  new Topic();
-        t.setId(3);
+        t.setId(1);
 
         deleteTopic(t);
 
