@@ -34,8 +34,16 @@ public class GameController implements Initializable {
     @FXML
     Button reloadButton;
 
+    /**
+     * labels for the x axis
+     */
     ObservableList<String> dayNames = FXCollections.observableArrayList();
+
+    /**
+     * array that contains the number of games per day
+     */
     Integer[][] dataArray = new Integer[7][1];
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeDataArray();
@@ -49,18 +57,29 @@ public class GameController implements Initializable {
         setBarChartData();
     }
 
+    /**
+     * fills the dateArray with zeros
+     */
     public void initializeDataArray(){
         for (int i = 0; i < 7; i++) {
             dataArray[i][0]=0;
         }
     }
 
+    /**
+     * adds the data to the bar chart element
+     */
     public void setBarChartData(){
         computeBarChartData();
 
         BarChart.getData().add(addBarChartData());
     }
 
+    /**
+     * creates a series with the data to present
+     *
+     * @return          the series with the data
+     */
     public XYChart.Series addBarChartData(){
         XYChart.Series<String, Integer> series = new XYChart.Series<>();
 
@@ -71,6 +90,9 @@ public class GameController implements Initializable {
         return series;
     }
 
+    /**
+     * fills the dateArray with values
+     */
     public void computeBarChartData(){
         for (Game game :
                 GameManager.gameList) {
@@ -100,6 +122,9 @@ public class GameController implements Initializable {
         }
     }
 
+    /**
+     * reloads the data and updates the view
+     */
     public void reloadStatistic(){
         initializeDataArray();
         try {
