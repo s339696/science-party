@@ -1,5 +1,6 @@
 package controller;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
@@ -290,6 +291,10 @@ public class QuizController implements Initializable {
             case DELETE:
                 t = topicsListView.getSelectionModel().getSelectedItem();
                 TopicManager.deleteTopic(t);
+                questionsListView.setItems(FXCollections.observableArrayList());
+
+                
+
                 closeTopicEditorMode();
                 break;
         }
