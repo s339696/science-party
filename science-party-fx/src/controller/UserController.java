@@ -93,15 +93,19 @@ public class UserController implements Initializable{
      */
     @FXML
     private void handleUserInSelect(){
-        presentedUser = lv.getSelectionModel().getSelectedItem();
+        try {
+            presentedUser = lv.getSelectionModel().getSelectedItem();
 
-        idLabel.textProperty().set(String.valueOf(presentedUser.getId()));
-        firstNameLabel.textProperty().set(presentedUser.getFirstname());
-        lastNameLabel.textProperty().set(presentedUser.getLastname());
-        emailLabel.textProperty().set(presentedUser.getEmail());
-        birthdateLabel.textProperty().set(presentedUser.getBirthday());
-        checkBox.setSelected(presentedUser.isLocked());
-        authorCheckBox.setSelected(presentedUser.isAuthor());
+            idLabel.textProperty().set(String.valueOf(presentedUser.getId()));
+            firstNameLabel.textProperty().set(presentedUser.getFirstname());
+            lastNameLabel.textProperty().set(presentedUser.getLastname());
+            emailLabel.textProperty().set(presentedUser.getEmail());
+            birthdateLabel.textProperty().set(presentedUser.getBirthday());
+            checkBox.setSelected(presentedUser.isLocked());
+            authorCheckBox.setSelected(presentedUser.isAuthor());
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
     }
 
     /**

@@ -8,7 +8,12 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.datamatrix.DataMatrixWriter;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.encoder.QRCode;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.BooleanPropertyBase;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableMapValue;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
@@ -33,12 +38,13 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.io.*;
 import java.net.URL;
+import java.util.ConcurrentModificationException;
 import java.util.ResourceBundle;
 
 /**
  * Created by Richard on 16.03.2016.
  */
-public class PerkController implements Initializable {
+public class PerkController implements Initializable, Serializable {
 
     @FXML
     ImageView qrImageView;
@@ -54,8 +60,10 @@ public class PerkController implements Initializable {
      */
     static ObservableMap<Integer, Image> qrMap = FXCollections.observableHashMap();
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         try {
             PerkManager.refreshPerkList();
         } catch (IOException e) {
@@ -71,14 +79,25 @@ public class PerkController implements Initializable {
         }
 
         perkListView.setItems(PerkManager.perkList);
+
+
+
     }
+
+
+
+
 
     /**
      * shows the appropriate image for the selected qr code
      */
     public void handlePerksInSelect(){
-        qrImageView.setImage(qrMap.get(perkListView.getSelectionModel().getSelectedItem().getId()));
-        topicLabel.setText("Thema: " + perkListView.getSelectionModel().getSelectedItem().getTopicName());
+        try {
+            qrImageView.setImage(qrMap.get(perkListView.getSelectionModel().getSelectedItem().getId()));
+            topicLabel.setText("Thema: " + perkListView.getSelectionModel().getSelectedItem().getTopicName());
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
     }
 
     /**
@@ -92,6 +111,7 @@ public class PerkController implements Initializable {
         for (Perk p : PerkManager.perkList) {
             qrMap.put(p.getId(), generateQr(p.getQrCode()));
         }
+
     }
 
     /**
@@ -142,28 +162,29 @@ public class PerkController implements Initializable {
     }
 
     public void deletePerksPerTopic(String tName) throws IOException, WriterException {
-        for (Perk perk :
-                PerkManager.perkList) {
-            System.out.println(perk.toString());
-            if(perk.getTopicName().equals(tName)){
-                System.out.println(perk.toString() + "soll entfernt werden");
-                //perkListView.getItems().remove(perk);
-                PerkManager.perkList.remove(perk);
+        try {
+            for (Perk perk :
+                    PerkManager.perkList) {
+                System.out.println(perk.toString());
+                if (perk.getTopicName().equals(tName)) {
+                    System.out.println(perk.toString() + "soll entfernt werden");
+                    PerkManager.perkList.remove(perk);
+                    qrImageView.setImage(null);
+                    topicLabel.setText("");
+                }
             }
+        }catch (ConcurrentModificationException e){
+            //System.out.printf(e.getMessage());
+        } catch (NullPointerException e){
+
         }
 
     }
 
-    public void setList(){
-        ObservableList l = PerkManager.perkList;
-        if(perkListView==null){
-            System.out.println("ListView ist null");
-        }
-
-        if(PerkManager.perkList==null){
-            System.out.println("Perklist ist null");
-        }
-        perkListView.setItems(l);
+    public void setList() throws IOException, WriterException {
+        perkListView.setItems(null);
+        perkListView.setItems(PerkManager.perkList);
+        makeQrMap();
     }
 
 
