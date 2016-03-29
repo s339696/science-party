@@ -10,6 +10,7 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.encoder.QRCode;
 import javafx.beans.value.ObservableMapValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -51,7 +52,7 @@ public class PerkController implements Initializable {
     /**
      * contains the qr codes as Images
      */
-    ObservableMap<Integer, Image> qrMap = FXCollections.observableHashMap();
+    static ObservableMap<Integer, Image> qrMap = FXCollections.observableHashMap();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -86,7 +87,8 @@ public class PerkController implements Initializable {
      * @throws IOException
      * @throws WriterException
      */
-    public void makeQrMap() throws IOException, WriterException {
+    public static void makeQrMap() throws IOException, WriterException {
+        qrMap.clear();
         for (Perk p : PerkManager.perkList) {
             qrMap.put(p.getId(), generateQr(p.getQrCode()));
         }
@@ -100,7 +102,7 @@ public class PerkController implements Initializable {
      * @throws WriterException
      * @throws IOException
      */
-    public Image generateQr(String qrText) throws WriterException, IOException {
+    public static Image generateQr(String qrText) throws WriterException, IOException {
         BitMatrix matrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, 200, 200);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         MatrixToImageWriter.writeToStream(matrix, "PNG", out);
@@ -137,6 +139,31 @@ public class PerkController implements Initializable {
         } catch (PrinterException e1) {
             e1.printStackTrace();
         }
+    }
+
+    public void deletePerksPerTopic(String tName) throws IOException, WriterException {
+        for (Perk perk :
+                PerkManager.perkList) {
+            System.out.println(perk.toString());
+            if(perk.getTopicName().equals(tName)){
+                System.out.println(perk.toString() + "soll entfernt werden");
+                //perkListView.getItems().remove(perk);
+                PerkManager.perkList.remove(perk);
+            }
+        }
+
+    }
+
+    public void setList(){
+        ObservableList l = PerkManager.perkList;
+        if(perkListView==null){
+            System.out.println("ListView ist null");
+        }
+
+        if(PerkManager.perkList==null){
+            System.out.println("Perklist ist null");
+        }
+        perkListView.setItems(l);
     }
 
 

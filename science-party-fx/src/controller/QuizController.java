@@ -1,11 +1,13 @@
 package controller;
 
+import com.google.zxing.WriterException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import main.Main;
+import model.manager.PerkManager;
 import model.models.Answer;
 import model.models.Question;
 import model.models.Topic;
@@ -274,12 +276,20 @@ public class QuizController implements Initializable {
     }
 
     @FXML
-    public void doAction() throws IOException {
+    public void doAction() throws IOException, WriterException {
         Topic t = new Topic();
+        PerkController pc = new PerkController();
         switch (bttn){
             case ADD:
                 t.setName(TopicTextField.textProperty().get());
                 TopicManager.insertTopic(t);
+
+                PerkManager.refreshPerkList();
+                //pc.setList();
+
+
+                //PerkController.makeQrMap();
+
                 closeTopicEditorMode();
                 break;
             case EDIT:
@@ -293,9 +303,11 @@ public class QuizController implements Initializable {
                 TopicManager.deleteTopic(t);
                 questionsListView.setItems(FXCollections.observableArrayList());
 
-                
-
                 closeTopicEditorMode();
+                pc.deletePerksPerTopic(t.getName());
+
+
+
                 break;
         }
     }
