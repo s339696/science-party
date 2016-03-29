@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import main.Main;
 import model.manager.PerkManager;
 import model.models.Answer;
+import model.models.Perk;
 import model.models.Question;
 import model.models.Topic;
 import model.manager.AnswerManager;
@@ -163,11 +164,17 @@ public class QuizController implements Initializable {
     public void handleTopicsInSelect() throws IOException {
         disableQuestionView();
         resetQuestionView();
-      int id = topicsListView.getSelectionModel().getSelectedItem().getId();
+        int id = 0;
+        try {
+            id = topicsListView.getSelectionModel().getSelectedItem().getId();
+
 
         QuestionManager.refreshQuestionListPerTopic(id);
 
         questionsListView.setItems(QuestionManager.questionList);
+        }catch (NullPointerException e){
+        e.getMessage();
+    }
     }
 
     /**
@@ -182,7 +189,14 @@ public class QuizController implements Initializable {
         deleteQuestionButton.setDisable(false);
         saveQuestionButton.setDisable(false);
 
-        int qid = questionsListView.getSelectionModel().getSelectedItem().getId();
+        int qid = 0;
+
+        try {
+            qid = questionsListView.getSelectionModel().getSelectedItem().getId();
+
+
+
+
 
         for(Question question : QuestionManager.questionList){
             if(question.getId() == qid){
@@ -229,6 +243,10 @@ public class QuizController implements Initializable {
                radioA.setSelected(AnswerManager.answerList.get(0).isCorrect());
                break;
        }
+
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
 
 
     }
@@ -284,11 +302,9 @@ public class QuizController implements Initializable {
                 t.setName(TopicTextField.textProperty().get());
                 TopicManager.insertTopic(t);
 
+                TopicManager.refreshTopicList();
                 PerkManager.refreshPerkList();
-                //pc.setList();
 
-
-                //PerkController.makeQrMap();
 
                 closeTopicEditorMode();
                 break;
