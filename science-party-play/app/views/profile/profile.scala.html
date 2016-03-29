@@ -107,6 +107,9 @@
     var numberOfPoints = @user.getPoints;
     var numberOfGames = @user.getNumberOfPlayedGames;
     var pointsPerGame = numberOfPoints/numberOfGames;
+    if (isNaN(pointsPerGame) || isFinite(pointsPerGame)) {
+        pointsPerGame = 0;
+    }
 
     document.getElementById("pointsPerGame").innerHTML = pointsPerGame;
 
