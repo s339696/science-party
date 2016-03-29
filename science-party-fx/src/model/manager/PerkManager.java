@@ -73,7 +73,6 @@ public class PerkManager {
             list.add(perk);
         }
         PerkManager.perkList = list;
-
     }
 
     public static void main(String[] args) throws IOException {

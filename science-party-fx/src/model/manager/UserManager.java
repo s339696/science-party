@@ -149,8 +149,7 @@ public class UserManager {
                 updateUser=u;
             }
         }
-
-
+        
         updateUser.setAuthor(isAuthor);
 
         ObjectMapper mapper = new ObjectMapper();
@@ -190,7 +189,8 @@ public class UserManager {
 
         UserManager.refreshUserList();
 
-        UserManager.deleteUser(15);
+        UserManager.deleteUser(9);
+        System.out.println("fertig");
 
 
 

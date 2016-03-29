@@ -83,22 +83,37 @@ public class UserController implements Initializable{
         lv.setItems(UserManager.userList);
    }
 
+    /**
+     * to handel the user in select
+     */
     User presentedUser = new User();
 
+    /**
+     * shows the values of the selected user
+     */
     @FXML
     private void handleUserInSelect(){
-        presentedUser = lv.getSelectionModel().getSelectedItem();
+        try {
+            presentedUser = lv.getSelectionModel().getSelectedItem();
 
-        idLabel.textProperty().set(String.valueOf(presentedUser.getId()));
-        firstNameLabel.textProperty().set(presentedUser.getFirstname());
-        lastNameLabel.textProperty().set(presentedUser.getLastname());
-        emailLabel.textProperty().set(presentedUser.getEmail());
-        birthdateLabel.textProperty().set(presentedUser.getBirthday());
-        checkBox.setSelected(presentedUser.isLocked());
-        authorCheckBox.setSelected(presentedUser.isAuthor());
-
+            idLabel.textProperty().set(String.valueOf(presentedUser.getId()));
+            firstNameLabel.textProperty().set(presentedUser.getFirstname());
+            lastNameLabel.textProperty().set(presentedUser.getLastname());
+            emailLabel.textProperty().set(presentedUser.getEmail());
+            birthdateLabel.textProperty().set(presentedUser.getBirthday());
+            checkBox.setSelected(presentedUser.isLocked());
+            authorCheckBox.setSelected(presentedUser.isAuthor());
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
     }
 
+    /**
+     * handle the state of the lock check box
+     * lock/unlock the user in the database
+     *
+     * @throws IOException
+     */
     @FXML
     private void handleCheckBox() throws IOException {
         int id = presentedUser.getId();
@@ -112,14 +127,24 @@ public class UserController implements Initializable{
         }
     }
 
+    /**
+     * deletes the selected user
+     *
+     * @throws IOException
+     */
     @FXML
     private void handleDeleteButton() throws IOException {
         int id = presentedUser.getId();
         UserManager.deleteUser(id);
         showList();
-
     }
 
+    /**
+     * handles the state of the author check box
+     * update the value in the database
+     *
+     * @throws IOException
+     */
     @FXML
     private void handleAuthorCheckBox() throws IOException {
         int id = presentedUser.getId();
@@ -134,6 +159,11 @@ public class UserController implements Initializable{
         }
     }
 
+    /**
+     * handles the search input in displays the results in the listView
+     *
+     * @throws IOException
+     */
     public void handleSearch() throws IOException {
         FilteredList<User> filteredData = new FilteredList<>(UserManager.userList, p -> true);
 
@@ -158,6 +188,9 @@ public class UserController implements Initializable{
         lv.setItems(sortedData);
     }
 
+    /**
+     * shows/hides a cancel button for the search box
+     */
    public void handleInput(){
        if (search.getText()==null||search.getText().isEmpty()){
            cancelSearchButton.setVisible(false);
@@ -166,6 +199,10 @@ public class UserController implements Initializable{
        }
    }
 
+    /**
+     * cancels the search mode;
+     * displays again all users and hides the cancel button
+     */
     public void cancelSearch(){
         cancelSearchButton.setVisible(false);
         search.setText("");

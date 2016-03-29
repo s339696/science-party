@@ -1,11 +1,15 @@
 package controller;
 
+import com.google.zxing.WriterException;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
 import main.Main;
+import model.manager.PerkManager;
 import model.models.Answer;
+import model.models.Perk;
 import model.models.Question;
 import model.models.Topic;
 import model.manager.AnswerManager;
@@ -106,7 +110,9 @@ public class QuizController implements Initializable {
         questionBox.setWrapText(true);
     }
 
-
+    /**
+     * add topics to the view
+     */
     public void showTopics(){
         disableQuestionView();
 
@@ -137,6 +143,9 @@ public class QuizController implements Initializable {
         saveQuestionButton.setDisable(true);
     }
 
+    /**
+     * resets the values in the elements of the question view
+     */
     public void resetQuestionView(){
         questionBox.clear();
         answerA.clear();
@@ -146,20 +155,33 @@ public class QuizController implements Initializable {
         difficultyField.clear();
     }
 
-
-
+    /**
+     * loads question per topic
+     *
+     * @throws IOException
+     */
     @FXML
     public void handleTopicsInSelect() throws IOException {
         disableQuestionView();
         resetQuestionView();
-      int id = topicsListView.getSelectionModel().getSelectedItem().getId();
+        int id = 0;
+        try {
+            id = topicsListView.getSelectionModel().getSelectedItem().getId();
+
 
         QuestionManager.refreshQuestionListPerTopic(id);
 
         questionsListView.setItems(QuestionManager.questionList);
+        }catch (NullPointerException e){
+        e.getMessage();
+    }
     }
 
-
+    /**
+     * loads answers per questions and show them
+     *
+     * @throws IOException
+     */
     @FXML
     public void handleQuestionsInSelect() throws IOException {
         questionBox.setDisable(false);
@@ -167,7 +189,14 @@ public class QuizController implements Initializable {
         deleteQuestionButton.setDisable(false);
         saveQuestionButton.setDisable(false);
 
-        int qid = questionsListView.getSelectionModel().getSelectedItem().getId();
+        int qid = 0;
+
+        try {
+            qid = questionsListView.getSelectionModel().getSelectedItem().getId();
+
+
+
+
 
         for(Question question : QuestionManager.questionList){
             if(question.getId() == qid){
@@ -200,24 +229,24 @@ public class QuizController implements Initializable {
                radioD.setDisable(false);
                answerD.textProperty().set(AnswerManager.answerList.get(3).getText());
                radioD.setSelected(AnswerManager.answerList.get(3).isCorrect());
-               //idList.add(3, AnswerManager.answerList.get(3).getId());
            case 3:
                radioC.setDisable(false);
                answerC.textProperty().set(AnswerManager.answerList.get(2).getText());
                radioC.setSelected(AnswerManager.answerList.get(2).isCorrect());
-               //idList.add(2, AnswerManager.answerList.get(2).getId());
            case 2:
                radioB.setDisable(false);
                answerB.textProperty().set(AnswerManager.answerList.get(1).getText());
                radioB.setSelected(AnswerManager.answerList.get(1).isCorrect());
-               //idList.add(1, AnswerManager.answerList.get(1).getId());
            case 1:
                radioA.setDisable(false);
                answerA.textProperty().set(AnswerManager.answerList.get(0).getText());
                radioA.setSelected(AnswerManager.answerList.get(0).isCorrect());
-               //idList.add(0, AnswerManager.answerList.get(0).getId());
                break;
        }
+
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
 
 
     }
@@ -262,16 +291,21 @@ public class QuizController implements Initializable {
         bttn = DELETE;
         openTopicEditorMode(DELETE, "Wirklich Löschen?");
         TopicTextField.setVisible(false);
-
     }
 
     @FXML
-    public void doAction() throws IOException {
+    public void doAction() throws IOException, WriterException {
         Topic t = new Topic();
+        PerkController pc = new PerkController();
         switch (bttn){
             case ADD:
                 t.setName(TopicTextField.textProperty().get());
                 TopicManager.insertTopic(t);
+
+                TopicManager.refreshTopicList();
+                PerkManager.refreshPerkList();
+
+
                 closeTopicEditorMode();
                 break;
             case EDIT:
@@ -283,7 +317,13 @@ public class QuizController implements Initializable {
             case DELETE:
                 t = topicsListView.getSelectionModel().getSelectedItem();
                 TopicManager.deleteTopic(t);
+                questionsListView.setItems(FXCollections.observableArrayList());
+
                 closeTopicEditorMode();
+                pc.deletePerksPerTopic(t.getName());
+
+
+
                 break;
         }
     }
@@ -322,19 +362,6 @@ public class QuizController implements Initializable {
         addQuestionButton.textProperty().set("+Neue Frage");
         addQuestionField.setVisible(false);
         cancelNewQuestionButton.setVisible(false);
-
-        /*
-        questionBox.setDisable(false);
-        difficultyField.setDisable(false);
-        answerA.setDisable(false);
-        answerB.setDisable(false);
-        answerC.setDisable(false);
-        answerD.setDisable(false);
-        radioA.setDisable(false);
-        radioB.setDisable(false);
-        radioC.setDisable(false);
-        radioD.setDisable(false);
-        */
     }
 
     @FXML
@@ -344,7 +371,6 @@ public class QuizController implements Initializable {
         questionsListView.setItems(QuestionManager.questionList);
     }
 
-
     @FXML
     public void activateRadioButtonA(){
         if(answerA.getText().length()!=0){
@@ -353,6 +379,7 @@ public class QuizController implements Initializable {
             radioA.setDisable(true);
         }
     }
+
     @FXML
     public void activateRadioButtonB(){
         if(answerB.getText().length()!=0){
@@ -361,6 +388,7 @@ public class QuizController implements Initializable {
             radioB.setDisable(true);
         }
     }
+
     @FXML
     public void activateRadioButtonC(){
         if(answerC.getText().length()!=0){
@@ -369,6 +397,7 @@ public class QuizController implements Initializable {
             radioC.setDisable(true);
         }
     }
+
     @FXML
     public void activateRadioButtonD(){
         if(answerD.getText().length()!=0){
