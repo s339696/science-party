@@ -48,6 +48,9 @@ public class PerkController implements Initializable {
     @FXML
     private javafx.scene.control.Label topicLabel;
 
+    /**
+     * contains the qr codes as Images
+     */
     ObservableMap<Integer, Image> qrMap = FXCollections.observableHashMap();
 
     @Override
@@ -67,22 +70,36 @@ public class PerkController implements Initializable {
         }
 
         perkListView.setItems(PerkManager.perkList);
-
-
     }
 
+    /**
+     * shows the appropriate image for the selected qr code
+     */
     public void handlePerksInSelect(){
         qrImageView.setImage(qrMap.get(perkListView.getSelectionModel().getSelectedItem().getId()));
         topicLabel.setText("Thema: " + perkListView.getSelectionModel().getSelectedItem().getTopicName());
     }
 
-
+    /**
+     * fill the qrMap with data
+     *
+     * @throws IOException
+     * @throws WriterException
+     */
     public void makeQrMap() throws IOException, WriterException {
         for (Perk p : PerkManager.perkList) {
             qrMap.put(p.getId(), generateQr(p.getQrCode()));
         }
     }
 
+    /**
+     * generating the qr code
+     *
+     * @param qrText                    string to decode
+     * @return                          qr code as image
+     * @throws WriterException
+     * @throws IOException
+     */
     public Image generateQr(String qrText) throws WriterException, IOException {
         BitMatrix matrix = new MultiFormatWriter().encode(qrText, BarcodeFormat.QR_CODE, 200, 200);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -95,6 +112,9 @@ public class PerkController implements Initializable {
         return image;
     }
 
+    /**
+     * creates a print job for printing the selected qr code
+     */
     public void printQr(){
         BufferedImage bufferedImage = SwingFXUtils.fromFXImage(qrImageView.getImage(), null);
 
